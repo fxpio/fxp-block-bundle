@@ -44,7 +44,7 @@ class BlockTypeGuesserChain implements BlockTypeGuesserInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function guessType($class, $property)
     {

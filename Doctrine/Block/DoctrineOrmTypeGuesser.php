@@ -35,7 +35,7 @@ class DoctrineOrmTypeGuesser implements BlockTypeGuesserInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function guessType($class, $property)
     {
