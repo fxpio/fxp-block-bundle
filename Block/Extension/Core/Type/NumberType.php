@@ -46,19 +46,19 @@ class NumberType extends AbstractType
             'grouping'      => false,
             'locale'        => \Locale::getDefault(),
             // Integer cast rounds towards 0, so do the same when displaying fractions
-            'rounding_mode' => \NumberFormatter::ROUND_HALFEVEN,
+            'rounding_mode' => NumberToLocalizedStringTransformer::ROUND_HALF_EVEN,
             'compound'      => false,
         ));
 
         $resolver->setAllowedValues(array(
             'rounding_mode' => array(
-                \NumberFormatter::ROUND_FLOOR,
-                \NumberFormatter::ROUND_DOWN,
-                \NumberFormatter::ROUND_HALFDOWN,
-                \NumberFormatter::ROUND_HALFEVEN,
-                \NumberFormatter::ROUND_HALFUP,
-                \NumberFormatter::ROUND_UP,
-                \NumberFormatter::ROUND_CEILING,
+                NumberToLocalizedStringTransformer::ROUND_CEILING,
+                NumberToLocalizedStringTransformer::ROUND_DOWN,
+                NumberToLocalizedStringTransformer::ROUND_FLOOR,
+                NumberToLocalizedStringTransformer::ROUND_HALF_DOWN,
+                NumberToLocalizedStringTransformer::ROUND_HALF_EVEN,
+                NumberToLocalizedStringTransformer::ROUND_HALF_UP,
+                NumberToLocalizedStringTransformer::ROUND_UP,
             ),
         ));
     }
