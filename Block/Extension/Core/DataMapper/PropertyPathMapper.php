@@ -12,7 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataMapper;
 
 use Sonatra\Bundle\BlockBundle\Block\DataMapperInterface;
-use Sonatra\Bundle\BlockBundle\Block\Util\VirtualBlockAwareIterator;
+use Sonatra\Bundle\BlockBundle\Block\Util\InheritDataAwareIterator;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -50,7 +50,7 @@ class PropertyPathMapper implements DataMapperInterface
             throw new UnexpectedTypeException($data, 'object, array or empty');
         }
 
-        $iterator = new VirtualBlockAwareIterator($blocks);
+        $iterator = new InheritDataAwareIterator($blocks);
         $iterator = new \RecursiveIteratorIterator($iterator);
 
         foreach ($iterator as $block) {

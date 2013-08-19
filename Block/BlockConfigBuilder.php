@@ -54,7 +54,7 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     /**
      * @var Boolean
      */
-    private $virtual = false;
+    private $inheritData = false;
 
     /**
      * @var Boolean
@@ -263,9 +263,9 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getVirtual()
+    public function getInheritData()
     {
-        return $this->virtual;
+        return $this->inheritData;
     }
 
     /**
@@ -471,13 +471,13 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function setVirtual($virtual)
+    public function setInheritData($inheritData)
     {
         if ($this->locked) {
             throw new BadMethodCallException('BlockConfigBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
         }
 
-        $this->virtual = $virtual;
+        $this->inheritData = $inheritData;
 
         return $this;
     }

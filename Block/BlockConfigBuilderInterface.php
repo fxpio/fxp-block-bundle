@@ -139,13 +139,13 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
     public function setMapped($mapped);
 
     /**
-     * Sets whether the block should be virtual.
+     * Sets whether the block should be inherit data.
      *
-     * @param Boolean $virtual Whether the block should be virtual.
+     * @param Boolean $inheritData Whether the block should be inherit data.
      *
      * @return self The configuration object.
      */
-    public function setVirtual($virtual);
+    public function setInheritData($inheritData);
 
     /**
      * Sets whether the block should be compound.

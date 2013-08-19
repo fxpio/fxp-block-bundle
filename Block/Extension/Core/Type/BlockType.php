@@ -51,7 +51,7 @@ class BlockType extends AbstractType
             ->setEmptyData($options['empty_data'])
             ->setMapped($options['mapped'])
             ->setPropertyPath(is_string($options['property_path']) ? $options['property_path'] : null)
-            ->setVirtual($options['virtual'])
+            ->setInheritData($options['inherit_data'])
             ->setCompound($options['compound'])
             ->setData(isset($options['data']) ? $options['data'] : null)
             ->setDataMapper($options['compound'] ? new PropertyPathMapper($this->propertyAccessor) : null)
@@ -175,7 +175,7 @@ class BlockType extends AbstractType
                 'label'              => null,
                 'attr'               => array(),
                 'label_attr'         => array(),
-                'virtual'            => false,
+                'inherit_data'       => false,
                 'compound'           => true,
                 'translation_domain' => null,
         ));

@@ -48,15 +48,15 @@ interface BlockConfigInterface
     public function getMapped();
 
     /**
-     * Returns whether the block should be virtual.
+     * Returns whether the block should be inherit data.
      *
      * When mapping data to the children of a block, the data mapper
-     * should ignore virtual blocks and map to the children of the
-     * virtual block instead.
+     * should ignore inherit data blocks and map to the children of the
+     * inherit data block instead.
      *
-     * @return Boolean Whether the block is virtual.
+     * @return Boolean Whether the block is inherit data.
      */
-    public function getVirtual();
+    public function getInheritData();
 
     /**
      * Returns whether the block is compound.

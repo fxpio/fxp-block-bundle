@@ -14,12 +14,12 @@ namespace Sonatra\Bundle\BlockBundle\Block\Util;
 /**
  * Iterator that traverses fields of a field group.
  *
- * If the iterator encounters a virtual field group, it enters the field
+ * If the iterator encounters a inherit data field group, it enters the field
  * group and traverses its children as well.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class VirtualBlockAwareIterator extends \ArrayIterator implements \RecursiveIterator
+class InheritDataAwareIterator extends \ArrayIterator implements \RecursiveIterator
 {
     /**
      * {@inheritdoc}
@@ -34,6 +34,6 @@ class VirtualBlockAwareIterator extends \ArrayIterator implements \RecursiveIter
      */
     public function hasChildren()
     {
-        return $this->current()->getConfig()->getVirtual();
+        return $this->current()->getConfig()->getInheritData();
     }
 }
