@@ -12,10 +12,10 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Exception;
 
 /**
- * Thrown when a block type is configured incorrectly.
+ * Base LogicException for the Block component.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class TypeDefinitionException extends Exception
+class LogicException extends \LogicException implements ExceptionInterface
 {
 }

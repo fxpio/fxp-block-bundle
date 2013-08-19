@@ -15,7 +15,7 @@ use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
-use Sonatra\Bundle\BlockBundle\Block\Exception\Exception;
+use Sonatra\Bundle\BlockBundle\Block\Exception\LogicException;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer\ChoicesToValuesTransformer;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer\ChoiceToValueTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -39,7 +39,7 @@ class ChoiceType extends AbstractType
     public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
         if (!$options['choice_list'] && !is_array($options['choices']) && !$options['choices'] instanceof \Traversable) {
-            throw new Exception('Either the option "choices" or "choice_list" must be set.');
+            throw new LogicException('Either the option "choices" or "choice_list" must be set.');
         }
 
         if ($options['multiple']) {

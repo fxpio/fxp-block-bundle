@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Block;
 
 use Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException;
+use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
@@ -114,9 +115,9 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      * @param EventDispatcherInterface $dispatcher The event dispatcher
      * @param array                    $options    The block options
      *
-     * @throws UnexpectedTypeException   If the name is not a string.
-     * @throws \InvalidArgumentException If the data class is not a valid class or if
-     *                                   the name contains invalid characters.
+     * @throws UnexpectedTypeException  If the name is not a string.
+     * @throws InvalidArgumentException If the data class is not a valid class or if
+     *                                  the name contains invalid characters.
      */
     public function __construct($name, $dataClass, EventDispatcherInterface $dispatcher, array $options = array())
     {
@@ -125,7 +126,7 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
         self::validateName($name);
 
         if (null !== $dataClass && !class_exists($dataClass)) {
-            throw new \InvalidArgumentException(sprintf('The data class "%s" is not a valid class.', $dataClass));
+            throw new InvalidArgumentException(sprintf('The data class "%s" is not a valid class.', $dataClass));
         }
 
         $this->name = $name;
@@ -559,8 +560,8 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      *
      * @param string $name The tested block name.
      *
-     * @throws UnexpectedTypeException   If the name is not a string.
-     * @throws \InvalidArgumentException If the name contains invalid characters.
+     * @throws UnexpectedTypeException  If the name is not a string.
+     * @throws InvalidArgumentException If the name contains invalid characters.
      */
     public static function validateName($name)
     {
@@ -569,7 +570,7 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
         }
 
         if (!self::isValidName($name)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'The name "%s" contains illegal characters. Names should start with a letter, digit or underscore and only contain letters, digits, numbers, underscores ("_"), hyphens ("-") and colons (":").',
                 $name
             ));

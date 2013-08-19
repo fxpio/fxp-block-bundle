@@ -11,7 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
-use Sonatra\Bundle\BlockBundle\Block\Exception\Exception;
+use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 
 /**
  * A block extension with preloaded types, type exceptions and type guessers.
@@ -55,7 +55,7 @@ class PreloadedExtension implements BlockExtensionInterface
     public function getType($name)
     {
         if (!isset($this->types[$name])) {
-            throw new Exception(sprintf('The type "%s" can not be loaded by this extension', $name));
+            throw new InvalidArgumentException(sprintf('The type "%s" can not be loaded by this extension', $name));
         }
 
         return $this->types[$name];

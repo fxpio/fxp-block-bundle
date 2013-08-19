@@ -11,7 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
-use Sonatra\Bundle\BlockBundle\Block\Exception\Exception;
+use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 
 /**
@@ -53,7 +53,7 @@ abstract class AbstractExtension implements BlockExtensionInterface
         }
 
         if (!isset($this->types[$name])) {
-            throw new Exception(sprintf('The type "%s" can not be loaded by this extension', $name));
+            throw new InvalidArgumentException(sprintf('The type "%s" can not be loaded by this extension', $name));
         }
 
         return $this->types[$name];

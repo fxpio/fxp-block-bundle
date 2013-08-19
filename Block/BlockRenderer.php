@@ -11,7 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
-use Sonatra\Bundle\BlockBundle\Block\Exception\Exception;
+use Sonatra\Bundle\BlockBundle\Block\Exception\LogicException;
 
 /**
  * Renders a block into HTML using a rendering engine.
@@ -73,17 +73,29 @@ class BlockRenderer implements BlockRendererInterface
      */
     public function renderBlock(BlockView $view, $blockName, array $variables = array())
     {
-        if (0 == count($this->variableStack)) {
-            throw new Exception('This method should only be called while rendering a block element.');
-        }
-
-        $blockCacheKey = $view->vars[self::CACHE_KEY_VAR];
-        $scopeVariables = end($this->variableStack[$blockCacheKey]);
-
         $resource = $this->engine->getResourceForBlockName($view, $blockName);
 
         if (!$resource) {
-            throw new Exception(sprintf('No block "%s" found while rendering the block.', $blockName));
+            throw new LogicException(sprintf('No block "%s" found while rendering the form.', $blockName));
+        }
+
+        $viewCacheKey = $view->vars[self::CACHE_KEY_VAR];
+
+        // The variables are cached globally for a view (instead of for the
+        // current suffix)
+        if (!isset($this->variableStack[$viewCacheKey])) {
+            $this->variableStack[$viewCacheKey] = array();
+
+            // The default variable scope contains all view variables, merged with
+            // the variables passed explicitly to the helper
+            $scopeVariables = $view->vars;
+
+            $varInit = true;
+        } else {
+            // Reuse the current scope and merge it with the explicitly passed variables
+            $scopeVariables = end($this->variableStack[$viewCacheKey]);
+
+            $varInit = false;
         }
 
         // Merge the passed with the existing attributes
@@ -100,13 +112,17 @@ class BlockRenderer implements BlockRendererInterface
         // cannot be overwritten
         $variables = array_replace($scopeVariables, $variables);
 
-        $this->variableStack[$blockCacheKey][] = $variables;
+        $this->variableStack[$viewCacheKey][] = $variables;
 
         // Do the rendering
         $html = $this->engine->renderBlock($view, $resource, $blockName, $variables);
 
         // Clear the stack
-        array_pop($this->variableStack[$blockCacheKey]);
+        array_pop($this->variableStack[$viewCacheKey]);
+
+        if ($varInit) {
+            unset($this->variableStack[$viewCacheKey]);
+        }
 
         return $html;
     }
@@ -203,7 +219,7 @@ class BlockRenderer implements BlockRendererInterface
 
         // Escape if no resource exists for this block
         if (!$resource) {
-            throw new Exception(sprintf(
+            throw new LogicException(sprintf(
                 'Unable to render the block as none of the following blocks exist: "%s".',
                 implode('", "', array_reverse($blockNameHierarchy))
             ));

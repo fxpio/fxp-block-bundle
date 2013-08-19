@@ -12,9 +12,11 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Exception;
 
 /**
+ * Base UnexpectedTypeException for the Block component.
+ *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class UnexpectedTypeException extends Exception
+class UnexpectedTypeException extends InvalidArgumentException
 {
     public function __construct($value, $expectedType)
     {

@@ -11,7 +11,9 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
-use Sonatra\Bundle\BlockBundle\Block\Exception\Exception;
+use Sonatra\Bundle\BlockBundle\Block\Exception\LogicException;
+use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
+use Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -88,7 +90,7 @@ class Block implements \IteratorAggregate, BlockInterface
         // `setData` and `add` will not lead to the correct population of
         // the child blocks.
         if ($config->getCompound() && !$config->getDataMapper()) {
-            throw new Exception('Compound blocks need a data mapper');
+            throw new LogicException('Compound blocks need a data mapper');
         }
 
         $this->config = $config;
@@ -147,7 +149,7 @@ class Block implements \IteratorAggregate, BlockInterface
     public function setParent(BlockInterface $parent = null)
     {
         if ('' === $this->config->getName()) {
-            throw new Exception('A block with an empty name cannot have a parent block.');
+            throw new LogicException('A block with an empty name cannot have a parent block.');
         }
 
         $this->parent = $parent;
@@ -205,7 +207,7 @@ class Block implements \IteratorAggregate, BlockInterface
     public function setData($modelData)
     {
         if ($this->lockSetData) {
-            throw new Exception('A cycle was detected. Listeners to the PRE_SET_DATA event must not call setData(). You should call setData() on the BlockEvent object instead.');
+            throw new RuntimeException('A cycle was detected. Listeners to the PRE_SET_DATA event must not call setData(). You should call setData() on the BlockEvent object instead.');
         }
 
         $this->lockSetData = true;
@@ -235,7 +237,7 @@ class Block implements \IteratorAggregate, BlockInterface
             if (null === $dataClass && is_object($viewData) && !$viewData instanceof \ArrayAccess) {
                 $expectedType = 'scalar, array or an instance of \ArrayAccess';
 
-                throw new Exception(
+                throw new LogicException(
                         'The block\'s view data is expected to be of type ' . $expectedType . ', ' .
                         'but is ' . $actualType . '. You ' .
                         'can avoid this error by setting the "data_class" option to ' .
@@ -245,7 +247,7 @@ class Block implements \IteratorAggregate, BlockInterface
             }
 
             if (null !== $dataClass && !$viewData instanceof $dataClass) {
-                throw new Exception(
+                throw new LogicException(
                         'The block\'s view data is expected to be an instance of class ' .
                         $dataClass . ', but is '. $actualType . '. You can avoid this error ' .
                         'by setting the "data_class" option to null or by adding a view ' .
@@ -348,7 +350,7 @@ class Block implements \IteratorAggregate, BlockInterface
     public function add($child, $type = null, array $options = array())
     {
         if (!$this->config->getCompound()) {
-            throw new Exception('You cannot add children to a simple block. Maybe you should set the option "compound" to true?');
+            throw new LogicException('You cannot add children to a simple block. Maybe you should set the option "compound" to true?');
         }
 
         // Obtain the view data
@@ -428,7 +430,7 @@ class Block implements \IteratorAggregate, BlockInterface
             return $this->children[$name];
         }
 
-        throw new \InvalidArgumentException(sprintf('Child "%s" does not exist.', $name));
+        throw new InvalidArgumentException(sprintf('Child "%s" does not exist.', $name));
     }
 
     /**

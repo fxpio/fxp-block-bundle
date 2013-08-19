@@ -11,7 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
-use Sonatra\Bundle\BlockBundle\Block\Exception\Exception;
+use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -55,7 +55,7 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
     public function __construct(BlockTypeInterface $innerType, array $typeExtensions = array(), ResolvedBlockTypeInterface $parent = null)
     {
         if (!preg_match('/^[a-z0-9_]*$/i', $innerType->getName())) {
-            throw new Exception(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'The "%s" block type name ("%s") is not valid. Names must only contain letters, numbers, and "_".',
                 get_class($innerType),
                 $innerType->getName()

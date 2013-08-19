@@ -16,6 +16,6 @@ namespace Sonatra\Bundle\BlockBundle\Block\Exception;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class TransformationFailedException extends \RuntimeException implements ExceptionInterface
+class TransformationFailedException extends RuntimeException
 {
 }

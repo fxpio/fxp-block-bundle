@@ -12,8 +12,10 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Exception;
 
 /**
+ * Base InvalidConfigurationException for the Block component.
+ *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class InvalidConfigurationException extends Exception
+class InvalidConfigurationException extends InvalidArgumentException
 {
 }

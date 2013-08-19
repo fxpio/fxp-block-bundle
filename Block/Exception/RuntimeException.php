@@ -12,10 +12,10 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Exception;
 
 /**
- * Base StringCastException for the Block component.
+ * Base RuntimeException for the Block component.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class StringCastException extends RuntimeException
+class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
 }

@@ -13,7 +13,7 @@ namespace Sonatra\Bundle\BlockBundle\Block;
 
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\ExceptionInterface;
-use Sonatra\Bundle\BlockBundle\Block\Exception\Exception;
+use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 
 /**
  * The central registry of the Block component.
@@ -85,7 +85,7 @@ class BlockRegistry implements BlockRegistryInterface
             }
 
             if (!$type) {
-                throw new Exception(sprintf('Could not load type "%s"', $name));
+                throw new InvalidArgumentException(sprintf('Could not load type "%s"', $name));
             }
 
             $this->resolveAndAddType($type);

@@ -11,6 +11,8 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
+use Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException;
+
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
@@ -123,11 +125,11 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Implements \ArrayAccess.
      *
-     * @throws \BadMethodCallException always as setting a child by name is not allowed
+     * @throws BadMethodCallException always as setting a child by name is not allowed
      */
     public function offsetSet($name, $value)
     {
-        throw new \BadMethodCallException('Not supported');
+        throw new BadMethodCallException('Not supported');
     }
 
     /**

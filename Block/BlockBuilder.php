@@ -11,7 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
-use Sonatra\Bundle\BlockBundle\Block\Exception\Exception;
+use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -144,7 +144,7 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
             return $this->children[$name];
         }
 
-        throw new Exception(sprintf('The child with the name "%s" does not exist.', $name));
+        throw new InvalidArgumentException(sprintf('The child with the name "%s" does not exist.', $name));
     }
 
     /**

@@ -15,7 +15,7 @@ use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
-use Sonatra\Bundle\BlockBundle\Block\Exception\Exception;
+use Sonatra\Bundle\BlockBundle\Block\Exception\LogicException;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -69,7 +69,7 @@ class BlockType extends AbstractType
 
         if ($view->parent) {
             if ('' === $name) {
-                throw new Exception('Block node with empty name can be used only as root block node.');
+                throw new LogicException('Block node with empty name can be used only as root block node.');
             }
 
             if ('' !== ($parentFullName = $view->parent->vars['full_name'])) {
