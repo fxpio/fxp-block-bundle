@@ -36,6 +36,12 @@ class SonatraBlockExtension extends Extension
         $loader->load('twig.yml');
         $loader->load('doctrine.yml');
 
+        if (count($configs) > 1) {
+            $initConfig = array_pop($configs);
+            $configs = array_reverse($configs);
+            $configs[] = $initConfig;
+        }
+
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
