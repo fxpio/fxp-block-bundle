@@ -16,6 +16,7 @@ use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
+use Sonatra\Bundle\BlockBundle\Block\Util\InheritDataAwareIterator;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
@@ -54,10 +55,10 @@ class Block implements \IteratorAggregate, BlockInterface
     protected $normData;
 
     /**
-     * The block data in block format.
+     * The block data in view format.
      * @var mixed
      */
-    protected $blockData;
+    protected $viewData;
 
     /**
      * Whether the block's data has been initialized.
@@ -71,7 +72,7 @@ class Block implements \IteratorAggregate, BlockInterface
      *
      * @var Boolean
      */
-    protected $initialized = false;
+    protected $defaultDataSet = false;
 
     /**
      * Whether setData() is currently being called.
@@ -260,14 +261,16 @@ class Block implements \IteratorAggregate, BlockInterface
         $this->modelData = $modelData;
         $this->normData = $normData;
         $this->viewData = $viewData;
-        $this->initialized = true;
+        $this->defaultDataSet = true;
         $this->lockSetData = false;
 
         // It is not necessary to invoke this method if the block doesn't have children,
         // even if the block is compound.
         if (count($this->children) > 0) {
             // Update child blocks view the data
-            $this->config->getDataMapper()->mapDataToViews($viewData, $this->children);
+            $childrenIterator = new InheritDataAwareIterator($this->children);
+            $childrenIterator = new \RecursiveIteratorIterator($childrenIterator);
+            $this->config->getDataMapper()->mapDataToViews($viewData, $childrenIterator);
         }
 
         if ($dispatcher->hasListeners(BlockEvents::POST_SET_DATA)) {
@@ -285,7 +288,7 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function getData()
     {
-        if (!$this->initialized) {
+        if (!$this->defaultDataSet) {
             $this->setData($this->config->getData());
         }
 
@@ -299,7 +302,7 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function getNormData()
     {
-        if (!$this->initialized) {
+        if (!$this->defaultDataSet) {
             $this->setData($this->config->getData());
         }
 
@@ -313,7 +316,7 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function getViewData()
     {
-        if (!$this->initialized) {
+        if (!$this->defaultDataSet) {
             $this->setData($this->config->getData());
         }
 
@@ -393,7 +396,9 @@ class Block implements \IteratorAggregate, BlockInterface
         $child->setParent($this);
 
         if (!$this->lockSetData) {
-            $this->config->getDataMapper()->mapDataToViews($viewData, array($child));
+            $childrenIterator = new InheritDataAwareIterator(array($child));
+            $childrenIterator = new \RecursiveIteratorIterator($childrenIterator);
+            $this->config->getDataMapper()->mapDataToViews($viewData, $childrenIterator);
         }
 
         return $this;
