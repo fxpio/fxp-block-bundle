@@ -75,7 +75,7 @@ class BlockExtension extends \Twig_Extension
             new \Twig_SimpleFunction('block_row',         'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_javascript',  'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_stylesheet',  'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
-            new \Twig_SimpleFunction('block_twig_render', 'renderBlock', array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_twig_render', array($this, 'renderBlock'), array('is_safe' => array('html'))),
         );
     }
 
