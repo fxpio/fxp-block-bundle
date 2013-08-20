@@ -24,5 +24,5 @@ interface DataMapperInterface
      *
      * @throws Exception\UnexpectedTypeException if the type of the data parameter is not supported.
      */
-    public function mapDataToViews($data, array $blocks);
+    public function mapDataToViews($data, $blocks);
 }

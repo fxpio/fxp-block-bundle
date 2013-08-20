@@ -40,7 +40,7 @@ class PropertyPathMapper implements DataMapperInterface
     /**
      * {@inheritdoc}
      */
-    public function mapDataToViews($data, array $blocks)
+    public function mapDataToViews($data, $blocks)
     {
         if (null === $data || array() === $data) {
             return;

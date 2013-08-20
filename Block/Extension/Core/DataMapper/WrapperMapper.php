@@ -23,7 +23,7 @@ class WrapperMapper implements DataMapperInterface
     /**
      * {@inheritdoc}
      */
-    public function mapDataToViews($data, array $blocks)
+    public function mapDataToViews($data, $blocks)
     {
     }
 }
