@@ -308,3 +308,30 @@
     {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
 {% endspaceless %}
 {% endblock widget_container_attributes %}
+
+
+{# Twig Widget #}
+{% block twig_widget %}
+{% if attr.id is not defined %}
+    {% set attr = attr|merge({'id': id}) %}
+{% endif %}
+<div {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}>
+{{ block_twig_render(resource, block_rendered, options) }}
+</div>
+{% endblock twig_widget %}
+
+
+{# Twig Javascript #}
+{% block twig_javascript %}
+{% if rendered %}
+    {{ block_twig_render(resource, block_rendered ~ '_javascript', options) }}
+{% endif %}
+{% endblock twig_javascript %}
+
+
+{# Twig Stylesheet #}
+{% block twig_stylesheet %}
+{% if rendered %}
+    {{ block_twig_render(resource, block_rendered ~ '_stylesheet', options) }}
+{% endif %}
+{% endblock twig_stylesheet %}
