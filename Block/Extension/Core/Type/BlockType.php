@@ -54,7 +54,7 @@ class BlockType extends AbstractType
             ->setInheritData($options['inherit_data'])
             ->setCompound($options['compound'])
             ->setData(isset($options['data']) ? $options['data'] : null)
-            ->setDataMapper($options['compound'] ? new PropertyPathMapper($this->propertyAccessor) : null)
+            ->setDataMapper($options['mapped'] ? new PropertyPathMapper($this->propertyAccessor) : null)
         ;
     }
 
@@ -151,13 +151,13 @@ class BlockType extends AbstractType
             }
 
             return function (BlockInterface $block) {
-                return $block->getConfig()->getCompound() ? array() : '';
+                return $block->getConfig()->getMapped() ? array() : '';
             };
         };
 
         // former property_path=false now equals mapped=false
         $mapped = function (Options $options) {
-            return false !== $options['property_path'];
+            return isset($options['data']) && (is_object($options['data']) || is_array($options['data']));
         };
 
         // If data is given, the block is locked to that data

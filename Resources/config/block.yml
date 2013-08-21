@@ -39,6 +39,10 @@ services:
         arguments: ['@property_accessor']
         tags: [ { name: sonatra.block.type, alias: block } ]
 
+    sonatra.block.type.field:
+        class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\FieldType'
+        tags: [ { name: sonatra.block.type, alias: field } ]
+
     sonatra.block.type.text:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType'
         tags: [ { name: sonatra.block.type, alias: text } ]

@@ -12,12 +12,13 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractType;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class TextType extends AbstractType
+class FieldType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -25,7 +26,7 @@ class TextType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'compound' => false,
+                'mapped' => true,
         ));
     }
 
@@ -34,7 +35,7 @@ class TextType extends AbstractType
      */
     public function getParent()
     {
-        return 'field';
+        return 'block';
     }
 
     /**
@@ -42,6 +43,6 @@ class TextType extends AbstractType
      */
     public function getName()
     {
-        return 'text';
+        return 'field';
     }
 }

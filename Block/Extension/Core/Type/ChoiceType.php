@@ -113,7 +113,7 @@ class ChoiceType extends AbstractType
      */
     public function getParent()
     {
-        return 'block';
+        return 'field';
     }
 
     /**

@@ -87,11 +87,11 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function __construct(BlockConfigInterface $config)
     {
-        // Compound blocks always need a data mapper, otherwise calls to
+        // Mapped blocks always need a data mapper, otherwise calls to
         // `setData` and `add` will not lead to the correct population of
         // the child blocks.
-        if ($config->getCompound() && !$config->getDataMapper()) {
-            throw new LogicException('Compound blocks need a data mapper');
+        if ($config->getMapped() && !$config->getDataMapper()) {
+            throw new LogicException('Mapped blocks need a data mapper');
         }
 
         $this->config = $config;
@@ -395,7 +395,7 @@ class Block implements \IteratorAggregate, BlockInterface
 
         $child->setParent($this);
 
-        if (!$this->lockSetData) {
+        if (!$this->lockSetData && $this->config->getMapped()) {
             $childrenIterator = new InheritDataAwareIterator(array($child));
             $childrenIterator = new \RecursiveIteratorIterator($childrenIterator);
             $this->config->getDataMapper()->mapDataToViews($viewData, $childrenIterator);
