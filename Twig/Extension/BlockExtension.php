@@ -85,7 +85,7 @@ class BlockExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('block_humanize', 'renderer::humanize'),
+            new \Twig_SimpleFilter('block_humanize', array($this->renderer, 'humanize')),
         );
     }
 
