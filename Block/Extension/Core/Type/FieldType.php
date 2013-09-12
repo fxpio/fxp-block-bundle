@@ -12,7 +12,6 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractType;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
