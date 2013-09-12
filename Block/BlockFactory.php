@@ -81,6 +81,10 @@ class BlockFactory implements BlockFactoryInterface
      */
     public function createNamedBuilder($name, $type = 'block', $data = null, array $options = array(), BlockBuilderInterface $parent = null)
     {
+        if (null === $name || '' === $name) {
+            $name = uniqid($type instanceof BlockTypeInterface ? $type->getName() : $type);
+        }
+
         if (null !== $data && !array_key_exists('data', $options)) {
             $options['data'] = $data;
         }
