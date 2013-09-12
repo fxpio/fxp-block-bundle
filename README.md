@@ -24,6 +24,7 @@ Features include:
 - Twig Extension
 - Block Theme and hierarchy for search parent block
 - Doctrine Entity Type
+- Automatically render the assets (javascript and stylesheet) of all blocks directlly in the global template (deactivable)
 
 Documentation
 -------------
