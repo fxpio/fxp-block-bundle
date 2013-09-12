@@ -142,3 +142,7 @@ services:
     sonatra.block.type.hidden:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\HiddenType'
         tags: [ { name: sonatra.block.type, alias: hidden } ]
+
+    sonatra.block.type.closure:
+        class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ClosureType'
+        tags: [ { name: sonatra.block.type, alias: closure } ]

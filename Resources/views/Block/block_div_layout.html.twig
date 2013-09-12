@@ -240,6 +240,16 @@
 {% endspaceless %}
 {% endblock entity_widget %}
 
+
+{% block closure_widget %}
+{% spaceless %}
+    {% set value %}
+        {{ value|raw_closure }}
+    {% endset %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock closure_widget %}
+
 {# Labels #}
 
 {% block block_label %}
