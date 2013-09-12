@@ -276,10 +276,6 @@
 
 {% block repeated_row %}
 {% spaceless %}
-    {#
-    No need to render the errors here, as all errors are mapped
-    to the first child (see RepeatedTypeValidatorExtension).
-    #}
     {{ block('block_rows') }}
 {% endspaceless %}
 {% endblock repeated_row %}
