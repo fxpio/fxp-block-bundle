@@ -76,6 +76,7 @@ class BlockType extends AbstractType
                 $id = sprintf('%s_%s', $view->parent->vars['id'], $name);
                 $fullName = sprintf('%s[%s]', $parentFullName, $name);
                 $uniqueBlockPrefix = sprintf('%s_%s', $view->parent->vars['unique_block_prefix'], $blockName);
+
             } else {
                 $id = $name;
                 $fullName = $name;
@@ -85,6 +86,7 @@ class BlockType extends AbstractType
             if (!$translationDomain) {
                 $translationDomain = $view->parent->vars['translation_domain'];
             }
+
         } else {
             $id = $name;
             $fullName = $name;
