@@ -156,7 +156,7 @@ class BlockExtension extends \Twig_Extension
      */
     public function createAndRenderSuperblock($type, array $options = array(), array $variables = array(), $renderAssets = true)
     {
-        return $this->renderSuperblock($this->createBlock($name, $type, null, $options), $variables, $renderAssets);
+        return $this->renderSuperblock($this->createBlock($type, $options), $variables, $renderAssets);
     }
 
     /**
