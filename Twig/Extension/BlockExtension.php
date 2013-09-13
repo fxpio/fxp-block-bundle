@@ -273,15 +273,18 @@ class BlockExtension extends \Twig_Extension
      *
      * @param mixed   $value        The value to format
      * @param string  $type         The formatter type
+     * @param array   $options      The block options
+     * @param array   $variables    The template variables
      * @param boolean $renderAssets
      *
      * @return string
      */
-    public function formatter($value, $type, $renderAssets = true)
+    public function formatter($value, $type, array $options = array(), array $variables = array(), $renderAssets = true)
     {
-        $view = $this->createBlock($type, array('data' => $value))->createView();
+        $options = array_merge($options, array('data' => $value));
+        $view = $this->createBlock($type, $options)->createView();
         $this->renderer->setTheme($view, '@SonatraBlock/Block/block_formatter_theme.html.twig');
-        $output = $this->renderer->searchAndRenderBlock($view, 'widget');
+        $output = $this->renderer->searchAndRenderBlock($view, 'widget', $variables);
 
         if ($renderAssets) {
             $this->addBlockAssets($view);
