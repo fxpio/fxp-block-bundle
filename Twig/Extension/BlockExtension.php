@@ -115,6 +115,7 @@ class BlockExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('block_humanize', array($this->renderer, 'humanize')),
             new \Twig_SimpleFilter('raw_closure', array($this, 'rawClosure')),
+            new \Twig_SimpleFilter('block_formatter', array($this, 'formatter'), array('is_safe' => array('html'))),
         );
     }
 
@@ -265,6 +266,28 @@ class BlockExtension extends \Twig_Extension
         }
 
         return $value;
+    }
+
+    /**
+     * Format the value.
+     *
+     * @param mixed   $value        The value to format
+     * @param string  $type         The formatter type
+     * @param boolean $renderAssets
+     *
+     * @return string
+     */
+    public function formatter($value, $type, $renderAssets = true)
+    {
+        $view = $this->createBlock($type, array('data' => $value))->createView();
+        $this->renderer->setTheme($view, '@SonatraBlock/Block/block_formatter_theme.html.twig');
+        $output = $this->renderer->searchAndRenderBlock($view, 'widget');
+
+        if ($renderAssets) {
+            $this->addBlockAssets($view);
+        }
+
+        return $output;
     }
 
     /**
