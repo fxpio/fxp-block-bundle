@@ -187,7 +187,10 @@ class BlockExtension extends \Twig_Extension
     {
         $view = $block->createView();
         $output = $this->renderer->searchAndRenderBlock($view, 'widget', $variables);
-        $this->addBlockAssets($view, $variables, $renderAssets);
+
+        if ($renderAssets) {
+            $this->addBlockAssets($view, $variables);
+        }
 
         return $output;
     }
