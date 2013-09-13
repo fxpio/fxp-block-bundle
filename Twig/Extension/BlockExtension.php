@@ -93,14 +93,15 @@ class BlockExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('block_widget',      'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockGlobalNode', 'is_safe' => array('html'))),
-            new \Twig_SimpleFunction('block_component',   'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
-            new \Twig_SimpleFunction('block_label',       'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
-            new \Twig_SimpleFunction('block_row',         'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
-            new \Twig_SimpleFunction('block_javascript',  'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
-            new \Twig_SimpleFunction('block_stylesheet',  'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
-            new \Twig_SimpleFunction('superblock',        array($this, 'createAndRenderSuperblock'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('block_twig_render', array($this, 'renderTwigBlock'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_widget',             'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_component',          'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_label',              'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_row',                'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_javascript',         'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_stylesheet',         'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_assets_widget',      'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockAssetsNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('superblock',               array($this, 'createAndRenderSuperblock'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_twig_render',        array($this, 'renderTwigBlock'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_global_javascripts', array($this, 'renderGlobalJavascripts'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_global_stylesheets', array($this, 'renderGlobalStylesheets'), array('is_safe' => array('html'))),
         );
@@ -123,6 +124,24 @@ class BlockExtension extends \Twig_Extension
     public function getName()
     {
         return 'sonatra_block';
+    }
+
+    /**
+     * Searches and renders a block and assets (javascript and stylesheet) for
+     * a given name suffix.
+     *
+     * @param BlockView $view            The view for which to render the block
+     * @param string    $blockNameSuffix The suffix of the block name
+     * @param array     $variables       The variables to pass to the template
+     *
+     * @return string The HTML markup
+     */
+    public function searchAndRenderBlockAssets(BlockView $view, $blockNameSuffix, array $variables = array())
+    {
+        $output = $this->renderer->searchAndRenderBlock($view, $blockNameSuffix, $variables);
+        $this->addBlockAssets($view, $variables);
+
+        return $output;
     }
 
     /**
@@ -168,7 +187,43 @@ class BlockExtension extends \Twig_Extension
     {
         $view = $block->createView();
         $output = $this->renderer->searchAndRenderBlock($view, 'widget', $variables);
-        $this->addAssetBlock($view, $variables, $renderAssets);
+        $this->addBlockAssets($view, $variables, $renderAssets);
+
+        return $output;
+    }
+
+    /**
+     * Render global form twig of javascript.
+     *
+     * @return string
+     */
+    public function renderGlobalJavascripts()
+    {
+        $output = '';
+
+        foreach ($this->globalJavascripts as $js) {
+            $output .= $this->renderer->searchAndRenderBlock($js['view'], 'javascript', $js['variables']) . "\n";
+        }
+
+        $this->globalJavascripts = array();
+
+        return $output;
+    }
+
+    /**
+     * Render global form twig of javascript.
+     *
+     * @return string
+     */
+    public function renderGlobalStyleSheets()
+    {
+        $output = '';
+
+        foreach ($this->globalStylesheets as $js) {
+            $output .= $this->renderer->searchAndRenderBlock($js['view'], 'stylesheet', $js['variables']) . "\n";
+        }
+
+        $this->globalStylesheets = array();
 
         return $output;
     }
@@ -194,61 +249,6 @@ class BlockExtension extends \Twig_Extension
     }
 
     /**
-     * Render global block twig of javascript.
-     *
-     * @return string
-     */
-    public function renderGlobalJavascripts()
-    {
-        $output = '';
-
-        foreach ($this->globalJavascripts as $js) {
-            $output .= $this->renderer->searchAndRenderBlock($js['view'], 'javascript', $js['variables']) . "\n";
-        }
-
-        $this->globalJavascripts = array();
-
-        return $output;
-    }
-
-    /**
-     * Render global block twig of javascript.
-     *
-     * @return string
-     */
-    public function renderGlobalStyleSheets()
-    {
-        $output = '';
-
-        foreach ($this->globalStylesheets as $js) {
-            $output .= $this->renderer->searchAndRenderBlock($js['view'], 'stylesheet', $js['variables']) . "\n";
-        }
-
-        $this->globalStylesheets = array();
-
-        return $output;
-    }
-
-    /**
-     * Add javascript and stylesheet of the block for to prepare the global
-     * render of the blocks assets.
-     *
-     * @param BlockView $view
-     * @param array     $variables
-     * @param boolean   $renderAssets
-     */
-    public function addAssetBlock(BlockView $view, array $variables = array(), $renderAssets = true)
-    {
-        if (!$renderAssets || null !== $view->parent) {
-            return;
-        }
-
-        $asset = array('view' => $view, 'variables' => $variables);
-        $this->globalJavascripts[] = $asset;
-        $this->globalStylesheets[] = $asset;
-    }
-
-    /**
      * Render closure value.
      *
      * @param string|\Closure $value
@@ -262,5 +262,18 @@ class BlockExtension extends \Twig_Extension
         }
 
         return $value;
+    }
+
+    /**
+     * Adds assets for block widget.
+     *
+     * @param BlockView $view
+     * @param array     $variables
+     */
+    protected function addBlockAssets(BlockView $view, array $variables = array())
+    {
+        $asset = array('view' => $view, 'variables' => $variables);
+        $this->globalJavascripts[] = $asset;
+        $this->globalStylesheets[] = $asset;
     }
 }
