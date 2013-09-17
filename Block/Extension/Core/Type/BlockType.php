@@ -120,6 +120,7 @@ class BlockType extends AbstractType
                 'label_attr'          => $options['label_attr'],
                 'compound'            => $block->getConfig()->getCompound(),
                 'block_prefixes'      => $blockPrefixes,
+                'block_type'          => $block->getConfig()->getType()->getInnerType()->getName(),
                 'unique_block_prefix' => $uniqueBlockPrefix,
                 'translation_domain'  => $translationDomain,
                 // Using the block name here speeds up performance in collection
