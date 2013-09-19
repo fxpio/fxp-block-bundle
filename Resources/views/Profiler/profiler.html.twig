@@ -49,7 +49,10 @@
 {% endblock %}
 
 {% block head %}
-{{ parent() }}
+    {{ parent() }}
+    <style>
+        {% include '@SonatraBlock/Profiler/profiler.css.twig' %}
+    </style>
 {% endblock %}
 
 {% block menu %}
@@ -71,17 +74,17 @@
         <tr>
             <th>Name</th>
             <th>Type</th>
-            <th>Memory used</th>
-            <th>Memory peak</th>
-            <th>Duration</th>
+            <th class="right">Memory used</th>
+            <th class="right">Memory peak</th>
+            <th class="right">Duration</th>
         </tr>
         {% for block in blocks %}
             <tr>
                 <td><{% if block.is_master %}strong{% else %}span{% endif %} style="margin-left:{{ 14*block.indentation }}px;"><abbr title="{{ block.id }}">{{ block.name }}</abbr>{% if block.is_master %}</strong>{% else %}</span>{% endif %}</td>
-                <td>{{ block.type }}</td>
-                <td>{{ bytesToSize(block.memory_used) }}</td>
-                <td>{{ bytesToSize(block.memory_peak) }}</td>
-                <td>{{ block.duration|number_format(0, '.') }} ms</td>
+                <td><abbr title="{{ block.type_class }}">{{ block.type }}</abbr></td>
+                <td class="right">{{ bytesToSize(block.memory_used) }}</td>
+                <td class="right">{{ bytesToSize(block.memory_peak) }}</td>
+                <td class="right">{{ block.duration|number_format(0, '.') }} ms</td>
             </tr>
         {% endfor %}
 

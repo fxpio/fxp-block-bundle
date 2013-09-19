@@ -1,16 +1,21 @@
 parameters:
     data_collector.sonatra_block.class: Sonatra\Bundle\BlockBundle\Profiler\DataCollector\BlockDataCollector
     sonatra.block.twig.tracable_engine.class: Sonatra\Bundle\BlockBundle\Twig\Block\TwigRendererEngineTraceable
+    sonatra.block.type_extension.profiler.class: Sonatra\Bundle\BlockBundle\Block\Extension\Core\Extension\ProfilerTypeExtension
 
 services:
     data_collector.sonatra_block:
         public: false
         class: '%data_collector.sonatra_block.class%'
         arguments: ['@sonatra.block.twig.engine']
-        tags: [ { name: data_collector, template: '@SonatraBlock/Profiler/block_profiler.html.twig', id: sonatra_block } ]
+        tags: [ { name: data_collector, template: '@SonatraBlock/Profiler/profiler.html.twig', id: sonatra_block } ]
 
     sonatra.block.twig.tracable_engine:
         public: false
         class: '%sonatra.block.twig.tracable_engine.class%'
         arguments: ['%sonatra.block.twig.resources%']
         calls: [ ['setStopwatch', ['@?debug.stopwatch']] ]
+
+    sonatra.block.type_extension.profiler:
+        class: '%sonatra.block.type_extension.profiler.class%'
+        tags: [ { name: sonatra.block.type_extension, alias: block } ]

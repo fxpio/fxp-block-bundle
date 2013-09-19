@@ -73,13 +73,15 @@ class TwigRendererEngineTraceable extends TwigRendererEngine implements TwigRend
     {
         $id = $view->vars['id'];
         $name = $view->vars['name'];
-        $type = $view->vars['block_type'];
+        $type = $view->vars['profiler_block_type'];
+        $typeClass = $view->vars['profiler_block_type_class'];
         $master = $view->parent === null;
 
         $this->traces[$id] = array(
                 'id'           => $id,
                 'name'         => $name,
                 'type'         => $type,
+                'type_class'   => $typeClass,
                 'is_master'    => $master,
                 'duration'     => false,
                 'memory_used'  => 0,
