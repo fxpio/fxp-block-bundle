@@ -29,7 +29,7 @@
 
     {% set text %}
         <div class="sf-toolbar-info-piece">
-            <b>Total</b>
+            <b>Total blocks</b>
             <span>{{ collector.total }}</span>
         </div>
         <div class="sf-toolbar-info-piece">
@@ -84,5 +84,11 @@
                 <td>{{ block.duration|number_format(0, '.') }} ms</td>
             </tr>
         {% endfor %}
+
+        {% if blocks|length == 0 %}
+            <tr>
+                <td colspan="5">{{ 'no_block_rendered'|trans({}, 'profiler') }}</td>
+            </tr>
+        {% endif %}
     </table>
 {% endblock %}
