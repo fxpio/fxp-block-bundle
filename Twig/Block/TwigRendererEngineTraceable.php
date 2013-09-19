@@ -115,6 +115,13 @@ class TwigRendererEngineTraceable extends TwigRendererEngine implements TwigRend
         }
     }
 
+    /**
+     * Count indentation.
+     *
+     * @param BlockView $view
+     *
+     * @return int
+     */
     protected function countIndentation(BlockView $view)
     {
         $count = 0;
