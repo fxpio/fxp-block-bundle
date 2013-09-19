@@ -82,7 +82,7 @@ class BlockExtension extends \Twig_Extension
         return array(
             // {% block_theme form "SomeBundle::widgets.twig" %}
             new BlockThemeTokenParser(),
-            // {% superblock 'checkbox', {data: true, label: "My checkbox" with {my_var: "the twig variable"} %}
+            // {% sblock 'checkbox', {data: true, label: "My checkbox" with {my_var: "the twig variable"} %}
             new SuperblockTokenParser(),
         );
     }
@@ -100,7 +100,7 @@ class BlockExtension extends \Twig_Extension
             new \Twig_SimpleFunction('block_javascript',         'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_stylesheet',         'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_assets_widget',      'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockAssetsNode', 'is_safe' => array('html'))),
-            new \Twig_SimpleFunction('superblock',               array($this, 'createAndRenderSuperblock'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('sblock',                   array($this, 'createAndRenderSuperblock'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_twig_render',        array($this, 'renderTwigBlock'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_global_javascripts', array($this, 'renderGlobalJavascripts'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_global_stylesheets', array($this, 'renderGlobalStylesheets'), array('is_safe' => array('html'))),

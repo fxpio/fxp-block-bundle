@@ -81,7 +81,7 @@ class SuperblockNode extends \Twig_Node
         // master block
         if (null === $this->getParent()) {
             $compiler
-                ->write('$superblock = $this->env->getExtension(\'sonatra_block\')->createBlock(')
+                ->write('$sblock = $this->env->getExtension(\'sonatra_block\')->createBlock(')
                 ->subcompile($this->type)
                 ->raw(', ')
                 ->subcompile($this->options)
@@ -91,7 +91,7 @@ class SuperblockNode extends \Twig_Node
         // child block
         } else {
             $compiler
-                ->write('$superblock->add($this->env->getExtension(\'sonatra_block\')->createBlock(')
+                ->write('$sblock->add($this->env->getExtension(\'sonatra_block\')->createBlock(')
                 ->subcompile($this->type)
                 ->raw(', ')
                 ->subcompile($this->options)
@@ -104,7 +104,7 @@ class SuperblockNode extends \Twig_Node
 
         if ($this->hasNode('body')) {
             $compiler
-                ->write('$superblock->add($this->env->getExtension(\'sonatra_block\')->createBlock(')
+                ->write('$sblock->add($this->env->getExtension(\'sonatra_block\')->createBlock(')
                 ->raw('"closure", ')
                 ->raw('array("data" => function() {')
                 ->write("\n")
@@ -115,7 +115,7 @@ class SuperblockNode extends \Twig_Node
 
         if (null === $this->getParent()) {
             $compiler->write('echo $this->env->getExtension(\'sonatra_block\')->renderSuperblock(')
-                ->raw('$superblock, ')
+                ->raw('$sblock, ')
                 ->subcompile($this->variables)
                 ->raw(', ' . ($this->assets ? 'true' : 'false'))
                 ->raw(");\n");

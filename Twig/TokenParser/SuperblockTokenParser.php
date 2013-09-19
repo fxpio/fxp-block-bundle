@@ -16,7 +16,7 @@ use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidConfigurationException;
 use Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockNode;
 
 /**
- * Token Parser for the 'superblock' tag.
+ * Token Parser for the 'sblock' tag.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
@@ -77,7 +77,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
             } elseif ($node->hasNode('expr')
                     && $node->getNode('expr') instanceof \Twig_Node_Expression_Function
                     && $node->getNode('expr')->hasAttribute('name')
-                    && 'superblock' === $node->getNode('expr')->getAttribute('name')) {
+                    && 'sblock' === $node->getNode('expr')->getAttribute('name')) {
                 $superblock->addChild($this->convertTwigExpressionToNode($node->getNode('expr')));
                 $body->removeNode($i);
             }
@@ -113,7 +113,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
      */
     public function decideBlockEnd(\Twig_Token $token)
     {
-        return $token->test('endsuperblock');
+        return $token->test('endsblock');
     }
 
     /**
@@ -123,7 +123,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
      */
     public function getTag()
     {
-        return 'superblock';
+        return 'sblock';
     }
 
     /**
@@ -140,7 +140,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
         $args = $node->getNode('arguments');
 
         if (!$args->hasNode(0)) {
-            throw new InvalidConfigurationException('The block type must be present in the "superblock" twig function');
+            throw new InvalidConfigurationException('The block type must be present in the "sblock" twig function');
         }
 
         $cType = $args->getNode(0);
