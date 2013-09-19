@@ -26,6 +26,7 @@ Features include:
 - Doctrine Entity Type
 - Automatically render the assets (javascript and stylesheet) of all blocks directlly in the global template
 - Twig filter formatter for convert the value in the specific block type
+- Profiler
 
 Documentation
 -------------
