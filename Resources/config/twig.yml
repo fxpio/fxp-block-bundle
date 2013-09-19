@@ -9,7 +9,7 @@ services:
     sonatra.block.twig.extension:
         public: false
         class: '%sonatra.block.twig.extension.base.class%'
-        arguments: ['@sonatra.block.twig.renderer', '@sonatra.block.factory']
+        arguments: ['@sonatra.block.twig.renderer', '@sonatra.block.factory', '@sonatra.block.registry']
         tags: [ { name: twig.extension } ]
 
     sonatra.block.twig.renderer:

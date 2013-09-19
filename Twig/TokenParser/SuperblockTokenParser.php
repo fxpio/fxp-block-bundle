@@ -12,7 +12,6 @@
 namespace Sonatra\Bundle\BlockBundle\Twig\TokenParser;
 
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidConfigurationException;
-
 use Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockNode;
 
 /**
@@ -22,6 +21,21 @@ use Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockNode;
  */
 class SuperblockTokenParser extends \Twig_TokenParser
 {
+    /**
+     * @var string
+     */
+    protected $tag;
+
+    /**
+     * Constructor.
+     *
+     * @param string $tag The tag name
+     */
+    public function __construct($tag = 'sblock')
+    {
+        $this->tag = $tag;
+    }
+
     /**
      * Parses a token and returns a node.
      *
@@ -33,28 +47,39 @@ class SuperblockTokenParser extends \Twig_TokenParser
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
-        $type = $this->parser->getExpressionParser()->parseExpression();
         $options = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
         $variables = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
         $assets = true;
         $skip = false;
 
-        if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
-            $stream->next();
+        if (0 === strpos($this->tag, 'sblock_')) {
+            $type = new \Twig_Node_Expression_Constant(substr($this->tag, 7), $lineno);
             $options = $this->parser->getExpressionParser()->parseExpression();
+
+        } else {
+            $type = $this->parser->getExpressionParser()->parseExpression();
+
+            if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
+                $stream->next();
+                $options = $this->parser->getExpressionParser()->parseExpression();
+            }
         }
 
         if ($stream->test(\Twig_Token::NAME_TYPE, 'with')) {
             $stream->next();
             $variables = $this->parser->getExpressionParser()->parseExpression();
+
+            if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
+                $stream->next();
+
+                if ($stream->test(\Twig_Token::NAME_TYPE, 'noassets')) {
+                    $stream->next();
+                    $assets = false;
+                }
+            }
         }
 
-        if ($stream->test(\Twig_Token::NAME_TYPE, 'noassets')) {
-            $stream->next();
-            $assets = false;
-        }
-
-        if ($stream->test(\Twig_Token::NAME_TYPE, 'end')) {
+        if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')) {
             $stream->next();
             $skip = true;
         }
@@ -77,7 +102,8 @@ class SuperblockTokenParser extends \Twig_TokenParser
             } elseif ($node->hasNode('expr')
                     && $node->getNode('expr') instanceof \Twig_Node_Expression_Function
                     && $node->getNode('expr')->hasAttribute('name')
-                    && 'sblock' === $node->getNode('expr')->getAttribute('name')) {
+                    && ($this->tag === $node->getNode('expr')->getAttribute('name')
+                            || 0 === strpos($node->getNode('expr')->getAttribute('name'), 'sblock_'))) {
                 $superblock->addChild($this->convertTwigExpressionToNode($node->getNode('expr')));
                 $body->removeNode($i);
             }
@@ -113,7 +139,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
      */
     public function decideBlockEnd(\Twig_Token $token)
     {
-        return $token->test('endsblock');
+        return $token->test('end'.$this->tag) || $token->test('endsblock');
     }
 
     /**
@@ -123,7 +149,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
      */
     public function getTag()
     {
-        return 'sblock';
+        return $this->tag;
     }
 
     /**
@@ -138,23 +164,41 @@ class SuperblockTokenParser extends \Twig_TokenParser
     protected function convertTwigExpressionToNode(\Twig_Node $node)
     {
         $args = $node->getNode('arguments');
+        $pos = 0;
 
         if (!$args->hasNode(0)) {
             throw new InvalidConfigurationException('The block type must be present in the "sblock" twig function');
         }
 
-        $cType = $args->getNode(0);
+        if ('sblock' === $node->getAttribute('name')) {
+            $cType = $args->getNode($pos);
+            $pos++;
+
+        } else {
+            $cType = $node->getAttribute('name');
+            $cType = new \Twig_Node_Expression_Constant(substr($cType, 7), $node->getLine());
+        }
+
         $cOptions = new \Twig_Node_Expression_Array(array(), $node->getLine());
         $cVariables = new \Twig_Node_Expression_Array(array(), $node->getLine());
+        $cRenderAssets = true;
 
-        if ($args->hasNode(1)) {
-            $cOptions = $args->getNode(1);
+        if ($args->hasNode($pos)) {
+            $cOptions = $args->getNode($pos);
         }
 
-        if ($args->hasNode(2)) {
-            $cVariables = $args->getNode(2);
+        $pos++;
+
+        if ($args->hasNode($pos)) {
+            $cVariables = $args->getNode($pos);
         }
 
-        return new SuperblockNode($cType, $cOptions, $cVariables, $node->getLine(), $node->getNodeTag());
+        $pos++;
+
+        if ($args->hasNode($pos)) {
+            $cRenderAssets = $args->getNode($pos);
+        }
+
+        return new SuperblockNode($cType, $cOptions, $cVariables, $node->getLine(), $node->getNodeTag(), $cRenderAssets);
     }
 }

@@ -14,6 +14,7 @@ namespace Sonatra\Bundle\BlockBundle\Twig\Extension;
 use Sonatra\Bundle\BlockBundle\Block\Block;
 use Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
+use Sonatra\Bundle\BlockBundle\Block\BlockRegistryInterface;
 use Sonatra\Bundle\BlockBundle\Twig\TokenParser\BlockThemeTokenParser;
 use Sonatra\Bundle\BlockBundle\Twig\TokenParser\SuperblockTokenParser;
 use Sonatra\Bundle\BlockBundle\Twig\Block\TwigRendererInterface;
@@ -38,6 +39,16 @@ class BlockExtension extends \Twig_Extension
     protected $factory;
 
     /**
+     * @var BlockRegistryInterface
+     */
+    protected $registry;
+
+    /**
+     * @var array
+     */
+    protected $types;
+
+    /**
      * @var \Twig_Environment
      */
     protected $environment;
@@ -57,10 +68,11 @@ class BlockExtension extends \Twig_Extension
      *
      * @param TwigRendererInterface $renderer
      */
-    public function __construct(TwigRendererInterface $renderer, BlockFactoryInterface $factory)
+    public function __construct(TwigRendererInterface $renderer, BlockFactoryInterface $factory, BlockRegistryInterface $registry)
     {
         $this->renderer = $renderer;
         $this->factory = $factory;
+        $this->registry = $registry;
         $this->globalJavascripts = array();
         $this->globalStylesheets = array();
     }
@@ -79,12 +91,18 @@ class BlockExtension extends \Twig_Extension
      */
     public function getTokenParsers()
     {
-        return array(
+        $tokens = array(
             // {% block_theme form "SomeBundle::widgets.twig" %}
             new BlockThemeTokenParser(),
-            // {% sblock 'checkbox', {data: true, label: "My checkbox" with {my_var: "the twig variable"} %}
+            // {% sblock 'checkbox', {data: true, label: "My checkbox" with {my_var: "the twig variable"}, noassets :%}
             new SuperblockTokenParser(),
         );
+
+        foreach ($this->getTypes() as $type) {
+            $tokens[] = new SuperblockTokenParser('sblock_'.$type);
+        }
+
+        return $tokens;
     }
 
     /**
@@ -92,7 +110,7 @@ class BlockExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        $functions = array(
             new \Twig_SimpleFunction('block_widget',             'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_component',          'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_label',              'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
@@ -105,6 +123,16 @@ class BlockExtension extends \Twig_Extension
             new \Twig_SimpleFunction('block_global_javascripts', array($this, 'renderGlobalJavascripts'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_global_stylesheets', array($this, 'renderGlobalStylesheets'), array('is_safe' => array('html'))),
         );
+
+        foreach ($this->getTypes() as $type) {
+            $closure = function(array $options = array(), array $variables = array(), array $renderAssets = array()) use ($type) {
+                return '';
+            };
+
+            $functions[] = new \Twig_SimpleFunction('sblock_'.$type, $closure, array('is_safe' => array('html')));
+        }
+
+        return $functions;
     }
 
     /**
@@ -304,5 +332,31 @@ class BlockExtension extends \Twig_Extension
         $asset = array('view' => $view, 'variables' => $variables);
         $this->globalJavascripts[] = $asset;
         $this->globalStylesheets[] = $asset;
+    }
+
+    /**
+     * Get block types.
+     *
+     * @return array
+     */
+    protected function getTypes()
+    {
+        if (null === $this->types) {
+            $this->types = array();
+            $refl = new \ReflectionClass($this->registry);
+            $prop = $refl->getProperty('extensions');
+            $prop->setAccessible(true);
+            $extensions = $prop->getValue($this->registry);
+
+            foreach ($extensions as $extension) {
+                $refl = new \ReflectionClass($extension);
+                $prop = $refl->getProperty('typeServiceIds');
+                $prop->setAccessible(true);
+                $types = array_keys($prop->getValue($extension));
+                $this->types = array_merge($this->types, $types);
+            }
+        }
+
+        return $this->types;
     }
 }
