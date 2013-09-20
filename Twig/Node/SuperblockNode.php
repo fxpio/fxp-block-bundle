@@ -78,48 +78,86 @@ class SuperblockNode extends \Twig_Node
     {
         $compiler->addDebugInfo($this);
 
-        // master block
+        // renderer start
         if (null === $this->getParent()) {
+            // master block
             $compiler
-                ->write('$sblock = $this->env->getExtension(\'sonatra_block\')->createBlock(')
-                ->subcompile($this->type)
-                ->raw(', ')
-                ->subcompile($this->options)
-                ->raw(");\n");
+                ->write('echo $this->env->getExtension(\'sonatra_block\')->searchAndRenderBlockAssets(')
+                ->raw("\n")
+                ->indent()
+                ->write('')
             ;
 
-        // child block
         } else {
-            $compiler
-                ->write('$sblock->add($this->env->getExtension(\'sonatra_block\')->createBlock(')
-                ->subcompile($this->type)
-                ->raw(', ')
-                ->subcompile($this->options)
-            ->raw("));\n");
+            // add child block of master block
+            $compiler->write('->add(');
         }
 
+        // create the block
+        $compiler
+            ->raw('$this->env->getExtension(\'sonatra_block\')->createNamedBuilder(')
+            ->subcompile($this->type)
+            ->raw(', ')
+            ->subcompile($this->options)
+            ->raw(')')
+        ;
+
+        $compiler->indent();
+
+        // children of block
         foreach ($this->children as $i => $child) {
-            $child->compile($compiler);
+            $compiler
+                ->raw("\n")
+                ->subcompile($child)
+            ;
         }
 
+        // body of block
         if ($this->hasNode('body')) {
             $compiler
-                ->write('$sblock->add($this->env->getExtension(\'sonatra_block\')->createBlock(')
-                ->raw('"closure", ')
+                ->raw("\n")
+                ->addDebugInfo($this->getNode('body'))
+                ->write('->add(')
+                ->raw('$this->env->getExtension(\'sonatra_block\')->createNamedBuilder(')
+                ->raw('"closure"')
+                ->raw(', ')
                 ->raw('array("data" => function() {')
                 ->write("\n")
+                ->indent()
                 ->subcompile($this->getNode('body'))
                 ->write('}, "block_name" => "body", "label" => "")')
-            ->raw("));\n");
+                ->raw(')')
+                ->raw(')')
+                ->raw("\n")
+                ->outdent()
+                ->outdent()
+                ->write('')
+                ->indent()
+            ;
         }
 
+        $compiler->outdent();
+
+        // renderer end
         if (null === $this->getParent()) {
-            $compiler->write('echo $this->env->getExtension(\'sonatra_block\')->renderSuperblock(')
-                ->raw('$sblock, ')
+            $compiler
+                // create block view
+                ->raw('->getBlock()->createView()')
+                // renderer prefix
+                ->raw(', ')
+                ->raw('"widget"')
+                ->raw(', ')
+                // variables
                 ->subcompile($this->variables)
+                // assets
                 ->raw(', ' . ($this->assets ? 'true' : 'false'))
-                ->raw(");\n");
+                ->raw(")\n")
+                ->outdent()
+                ->write(";\n")
             ;
+
+        } else {
+            $compiler->raw(")");
         }
     }
 

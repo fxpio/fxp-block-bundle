@@ -156,19 +156,33 @@ class BlockExtension extends \Twig_Extension
     }
 
     /**
+     * Get block factory.
+     *
+     * @return BlockFactoryInterface
+     */
+    public function getFactory()
+    {
+        return $this->factory;
+    }
+
+    /**
      * Searches and renders a block and assets (javascript and stylesheet) for
      * a given name suffix.
      *
      * @param BlockView $view            The view for which to render the block
      * @param string    $blockNameSuffix The suffix of the block name
      * @param array     $variables       The variables to pass to the template
+     * @param boolean   $renderAssets
      *
      * @return string The HTML markup
      */
-    public function searchAndRenderBlockAssets(BlockView $view, $blockNameSuffix, array $variables = array())
+    public function searchAndRenderBlockAssets(BlockView $view, $blockNameSuffix, array $variables = array(), $renderAssets = true)
     {
         $output = $this->renderer->searchAndRenderBlock($view, $blockNameSuffix, $variables);
-        $this->addBlockAssets($view, $variables);
+
+        if ($renderAssets) {
+            $this->addBlockAssets($view, $variables);
+        }
 
         return $output;
     }
@@ -185,43 +199,24 @@ class BlockExtension extends \Twig_Extension
      */
     public function createAndRenderSuperblock($type, array $options = array(), array $variables = array(), $renderAssets = true)
     {
-        return $this->renderSuperblock($this->createBlock($type, $options), $variables, $renderAssets);
+        $view = $this->createNamedBuilder($type, $options)->createView();
+
+        return $this->searchAndRenderBlockAssets($view, 'widget', $variables, $renderAssets);
     }
 
     /**
-     * Create a superblock.
+     * Create block builder named with the 'block_name' options.
      *
      * @param string|BlockTypeInterface $type
      * @param array                     $options
      *
-     * @return string The html
+     * @return \Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface
      */
-    public function createBlock($type, array $options = array())
+    public function createNamedBuilder($type, array $options = array())
     {
-        $name = isset($options['block_name']) ? $options['block_name'] : null;
+        $name = $this->getBlockName($options);
 
-        return $this->factory->createNamed($name, $type, null, $options);
-    }
-
-    /**
-     * Render a superblock.
-     *
-     * @param Block   $block
-     * @param array   $variables    The twig variables
-     * @param boolean $renderAssets
-     *
-     * @return string The html
-     */
-    public function renderSuperblock(Block $block, array $variables = array(), $renderAssets = true)
-    {
-        $view = $block->createView();
-        $output = $this->renderer->searchAndRenderBlock($view, 'widget', $variables);
-
-        if ($renderAssets) {
-            $this->addBlockAssets($view, $variables);
-        }
-
-        return $output;
+        return $this->factory->createNamedBuilder($name, $type, null, $options);
     }
 
     /**
@@ -310,7 +305,9 @@ class BlockExtension extends \Twig_Extension
     public function formatter($value, $type, array $options = array(), array $variables = array(), $renderAssets = true)
     {
         $options = array_merge($options, array('data' => $value));
-        $view = $this->createBlock($type, $options)->createView();
+        $name = $this->getBlockName($options);
+        $view = $this->factory->createNamed($name, $type, null, $options)->createView();
+
         $this->renderer->setTheme($view, '@SonatraBlock/Block/block_formatter_theme.html.twig');
         $output = $this->renderer->searchAndRenderBlock($view, 'widget', $variables);
 
@@ -358,5 +355,17 @@ class BlockExtension extends \Twig_Extension
         }
 
         return $this->types;
+    }
+
+    /**
+     * Get the block name.
+     *
+     * @param array $options
+     *
+     * @return string|null
+     */
+    protected function getBlockName(array $options = array())
+    {
+        return isset($options['block_name']) ? $options['block_name'] : null;
     }
 }

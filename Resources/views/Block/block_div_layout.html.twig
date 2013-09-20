@@ -243,10 +243,7 @@
 
 {% block closure_widget %}
 {% spaceless %}
-    {% set value %}
-        {{ value|raw_closure }}
-    {% endset %}
-    {{ block('block_widget_simple') }}
+    {{ value|raw_closure }}
 {% endspaceless %}
 {% endblock closure_widget %}
 

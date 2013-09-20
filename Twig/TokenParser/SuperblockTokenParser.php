@@ -52,9 +52,11 @@ class SuperblockTokenParser extends \Twig_TokenParser
         $assets = true;
         $skip = false;
 
+        // {% sblock_checkbox ... :%}
         if (0 === strpos($this->tag, 'sblock_')) {
             $type = new \Twig_Node_Expression_Constant(substr($this->tag, 7), $lineno);
 
+        // {% sblock 'checkbox', ... :%}
         } else {
             $type = $this->parser->getExpressionParser()->parseExpression();
 
@@ -63,22 +65,57 @@ class SuperblockTokenParser extends \Twig_TokenParser
             }
         }
 
-        $options = $this->parser->getExpressionParser()->parseExpression();
+        // {% sblock_checkbox data=true block_name='foo' label='Bar' :%}
+        if ($stream->look(1)->getType() === \Twig_Token::OPERATOR_TYPE
+                && $stream->look(1)->getValue() === '=') {
+            $options = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
+
+            do {
+                if (!$stream->test(\Twig_Token::NAME_TYPE)
+                        && !$stream->test(\Twig_Token::STRING_TYPE)) {
+                    throw new \Twig_Error_Syntax(sprintf('The attribute name "%s" must be an STRING or CONSTANT', $stream->getCurrent()->getValue()), $stream->getCurrent()->getLine(), $stream->getFilename());
+                }
+
+                $attr = $stream->getCurrent();
+                $attr = new \Twig_Node_Expression_Constant($attr->getValue(), $attr->getLine());
+                $stream->next();
+
+                if (!$stream->test(\Twig_Token::OPERATOR_TYPE, '=')) {
+                    throw new \Twig_Error_Syntax("The attribute must be followed by '=' operator", $stream->getCurrent()->getLine(), $stream->getFilename());
+                }
+
+                $stream->next();
+                $options->addElement($this->parser->getExpressionParser()->parseExpression(), $attr);
+
+            } while (!$stream->test(\Twig_Token::NAME_TYPE, 'with')
+                    && !$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
+                    && !$stream->test(\Twig_Token::BLOCK_END_TYPE));
+
+        // {% sblock_checkbox {data:true} ... :%} or {% sblock_checkbox ... :%}
+        } elseif (!$stream->test(\Twig_Token::NAME_TYPE, 'with')
+                && !$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
+                && !$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
+            $options = $this->parser->getExpressionParser()->parseExpression();
+        }
 
         if ($stream->test(\Twig_Token::NAME_TYPE, 'with')) {
             $stream->next();
+            // {% sblock_checkbox, {data:true} with {foo:'bar'} :%}
             $variables = $this->parser->getExpressionParser()->parseExpression();
 
+            // {% sblock_checkbox, {data:true} with {foo:'bar'}, noassets :%}
             if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
                 $stream->next();
+            }
 
-                if ($stream->test(\Twig_Token::NAME_TYPE, 'noassets')) {
-                    $stream->next();
-                    $assets = false;
-                }
+            // or {% sblock_checkbox, {data:true} with noassets :%}
+            if ($stream->test(\Twig_Token::NAME_TYPE, 'noassets')) {
+                $stream->next();
+                $assets = false;
             }
         }
 
+        // end schortcut
         if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')) {
             $stream->next();
             $skip = true;
@@ -92,7 +129,9 @@ class SuperblockTokenParser extends \Twig_TokenParser
             return $superblock;
         }
 
+        // body content
         $body = $this->parser->subparse(array($this, 'decideBlockEnd'), true);
+        $bodyHasText = $body instanceof \Twig_Node_Text && '' !== trim($body->getAttribute('data'));
 
         foreach ($body->getIterator() as $i => $node) {
             if ($node instanceof SuperblockNode) {
@@ -109,8 +148,8 @@ class SuperblockTokenParser extends \Twig_TokenParser
             }
         }
 
-        if (count($body) > 0) {
-            $addBody = false;
+        if (count($body) > 0 || $bodyHasText) {
+            $addBody = $bodyHasText;
 
             foreach ($body as $node) {
                 if (!$node instanceof \Twig_Node_Text
