@@ -54,16 +54,16 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
         if (0 === strpos($this->tag, 'sblock_')) {
             $type = new \Twig_Node_Expression_Constant(substr($this->tag, 7), $lineno);
-            $options = $this->parser->getExpressionParser()->parseExpression();
 
         } else {
             $type = $this->parser->getExpressionParser()->parseExpression();
 
             if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
                 $stream->next();
-                $options = $this->parser->getExpressionParser()->parseExpression();
             }
         }
+
+        $options = $this->parser->getExpressionParser()->parseExpression();
 
         if ($stream->test(\Twig_Token::NAME_TYPE, 'with')) {
             $stream->next();
