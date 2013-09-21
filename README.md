@@ -1,4 +1,4 @@
-﻿Sonatra Block Bundle
+Sonatra Block Bundle
 ====================
 
 The Sonatra BlockBundle provides tools for defining UI blocks, rendering and mapping response data to related models. 
