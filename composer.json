@@ -1,4 +1,4 @@
-﻿{
+{
     "name": "sonatra/block-bundle",
     "type": "symfony-bundle",
     "description": "Sonatra Block Bundle",
@@ -30,10 +30,8 @@
     },
     "suggest": {
         "doctrine/orm": "For doctrine block type",
-        "sonatra/panel-bundle": "The bundle of panel builder",
-        "sonatra/grid-bundle": "The bundle of grid builder",
-        "sonatra/ajax-bundle": "Add ajax interaction directly in block type",
-    }
+        "sonatra/bootstrap-bundle": "The twitter bootstrap DSL twig tag"
+    },
     "autoload": {
         "psr-0": { "Sonatra\\Bundle\\BlockBundle": "" }
     },
