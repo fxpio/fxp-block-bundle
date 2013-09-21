@@ -84,6 +84,7 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
         }
 
         if ($child instanceof self) {
+            $this->getType()->validateChild($this, $child);
             $child->setParent($this);
             $this->children[$child->getName()] = $child;
 

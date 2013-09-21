@@ -391,6 +391,7 @@ class Block implements \IteratorAggregate, BlockInterface
             }
         }
 
+        $this->getConfig()->getType()->validateChild($this->getConfig(), $child->getConfig());
         $this->children[$child->getName()] = $child;
 
         $child->setParent($this);

@@ -45,4 +45,11 @@ abstract class AbstractTypeExtension implements BlockTypeExtensionInterface
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild)
+    {
+    }
 }

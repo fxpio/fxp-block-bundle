@@ -53,4 +53,11 @@ abstract class AbstractType implements BlockTypeInterface
     {
         return 'block';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild)
+    {
+    }
 }

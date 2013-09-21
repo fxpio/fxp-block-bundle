@@ -72,4 +72,14 @@ interface BlockTypeExtensionInterface
      * @return string The name of the type being extended
      */
     public function getExtendedType();
+
+    /**
+     * Validates the child when is added to this block.
+     *
+     * @param BlockBuilderInterface $builder
+     * @param BlockBuilderInterface $builderChild
+     *
+     * @throws \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidChildException When the child block is not allowed for this block
+     */
+    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild);
 }

@@ -99,6 +99,14 @@ interface ResolvedBlockTypeInterface
     public function finishView(BlockView $view, BlockInterface $block, array $options);
 
     /**
+     * Validates the child when is added to the parent block.
+     *
+     * @param BlockBuilderInterface $builder
+     * @param BlockBuilderInterface $builderChild
+     */
+    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild);
+
+    /**
      * Returns the configured options resolver used for this type.
      *
      * @return \Symfony\Component\OptionsResolver\OptionsResolverInterface The options resolver.

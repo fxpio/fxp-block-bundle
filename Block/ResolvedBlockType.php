@@ -29,7 +29,7 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
     protected $innerType;
 
     /**
-     * @var array
+     * @var BlockTypeExtensionInterface[]
      */
     protected $typeExtensions;
 
@@ -193,6 +193,23 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         foreach ($this->typeExtensions as $extension) {
             /* @var BlockTypeExtensionInterface $extension */
             $extension->finishView($view, $block, $options);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild)
+    {
+        if (null !== $this->parent) {
+            $this->parent->validateChild($builder, $builderChild);
+        }
+
+        $this->innerType->validateChild($builder, $builderChild);
+
+        foreach ($this->typeExtensions as $extension) {
+            /* @var BlockTypeExtensionInterface $extension */
+            $extension->validateChild($builder, $builderChild);
         }
     }
 
