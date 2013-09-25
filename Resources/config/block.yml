@@ -39,8 +39,8 @@ services:
         arguments: ['@property_accessor']
         tags: [ { name: sonatra.block.type, alias: block } ]
 
-    sonatra.block_extensions.type.twig:
-        class: 'Sonatra\Bundle\BlockBundle\Block\Type\TwigType'
+    sonatra.block.type.twig:
+        class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TwigType'
         tags: [ { name: sonatra.block.type, alias: 'twig' } ]
 
     sonatra.block.type.field:
