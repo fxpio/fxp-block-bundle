@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -31,10 +32,11 @@ class SonatraBlockExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('block.yml');
-        $loader->load('twig.yml');
-        $loader->load('doctrine.yml');
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $ymlLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $ymlLoader->load('block.yml');
+        $ymlLoader->load('twig.yml');
+        $ymlLoader->load('doctrine.yml');
 
         if (count($configs) > 1) {
             $initConfig = array_pop($configs);
@@ -45,19 +47,24 @@ class SonatraBlockExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('sonatra.block.twig.resources', $config['block']['resources']);
+        $container->setParameter('sonatra_block.twig.resources', $config['block']['resources']);
+        $this->registerProfilerConfiguration($config['profiler'], $container, $loader);
+    }
 
-        if (0 === strpos($config['profiler']['enabled'], '%')) {
-            $config['profiler']['enabled'] = $container->getParameter(trim($config['profiler']['enabled'], '%'));
-        }
-
-        if ($config['profiler']['enabled']) {
-            $loader->load('profiler.yml');
-
-            foreach ($config['profiler']['engines'] as $engine => $tracable) {
-                $container->setDefinition($engine, $container->findDefinition($tracable));
-                $container->removeDefinition($tracable);
-            }
+    /**
+     * Loads the profiler configuration.
+     *
+     * @param array            $config    A profiler configuration array
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param XmlFileLoader    $loader    An XmlFileLoader instance
+     *
+     * @throws \LogicException
+     */
+    private function registerProfilerConfiguration(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    {
+        if ($config['enabled'] && $config['collect']) {
+            $loader->load('block_debug.xml');
+            $loader->load('collectors.xml');
         }
     }
 }

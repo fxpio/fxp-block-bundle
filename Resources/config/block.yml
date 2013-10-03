@@ -1,148 +1,148 @@
 parameters:
-    sonatra.block.extension.base.class: Sonatra\Bundle\BlockBundle\Block\Extension\DependencyInjection\DependencyInjectionExtension
-    sonatra.block.factory.class: Sonatra\Bundle\BlockBundle\Block\BlockFactory
-    sonatra.block.registry.class: Sonatra\Bundle\BlockBundle\Block\BlockRegistry
-    sonatra.block.resolved_type_factory.class: Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactory
-    sonatra.block.type_guesser.validator.base.class: Sonatra\Bundle\BlockBundle\Block\Extension\Validator\ValidatorTypeGuesser
-    sonatra.block.type.money.default_currency:
+    sonatra_block.extension.base.class: Sonatra\Bundle\BlockBundle\Block\Extension\DependencyInjection\DependencyInjectionExtension
+    sonatra_block.factory.class: Sonatra\Bundle\BlockBundle\Block\BlockFactory
+    sonatra_block.registry.class: Sonatra\Bundle\BlockBundle\Block\BlockRegistry
+    sonatra_block.resolved_type_factory.class: Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactory
+    sonatra_block.type_guesser.validator.base.class: Sonatra\Bundle\BlockBundle\Block\Extension\Validator\ValidatorTypeGuesser
+    sonatra_block.type.money.default_currency:
 
 services:
     #DependencyInjectionExtension
-    sonatra.block.extension:
-        class: '%sonatra.block.extension.base.class%'
-        arguments: ['@service_container', ['@sonatra.block.type'], ['@sonatra.block.type_extension'], ['@sonatra.block.type_guesser']]
+    sonatra_block.extension:
+        class: '%sonatra_block.extension.base.class%'
+        arguments: ['@service_container', ['@sonatra_block.type'], ['@sonatra_block.type_extension'], ['@sonatra_block.type_guesser']]
         public: false
 
     #BlockFactory
-    sonatra.block.factory:
-        class: '%sonatra.block.factory.class%'
-        arguments: ['@sonatra.block.registry', '@sonatra.block.resolved_type_factory']
+    sonatra_block.factory:
+        class: '%sonatra_block.factory.class%'
+        arguments: ['@sonatra_block.registry', '@sonatra_block.resolved_type_factory']
 
     #BlockRegistry
-    sonatra.block.registry:
-        class: '%sonatra.block.registry.class%'
-        arguments: [['@sonatra.block.extension'], '@sonatra.block.resolved_type_factory']
+    sonatra_block.registry:
+        class: '%sonatra_block.registry.class%'
+        arguments: [['@sonatra_block.extension'], '@sonatra_block.resolved_type_factory']
 
     #ResolvedBlockTypeFactory
-    sonatra.block.resolved_type_factory:
-        class: '%sonatra.block.resolved_type_factory.class%'
+    sonatra_block.resolved_type_factory:
+        class: '%sonatra_block.resolved_type_factory.class%'
 
     #ValidatorTypeGuesser
-    sonatra.block.type_guesser.validator:
-        class: '%sonatra.block.type_guesser.validator.base.class%'
+    sonatra_block.type_guesser.validator:
+        class: '%sonatra_block.type_guesser.validator.base.class%'
         arguments: ['@validator.mapping.class_metadata_factory']
-        tags: [ { name: sonatra.block.type_guesser } ]
+        tags: [ { name: sonatra_block.type_guesser } ]
 
     #CoreExtension
-    sonatra.block.type.block:
+    sonatra_block.type.block:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BlockType'
         arguments: ['@property_accessor']
-        tags: [ { name: sonatra.block.type, alias: block } ]
+        tags: [ { name: sonatra_block.type, alias: block } ]
 
-    sonatra.block.type.twig:
+    sonatra_block.type.twig:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TwigType'
-        tags: [ { name: sonatra.block.type, alias: 'twig' } ]
+        tags: [ { name: sonatra_block.type, alias: 'twig' } ]
 
-    sonatra.block.type.field:
+    sonatra_block.type.field:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\FieldType'
-        tags: [ { name: sonatra.block.type, alias: field } ]
+        tags: [ { name: sonatra_block.type, alias: field } ]
 
-    sonatra.block.type.text:
+    sonatra_block.type.text:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType'
-        tags: [ { name: sonatra.block.type, alias: text } ]
+        tags: [ { name: sonatra_block.type, alias: text } ]
 
-    sonatra.block.type.textarea:
+    sonatra_block.type.textarea:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextareaType'
-        tags: [ { name: sonatra.block.type, alias: textarea } ]
+        tags: [ { name: sonatra_block.type, alias: textarea } ]
 
-    sonatra.block.type.password:
+    sonatra_block.type.password:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\PasswordType'
-        tags: [ { name: sonatra.block.type, alias: password } ]
+        tags: [ { name: sonatra_block.type, alias: password } ]
 
-    sonatra.block.type.email:
+    sonatra_block.type.email:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\EmailType'
-        tags: [ { name: sonatra.block.type, alias: email } ]
+        tags: [ { name: sonatra_block.type, alias: email } ]
 
-    sonatra.block.type.url:
+    sonatra_block.type.url:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\UrlType'
-        tags: [ { name: sonatra.block.type, alias: url } ]
+        tags: [ { name: sonatra_block.type, alias: url } ]
 
-    sonatra.block.type.checkbox:
+    sonatra_block.type.checkbox:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CheckboxType'
-        tags: [ { name: sonatra.block.type, alias: checkbox } ]
+        tags: [ { name: sonatra_block.type, alias: checkbox } ]
 
-    sonatra.block.type.radio:
+    sonatra_block.type.radio:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\RadioType'
-        tags: [ { name: sonatra.block.type, alias: radio } ]
+        tags: [ { name: sonatra_block.type, alias: radio } ]
 
-    sonatra.block.type.datetime:
+    sonatra_block.type.datetime:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\DateTimeType'
-        tags: [ { name: sonatra.block.type, alias: datetime } ]
+        tags: [ { name: sonatra_block.type, alias: datetime } ]
 
-    sonatra.block.type.date:
+    sonatra_block.type.date:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\DateType'
-        tags: [ { name: sonatra.block.type, alias: date } ]
+        tags: [ { name: sonatra_block.type, alias: date } ]
 
-    sonatra.block.type.time:
+    sonatra_block.type.time:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TimeType'
-        tags: [ { name: sonatra.block.type, alias: time } ]
+        tags: [ { name: sonatra_block.type, alias: time } ]
 
-    sonatra.block.type.birthday:
+    sonatra_block.type.birthday:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BirthdayType'
-        tags: [ { name: sonatra.block.type, alias: birthday } ]
+        tags: [ { name: sonatra_block.type, alias: birthday } ]
 
-    sonatra.block.type.timezone:
+    sonatra_block.type.timezone:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TimezoneType'
-        tags: [ { name: sonatra.block.type, alias: timezone } ]
+        tags: [ { name: sonatra_block.type, alias: timezone } ]
 
-    sonatra.block.type.number:
+    sonatra_block.type.number:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\NumberType'
-        tags: [ { name: sonatra.block.type, alias: number } ]
+        tags: [ { name: sonatra_block.type, alias: number } ]
 
-    sonatra.block.type.integer:
+    sonatra_block.type.integer:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\IntegerType'
-        tags: [ { name: sonatra.block.type, alias: integer } ]
+        tags: [ { name: sonatra_block.type, alias: integer } ]
 
-    sonatra.block.type.percent:
+    sonatra_block.type.percent:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\PercentType'
-        tags: [ { name: sonatra.block.type, alias: percent } ]
+        tags: [ { name: sonatra_block.type, alias: percent } ]
 
-    sonatra.block.type.money:
+    sonatra_block.type.money:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\MoneyType'
-        tags: [ { name: sonatra.block.type, alias: money } ]
+        tags: [ { name: sonatra_block.type, alias: money } ]
 
-    sonatra.block.type.currency:
+    sonatra_block.type.currency:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CurrencyType'
-        tags: [ { name: sonatra.block.type, alias: currency } ]
+        tags: [ { name: sonatra_block.type, alias: currency } ]
 
-    sonatra.block.type.choice:
+    sonatra_block.type.choice:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ChoiceType'
-        tags: [ { name: sonatra.block.type, alias: choice } ]
+        tags: [ { name: sonatra_block.type, alias: choice } ]
 
-    sonatra.block.type.country:
+    sonatra_block.type.country:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CountryType'
-        tags: [ { name: sonatra.block.type, alias: country } ]
+        tags: [ { name: sonatra_block.type, alias: country } ]
 
-    sonatra.block.type.locale:
+    sonatra_block.type.locale:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\LocaleType'
-        tags: [ { name: sonatra.block.type, alias: locale } ]
+        tags: [ { name: sonatra_block.type, alias: locale } ]
 
-    sonatra.block.type.language:
+    sonatra_block.type.language:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\LanguageType'
-        tags: [ { name: sonatra.block.type, alias: language } ]
+        tags: [ { name: sonatra_block.type, alias: language } ]
 
-    sonatra.block.type.collection:
+    sonatra_block.type.collection:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CollectionType'
-        tags: [ { name: sonatra.block.type, alias: collection } ]
+        tags: [ { name: sonatra_block.type, alias: collection } ]
 
-    sonatra.block.type.repeated:
+    sonatra_block.type.repeated:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\RepeatedType'
-        tags: [ { name: sonatra.block.type, alias: repeated } ]
+        tags: [ { name: sonatra_block.type, alias: repeated } ]
 
-    sonatra.block.type.hidden:
+    sonatra_block.type.hidden:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\HiddenType'
-        tags: [ { name: sonatra.block.type, alias: hidden } ]
+        tags: [ { name: sonatra_block.type, alias: hidden } ]
 
-    sonatra.block.type.closure:
+    sonatra_block.type.closure:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ClosureType'
-        tags: [ { name: sonatra.block.type, alias: closure } ]
+        tags: [ { name: sonatra_block.type, alias: closure } ]

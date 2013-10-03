@@ -31,6 +31,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('sonatra_block');
 
         $this->addBlockSection($rootNode);
+        $this->addProfilerSection($rootNode);
 
         return $treeBuilder;
     }
@@ -45,19 +46,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-                ->arrayNode('profiler')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->booleanNode('enabled')->defaultValue('%kernel.debug%')->end()
-                        ->arrayNode('engines')
-                            ->info('Replacing the renderer engine service id by a traceable version service id')
-                            ->fixXmlConfig('engine')
-                            ->useAttributeAsKey('id')
-                            ->prototype('scalar')->end()
-                            ->defaultValue(array('sonatra.block.twig.engine' => 'sonatra.block.twig.tracable_engine'))
-                        ->end()
-                    ->end()
-                ->end()
                 ->arrayNode('block')
                     ->addDefaultsIfNotSet()
                     ->fixXmlConfig('resource')
@@ -73,6 +61,26 @@ class Configuration implements ConfigurationInterface
                                 })
                             ->end()
                         ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Add profiler section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addProfilerSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('profiler')
+                    ->info('profiler configuration')
+                    ->canBeEnabled()
+                    ->children()
+                        ->booleanNode('collect')->defaultTrue()->end()
                     ->end()
                 ->end()
             ->end()

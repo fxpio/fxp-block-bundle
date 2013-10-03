@@ -15,8 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
- * Adds all services with the tags "sonatra.block.type" and "sonatra.block.type_guesser" as
- * arguments of the "sonatra.block.extension" service.
+ * Adds all services with the tags "sonatra_block.type" and "sonatra_block.type_guesser" as
+ * arguments of the "sonatra_block.extension" service.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
@@ -27,14 +27,14 @@ class BlockPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('sonatra.block.extension')) {
+        if (!$container->hasDefinition('sonatra_block.extension')) {
             return;
         }
 
         // Builds an array with service IDs as keys and tag aliases as values
         $types = array();
 
-        foreach ($container->findTaggedServiceIds('sonatra.block.type') as $serviceId => $tag) {
+        foreach ($container->findTaggedServiceIds('sonatra_block.type') as $serviceId => $tag) {
             $alias = isset($tag[0]['alias'])
                 ? $tag[0]['alias']
                 : $serviceId;
@@ -43,11 +43,11 @@ class BlockPass implements CompilerPassInterface
             $types[$alias] = $serviceId;
         }
 
-        $container->getDefinition('sonatra.block.extension')->replaceArgument(1, $types);
+        $container->getDefinition('sonatra_block.extension')->replaceArgument(1, $types);
 
         $typeExtensions = array();
 
-        foreach ($container->findTaggedServiceIds('sonatra.block.type_extension') as $serviceId => $tag) {
+        foreach ($container->findTaggedServiceIds('sonatra_block.type_extension') as $serviceId => $tag) {
             $alias = isset($tag[0]['alias'])
                 ? $tag[0]['alias']
                 : $serviceId;
@@ -55,11 +55,11 @@ class BlockPass implements CompilerPassInterface
             $typeExtensions[$alias][] = $serviceId;
         }
 
-        $container->getDefinition('sonatra.block.extension')->replaceArgument(2, $typeExtensions);
+        $container->getDefinition('sonatra_block.extension')->replaceArgument(2, $typeExtensions);
 
         // Find all services annotated with "block.type_guesser"
-        $guessers = array_keys($container->findTaggedServiceIds('sonatra.block.type_guesser'));
+        $guessers = array_keys($container->findTaggedServiceIds('sonatra_block.type_guesser'));
 
-        $container->getDefinition('sonatra.block.extension')->replaceArgument(3, $guessers);
+        $container->getDefinition('sonatra_block.extension')->replaceArgument(3, $guessers);
     }
 }
