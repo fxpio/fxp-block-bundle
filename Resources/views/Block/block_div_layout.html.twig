@@ -251,20 +251,18 @@
 
 {% block block_label %}
 {% spaceless %}
-    {% if not(label is empty and id == '') %}
-        {% if not compound %}
-            {% set label_attr = label_attr %}
-        {% endif %}
+    {% if not compound %}
+        {% set label_attr = label_attr %}
+    {% endif %}
 
-        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' block_label')|trim}) %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' block_label')|trim}) %}
 
-        {% if label is null %}
-            {% set label = name|block_humanize %}
-        {% endif %}
+    {% if label is null %}
+        {% set label = name|block_humanize %}
+    {% endif %}
 
-        {% if label != '' %}
-            <div{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</div>
-        {% endif %}
+    {% if label != '' %}
+        <div{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</div>
     {% endif %}
 {% endspaceless %}
 {% endblock block_label %}
@@ -305,14 +303,14 @@
 
 {% block widget_attributes %}
 {% spaceless %}
-    id="{{ id }}"
+    {% if display_id %}id="{{ id }}" {% endif %}
     {% for attrname, attrvalue in attr %}{% if attrname in ['title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
 {% endspaceless %}
 {% endblock widget_attributes %}
 
 {% block widget_container_attributes %}
 {% spaceless %}
-    {% if id is not empty %}id="{{ id }}" {% endif %}
+    {% if display_id %}id="{{ id }}" {% endif %}
     {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
 {% endspaceless %}
 {% endblock widget_container_attributes %}
@@ -321,7 +319,9 @@
 {# Twig Widget #}
 {% block twig_widget %}
 {% if attr.id is not defined %}
-    {% set attr = attr|merge({'id': id}) %}
+    {% if display_id %}
+        {% set attr = attr|merge({'id': id}) %}
+    {% endif %}
 {% endif %}
 <div {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}>
 {{ block_twig_render(resource, block_rendered, options) }}

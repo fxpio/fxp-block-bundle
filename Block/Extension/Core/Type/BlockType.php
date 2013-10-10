@@ -15,7 +15,6 @@ use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
-use Sonatra\Bundle\BlockBundle\Block\Exception\LogicException;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -67,21 +66,9 @@ class BlockType extends AbstractType
         $blockName = $options['block_name'] ?: $block->getName();
         $translationDomain = $options['translation_domain'];
 
-        if ($view->parent) {
-            if ('' === $name) {
-                throw new LogicException('Block node with empty name can be used only as root block node.');
-            }
-
-            if ('' !== ($parentFullName = $view->parent->vars['full_name'])) {
-                $id = sprintf('%s_%s', $view->parent->vars['id'], $name);
-                $fullName = sprintf('%s[%s]', $parentFullName, $name);
-                $uniqueBlockPrefix = sprintf('%s_%s', $view->parent->vars['unique_block_prefix'], $blockName);
-
-            } else {
-                $id = $name;
-                $fullName = $name;
-                $uniqueBlockPrefix = '_' . $blockName;
-            }
+        if ($view->parent && $options['chained_block']) {
+            $id = sprintf('%s_%s', $view->parent->vars['id'], $name);
+            $uniqueBlockPrefix = sprintf('%s_%s', $view->parent->vars['unique_block_prefix'], $blockName);
 
             if (!$translationDomain) {
                 $translationDomain = $view->parent->vars['translation_domain'];
@@ -89,7 +76,6 @@ class BlockType extends AbstractType
 
         } else {
             $id = $name;
-            $fullName = $name;
             $uniqueBlockPrefix = '_' . $blockName;
 
             // Strip leading underscores and digits. These are allowed in
@@ -109,10 +95,10 @@ class BlockType extends AbstractType
         }
 
         $view->vars = array_replace($view->vars, array(
-                'block'                => $view,
+                'block'               => $view,
                 'id'                  => $id,
                 'name'                => $name,
-                'full_name'           => $fullName,
+                'display_id'          => $options['display_id'],
                 'value'               => $block->getViewData(),
                 'data'                => $block->getNormData(),
                 'label'               => $options['label'],
@@ -123,11 +109,10 @@ class BlockType extends AbstractType
                 'unique_block_prefix' => $uniqueBlockPrefix,
                 'translation_domain'  => $translationDomain,
                 // Using the block name here speeds up performance in collection
-                // forms, where each entry has the same full block name.
+                // blocks, where each entry has the same full block name.
                 // Including the type is important too, because if rows of a
-                // collection form have different types (dynamically), they should
+                // collection block have different types (dynamically), they should
                 // be rendered differently.
-                // https://github.com/symfony/symfony/issues/5038
                 'cache_key'           => $uniqueBlockPrefix . '_' . $block->getConfig()->getType()->getName(),
         ));
     }
@@ -170,6 +155,8 @@ class BlockType extends AbstractType
 
         $resolver->setDefaults(array(
                 'block_name'         => null,
+                'display_id'         => false,
+                'chained_block'      => false,
                 'data_class'         => $dataClass,
                 'empty_data'         => $emptyData,
                 'property_path'      => null,
