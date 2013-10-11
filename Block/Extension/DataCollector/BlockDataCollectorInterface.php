@@ -57,16 +57,6 @@ interface BlockDataCollectorInterface extends DataCollectorInterface
      *
      * The result can be queried using {@link getData()}.
      *
-     * @param BlockInterface $block A root block
-     */
-    public function buildPreliminaryBlockTree(BlockInterface $block);
-
-    /**
-     * Assembles the data collected about the given block and its children as
-     * a tree-like data structure.
-     *
-     * The result can be queried using {@link getData()}.
-     *
      * Contrary to {@link buildPreliminaryBlockTree()}, a {@link BlockView}
      * object has to be passed. The tree structure of this view object will be
      * used for structuring the resulting data. That means, if a child is

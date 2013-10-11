@@ -156,16 +156,6 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
     /**
      * {@inheritdoc}
      */
-    public function buildPreliminaryBlockTree(BlockInterface $block)
-    {
-        $this->data['blocks'][$block->getName()] = array();
-
-        $this->recursiveBuildPreliminaryBlockTree($block, $this->data['blocks'][$block->getName()]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildFinalBlockTree(BlockInterface $block, BlockView $view)
     {
         $this->data['blocks'][$block->getName()] = array();
@@ -187,23 +177,6 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
     public function getData()
     {
         return $this->data;
-    }
-
-    private function recursiveBuildPreliminaryBlockTree(BlockInterface $block, &$output = null)
-    {
-        $hash = spl_object_hash($block);
-
-        $output = isset($this->dataByBlock[$hash])
-            ? $this->dataByBlock[$hash]
-            : array();
-
-        $output['children'] = array();
-
-        foreach ($block as $name => $child) {
-            $output['children'][$name] = array();
-
-            $this->recursiveBuildPreliminaryBlockTree($child, $output['children'][$name]);
-        }
     }
 
     private function recursiveBuildFinalBlockTree(BlockInterface $block = null, BlockView $view, &$output = null)
