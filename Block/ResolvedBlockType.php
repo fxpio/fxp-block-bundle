@@ -128,20 +128,7 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
      */
     public function createView(BlockInterface $block, BlockView $parent = null)
     {
-        $options = $block->getConfig()->getOptions();
-
-        $view = new BlockView($parent);
-
-        $this->buildView($view, $block, $options);
-
-        foreach ($block as $name => $child) {
-            /* @var BlockInterface $child */
-            $view->children[$name] = $child->createView($view);
-        }
-
-        $this->finishView($view, $block, $options);
-
-        return $view;
+        return new BlockView($parent);
     }
 
     /**
