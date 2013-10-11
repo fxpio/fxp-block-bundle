@@ -108,7 +108,7 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function createBuilder(BlockFactoryInterface $factory, $name, array $options = array(), BlockBuilderInterface $parent = null)
+    public function createBuilder(BlockFactoryInterface $factory, $name, array $options = array())
     {
         $options = $this->getOptionsResolver()->resolve($options);
 
@@ -117,7 +117,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
 
         $builder = new BlockBuilder($name, $dataClass, new EventDispatcher(), $factory, $options);
         $builder->setType($this);
-        $builder->setParent($parent);
 
         $this->buildBlock($builder, $options);
 

@@ -82,9 +82,9 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function createBuilder(BlockFactoryInterface $factory, $name, array $options = array(), BlockBuilderInterface $parent = null)
+    public function createBuilder(BlockFactoryInterface $factory, $name, array $options = array())
     {
-        $builder = $this->proxiedType->createBuilder($factory, $name, $options, $parent);
+        $builder = $this->proxiedType->createBuilder($factory, $name, $options);
 
         $builder->setAttribute('data_collector/passed_options', $options);
         $builder->setType($this);

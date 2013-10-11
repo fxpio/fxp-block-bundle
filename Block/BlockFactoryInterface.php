@@ -24,13 +24,12 @@ interface BlockFactoryInterface
      * @param string|BlockTypeInterface $type    The type of the block
      * @param mixed                     $data    The initial data
      * @param array                     $options The options
-     * @param BlockBuilderInterface     $parent  The parent builder
      *
      * @return BlockInterface The block named after the type
      *
      * @throws Exception\UnexpectedTypeException if any given option is not applicable to the given type
      */
-    public function create($type = 'block', $data = null, array $options = array(), BlockBuilderInterface $parent = null);
+    public function create($type = 'block', $data = null, array $options = array());
 
     /**
      * Returns a block.
@@ -41,30 +40,28 @@ interface BlockFactoryInterface
      * @param string|BlockTypeInterface $type    The type of the block
      * @param mixed                     $data    The initial data
      * @param array                     $options The options
-     * @param BlockBuilderInterface     $parent  The parent builder
      *
      * @return BlockInterface The block
      *
      * @throws Exception\UnexpectedTypeException if any given option is not applicable to the given type
      */
-    public function createNamed($name, $type = 'block', $data = null, array $options = array(), BlockBuilderInterface $parent = null);
+    public function createNamed($name, $type = 'block', $data = null, array $options = array());
 
     /**
      * Returns a block for a property of a class.
      *
      * @see createBuilderForProperty()
      *
-     * @param string                $class    The fully qualified class name
-     * @param string                $property The name of the property to guess for
-     * @param mixed                 $data     The initial data
-     * @param array                 $options  The options for the builder
-     * @param BlockBuilderInterface $parent   The parent builder
+     * @param string $class    The fully qualified class name
+     * @param string $property The name of the property to guess for
+     * @param mixed  $data     The initial data
+     * @param array  $options  The options for the builder
      *
      * @return BlockInterface The block named after the property
      *
      * @throws Exception\UnexpectedTypeException if any given option is not applicable to the block type
      */
-    public function createForProperty($class, $property, $data = null, array $options = array(), BlockBuilderInterface $parent = null);
+    public function createForProperty($class, $property, $data = null, array $options = array());
 
     /**
      * Returns a block builder.
@@ -72,13 +69,12 @@ interface BlockFactoryInterface
      * @param string|BlockTypeInterface $type    The type of the block
      * @param mixed                     $data    The initial data
      * @param array                     $options The options
-     * @param BlockBuilderInterface     $parent  The parent builder
      *
      * @return BlockBuilderInterface The block builder
      *
      * @throws Exception\UnexpectedTypeException if any given option is not applicable to the given type
      */
-    public function createBuilder($type = 'block', $data = null, array $options = array(), BlockBuilderInterface $parent = null);
+    public function createBuilder($type = 'block', $data = null, array $options = array());
 
     /**
      * Returns a block builder.
@@ -87,13 +83,12 @@ interface BlockFactoryInterface
      * @param string|BlockTypeInterface $type    The type of the block
      * @param mixed                     $data    The initial data
      * @param array                     $options The options
-     * @param BlockBuilderInterface     $parent  The parent builder
      *
      * @return BlockBuilderInterface The block builder
      *
      * @throws Exception\UnexpectedTypeException if any given option is not applicable to the given type
      */
-    public function createNamedBuilder($name, $type = 'block', $data = null, array $options = array(), BlockBuilderInterface $parent = null);
+    public function createNamedBuilder($name, $type = 'block', $data = null, array $options = array());
 
     /**
      * Returns a block builder for a property of a class.
@@ -101,15 +96,14 @@ interface BlockFactoryInterface
      * If any type options can be guessed, and are not provided in the options
      * argument, the guessed value is used.
      *
-     * @param string                $class    The fully qualified class name
-     * @param string                $property The name of the property to guess for
-     * @param mixed                 $data     The initial data
-     * @param array                 $options  The options for the builder
-     * @param BlockBuilderInterface $parent   The parent builder
+     * @param string $class    The fully qualified class name
+     * @param string $property The name of the property to guess for
+     * @param mixed  $data     The initial data
+     * @param array  $options  The options for the builder
      *
      * @return BlockBuilderInterface The block builder named after the property
      *
      * @throws Exception\UnexpectedTypeException if any given option is not applicable to the block type
      */
-    public function createBuilderForProperty($class, $property, $data = null, array $options = array(), BlockBuilderInterface $parent = null);
+    public function createBuilderForProperty($class, $property, $data = null, array $options = array());
 }

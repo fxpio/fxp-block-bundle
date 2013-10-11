@@ -52,11 +52,10 @@ interface ResolvedBlockTypeInterface
      * @param BlockFactoryInterface $factory The block factory.
      * @param string                $name    The name for the builder.
      * @param array                 $options The builder options.
-     * @param BlockBuilderInterface $parent  The parent builder object or null.
      *
      * @return BlockBuilderInterface The created block builder.
      */
-    public function createBuilder(BlockFactoryInterface $factory, $name, array $options = array(), BlockBuilderInterface $parent = null);
+    public function createBuilder(BlockFactoryInterface $factory, $name, array $options = array());
 
     /**
      * Creates a new block view for a block of this type.

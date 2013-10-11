@@ -43,31 +43,31 @@ class BlockFactory implements BlockFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create($type = 'block', $data = null, array $options = array(), BlockBuilderInterface $parent = null)
+    public function create($type = 'block', $data = null, array $options = array())
     {
-        return $this->createBuilder($type, $data, $options, $parent)->getBlock();
+        return $this->createBuilder($type, $data, $options)->getBlock();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createNamed($name, $type = 'block', $data = null, array $options = array(), BlockBuilderInterface $parent = null)
+    public function createNamed($name, $type = 'block', $data = null, array $options = array())
     {
-        return $this->createNamedBuilder($name, $type, $data, $options, $parent)->getBlock();
+        return $this->createNamedBuilder($name, $type, $data, $options)->getBlock();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createForProperty($class, $property, $data = null, array $options = array(), BlockBuilderInterface $parent = null)
+    public function createForProperty($class, $property, $data = null, array $options = array())
     {
-        return $this->createBuilderForProperty($class, $property, $data, $options, $parent)->getBlock();
+        return $this->createBuilderForProperty($class, $property, $data, $options)->getBlock();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createBuilder($type = 'block', $data = null, array $options = array(), BlockBuilderInterface $parent = null)
+    public function createBuilder($type = 'block', $data = null, array $options = array())
     {
         $name = $type instanceof BlockTypeInterface || $type instanceof ResolvedBlockTypeInterface
             ? $type->getName()
@@ -79,7 +79,7 @@ class BlockFactory implements BlockFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createNamedBuilder($name, $type = 'block', $data = null, array $options = array(), BlockBuilderInterface $parent = null)
+    public function createNamedBuilder($name, $type = 'block', $data = null, array $options = array())
     {
         if (null !== $data && !array_key_exists('data', $options)) {
             $options['data'] = $data;
@@ -95,13 +95,13 @@ class BlockFactory implements BlockFactoryInterface
             throw new UnexpectedTypeException($type, 'string, Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface or Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
         }
 
-        return $type->createBuilder($this, $name, $options, $parent);
+        return $type->createBuilder($this, $name, $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createBuilderForProperty($class, $property, $data = null, array $options = array(), BlockBuilderInterface $parent = null)
+    public function createBuilderForProperty($class, $property, $data = null, array $options = array())
     {
         $guesser = $this->registry->getTypeGuesser();
         $typeGuess = $guesser->guessType($class, $property);
@@ -113,7 +113,7 @@ class BlockFactory implements BlockFactoryInterface
             $options = array_merge($typeGuess->getOptions(), $options);
         }
 
-        return $this->createNamedBuilder($property, $type, $data, $options, $parent);
+        return $this->createNamedBuilder($property, $type, $data, $options);
     }
 
     /**
