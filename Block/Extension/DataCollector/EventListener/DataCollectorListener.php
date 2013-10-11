@@ -56,13 +56,10 @@ class DataCollectorListener implements EventSubscriberInterface
      */
     public function postSetData(BlockEvent $event)
     {
-        if ($event->getBlock()->isRoot()) {
-            // Collect basic information about each block
-            $this->dataCollector->collectConfiguration($event->getBlock());
+        // Collect basic information about each block
+        $this->dataCollector->collectConfiguration($event->getBlock());
 
-            // Collect the default data
-            $this->dataCollector->collectDefaultData($event->getBlock());
-        }
+        // Collect the default data
+        $this->dataCollector->collectDefaultData($event->getBlock());
     }
-
 }
