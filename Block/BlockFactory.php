@@ -103,9 +103,11 @@ class BlockFactory implements BlockFactoryInterface
      */
     public function createBuilderForProperty($class, $property, $data = null, array $options = array())
     {
-        $guesser = $this->registry->getTypeGuesser();
-        $typeGuess = $guesser->guessType($class, $property);
+        if (null === $guesser = $this->registry->getTypeGuesser()) {
+            return $this->createNamedBuilder($property, 'text', $data, $options);
+        }
 
+        $typeGuess = $guesser->guessType($class, $property);
         $type = $typeGuess ? $typeGuess->getType() : 'text';
 
         // user options may override guessed options
