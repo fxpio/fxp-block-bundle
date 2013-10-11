@@ -94,12 +94,18 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
             return $this;
         }
 
-        if (!is_string($child)) {
+        if (null !== $child && !is_string($child)) {
             throw new UnexpectedTypeException($child, 'string or Sonatra\Bundle\BlockBundle\Block\BlockBuilder');
         }
 
         if (null !== $type && !is_string($type) && !$type instanceof BlockTypeInterface) {
             throw new UnexpectedTypeException($type, 'string or Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
+        }
+
+        if (null === $child) {
+            $child = function_exists('openssl_random_pseudo_bytes')
+                ? bin2hex(openssl_random_pseudo_bytes(5))
+                : uniqid();
         }
 
         // Add to "children" to maintain order

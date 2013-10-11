@@ -69,11 +69,11 @@ class BlockFactory implements BlockFactoryInterface
      */
     public function createBuilder($type = 'block', $data = null, array $options = array())
     {
-        $name = $type instanceof BlockTypeInterface || $type instanceof ResolvedBlockTypeInterface
-            ? $type->getName()
-            : $type;
+        $name = function_exists('openssl_random_pseudo_bytes')
+            ? bin2hex(openssl_random_pseudo_bytes(5))
+            : uniqid();
 
-        return $this->createNamedBuilder(uniqid($name), $type, $data, $options, $parent);
+        return $this->createNamedBuilder($name, $type, $data, $options);
     }
 
     /**

@@ -149,7 +149,7 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function setParent(BlockInterface $parent = null)
     {
-        if ('' === $this->config->getName()) {
+        if (null !== $parent && '' === $this->config->getName()) {
             throw new LogicException('A block with an empty name cannot have a parent block.');
         }
 
@@ -376,7 +376,7 @@ class Block implements \IteratorAggregate, BlockInterface
         }
 
         if (!$child instanceof BlockInterface) {
-            if (!is_string($child) && !is_int($child)) {
+            if (null !== $child && !is_string($child) && !is_int($child)) {
                 throw new UnexpectedTypeException($child, 'string, integer or Sonatra\Bundle\BlockBundle\Block\BlockInterface');
             }
 
@@ -386,6 +386,8 @@ class Block implements \IteratorAggregate, BlockInterface
 
             if (null === $type) {
                 $child = $this->config->getBlockFactory()->createForProperty($this->config->getDataClass(), $child, null, $options);
+            } elseif (null === $child) {
+                $child = $this->config->getBlockFactory()->create($type, null, $options);
             } else {
                 $child = $this->config->getBlockFactory()->createNamed($child, $type, null, $options);
             }
