@@ -95,7 +95,13 @@ class BlockFactory implements BlockFactoryInterface
             throw new UnexpectedTypeException($type, 'string, Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface or Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
         }
 
-        return $type->createBuilder($this, $name, $options);
+        $builder = $type->createBuilder($this, $name, $options);
+
+        // Explicitly call buildBlock() in order to be able to override either
+        // createBuilder() or buildBlock() in the resolved block type
+        $type->buildBlock($builder, $builder->getOptions());
+
+        return $builder;
     }
 
     /**

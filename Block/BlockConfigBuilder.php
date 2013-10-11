@@ -18,7 +18,6 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\ImmutableEventDispatcher;
 
 /**
  * A basic block configuration.
@@ -544,13 +543,13 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      */
     public function getBlockConfig()
     {
+        if ($this->locked) {
+            throw new BadMethodCallException('BlockConfigBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
+        }
+
         // This method should be idempotent, so clone the builder
         $config = clone $this;
         $config->locked = true;
-
-        if (!$config->dispatcher instanceof ImmutableEventDispatcher) {
-            $config->dispatcher = new ImmutableEventDispatcher($config->dispatcher);
-        }
 
         return $config;
     }

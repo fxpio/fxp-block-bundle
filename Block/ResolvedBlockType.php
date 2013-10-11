@@ -118,8 +118,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         $builder = new BlockBuilder($name, $dataClass, new EventDispatcher(), $factory, $options);
         $builder->setType($this);
 
-        $this->buildBlock($builder, $options);
-
         return $builder;
     }
 

@@ -132,10 +132,10 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
         }
 
         if (null !== $type) {
-            return $this->factory->createNamedBuilder($name, $type, null, $options, $this);
+            return $this->factory->createNamedBuilder($name, $type, null, $options);
         }
 
-        return $this->factory->createBuilderForProperty($this->getDataClass(), $name, null, $options, $this);
+        return $this->factory->createBuilderForProperty($this->getDataClass(), $name, null, $options);
     }
 
     /**
@@ -212,8 +212,25 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
     /**
      * {@inheritdoc}
      */
+    public function getBlockConfig()
+    {
+        $config = parent::getBlockConfig();
+
+        $config->children = array();
+        $config->unresolvedChildren = array();
+
+        return $config;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getBlock()
     {
+        if ($this->locked) {
+            throw new BadMethodCallException('BlockBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
+        }
+
         $this->resolveChildren();
 
         $block = new Block($this->getBlockConfig());
