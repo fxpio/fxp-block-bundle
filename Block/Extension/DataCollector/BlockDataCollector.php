@@ -63,6 +63,16 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
     private $blocksByView;
 
     /**
+     * @var array
+     */
+    private $viewIds;
+
+    /**
+     * @var array
+     */
+    private $viewDuplicateIds;
+
+    /**
      * Constructor.
      *
      * @param BlockDataExtractorInterface $dataExtractor
@@ -71,8 +81,11 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
     {
         $this->dataExtractor = $dataExtractor;
         $this->data = array(
-            'blocks' => array(),
+            'blocks'    => array(),
+            'has_error' => false,
         );
+        $this->viewIds = array();
+        $this->viewDuplicateIds = array();
     }
 
     /**
@@ -158,9 +171,10 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
      */
     public function buildFinalBlockTree(BlockInterface $block, BlockView $view)
     {
-        $this->data['blocks'][$block->getName()] = array();
+        $hash = spl_object_hash($view);
+        $this->data['blocks'][$hash] = array();
 
-        $this->recursiveBuildFinalBlockTree($block, $view, $this->data['blocks'][$block->getName()]);
+        $this->recursiveBuildFinalBlockTree($block, $view, $this->data['blocks'][$hash]);
     }
 
     /**
@@ -179,6 +193,14 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
         return $this->data;
     }
 
+    /**
+     * Recursive build final block tree.
+     *
+     * @param BlockInterface $block
+     * @param BlockView      $view
+     *
+     * @param string $output
+     */
     private function recursiveBuildFinalBlockTree(BlockInterface $block = null, BlockView $view, &$output = null)
     {
         $viewHash = spl_object_hash($view);
@@ -206,6 +228,8 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
             );
         }
 
+        $this->validateViewIds($block, $view, $output);
+
         $output['children'] = array();
 
         foreach ($view->children as $name => $childView) {
@@ -215,9 +239,34 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
                 ? $block->get($name)
                 : null;
 
-            $output['children'][$name] = array();
+            $childHash = spl_object_hash($childView);
+            $output['children'][$childHash] = array();
 
-            $this->recursiveBuildFinalBlockTree($childBlock, $childView, $output['children'][$name]);
+            $this->recursiveBuildFinalBlockTree($childBlock, $childView, $output['children'][$childHash]);
         }
+    }
+
+    /**
+     * Validate the view Id.
+     *
+     * @param BlockInterface $block
+     * @param BlockView      $view
+     * @param string         $output
+     */
+    private function validateViewIds(BlockInterface $block = null, BlockView $view, &$output = null)
+    {
+        if (!$block->getConfig()->getOption('display_id')) {
+            return;
+        }
+
+        $output['has_duplicate_id'] = false;
+
+        if (in_array($view->vars['id'], $this->viewIds)) {
+            $output['has_duplicate_id'] = true;
+            $this->data['has_error'] = true;
+        }
+
+        $this->viewIds[] = $view->vars['id'];
+        array_unique($this->viewIds);
     }
 }
