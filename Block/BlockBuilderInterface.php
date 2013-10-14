@@ -91,27 +91,4 @@ interface BlockBuilderInterface extends \Traversable, \Countable, BlockConfigBui
      * @return Block The block
      */
     public function getBlock();
-
-    /**
-     * Sets the parent builder.
-     *
-     * @param BlockBuilderInterface $parent The parent builder
-     *
-     * @return BlockBuilderInterface The builder object.
-     */
-    public function setParent(BlockBuilderInterface $parent = null);
-
-    /**
-     * Returns the parent builder.
-     *
-     * @return BlockBuilderInterface The parent builder
-     */
-    public function getParent();
-
-    /**
-     * Returns whether the builder has a parent.
-     *
-     * @return Boolean
-     */
-    public function hasParent();
 }

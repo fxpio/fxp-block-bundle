@@ -85,7 +85,6 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
 
         if ($child instanceof self) {
             $this->getType()->validateChild($this, $child);
-            $child->setParent($this);
             $this->children[$child->getName()] = $child;
 
             // In case an unresolved child with the same name exists
@@ -143,6 +142,10 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
      */
     public function get($name)
     {
+        if ($this->locked) {
+            throw new BadMethodCallException('BlockBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
+        }
+
         if (isset($this->unresolvedChildren[$name])) {
             return $this->resolveChild($name);
         }
@@ -166,9 +169,6 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
         unset($this->unresolvedChildren[$name]);
 
         if (array_key_exists($name, $this->children)) {
-            if ($this->children[$name] instanceof self) {
-                $this->children[$name]->setParent(null);
-            }
             unset($this->children[$name]);
         }
 
@@ -180,6 +180,10 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
      */
     public function has($name)
     {
+        if ($this->locked) {
+            throw new BadMethodCallException('BlockBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
+        }
+
         if (isset($this->unresolvedChildren[$name])) {
             return true;
         }
@@ -196,6 +200,10 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
      */
     public function all()
     {
+        if ($this->locked) {
+            throw new BadMethodCallException('BlockBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
+        }
+
         $this->resolveChildren();
 
         return $this->children;
@@ -206,6 +214,10 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
      */
     public function count()
     {
+        if ($this->locked) {
+            throw new BadMethodCallException('BlockBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
+        }
+
         return count($this->children);
     }
 
@@ -245,38 +257,12 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
     /**
      * {@inheritdoc}
      */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setParent(BlockBuilderInterface $parent = null)
+    public function getIterator()
     {
         if ($this->locked) {
             throw new BadMethodCallException('BlockBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
         }
 
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasParent()
-    {
-        return null !== $this->parent;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator()
-    {
         return new \ArrayIterator($this->children);
     }
 
