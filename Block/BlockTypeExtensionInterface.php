@@ -32,6 +32,24 @@ interface BlockTypeExtensionInterface
     public function buildBlock(BlockBuilderInterface $builder, array $options);
 
     /**
+     * Action when the block adds a child.
+     *
+     * @param BlockInterface $child   The child block
+     * @param BlockInterface $block   The block
+     * @param array          $options The options
+     */
+    public function addChild(BlockInterface $child, BlockInterface $block, array $options);
+
+    /**
+     * Action when the block removes a child.
+     *
+     * @param BlockInterface $child   The child block
+     * @param BlockInterface $block   The block
+     * @param array          $options The options
+     */
+    public function removeChild(BlockInterface $child, BlockInterface $block, array $options);
+
+    /**
      * Builds the view.
      *
      * This method is called after the extended type has built the view to
@@ -72,14 +90,4 @@ interface BlockTypeExtensionInterface
      * @return string The name of the type being extended
      */
     public function getExtendedType();
-
-    /**
-     * Validates the child when is added to this block.
-     *
-     * @param BlockBuilderInterface $builder
-     * @param BlockBuilderInterface $builderChild
-     *
-     * @throws \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidChildException When the child block is not allowed for this block
-     */
-    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild);
 }

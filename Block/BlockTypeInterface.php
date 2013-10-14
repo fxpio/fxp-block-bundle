@@ -30,6 +30,24 @@ interface BlockTypeInterface
     public function buildBlock(BlockBuilderInterface $builder, array $options);
 
     /**
+     * Action when the block adds a child.
+     *
+     * @param BlockInterface $child   The child block
+     * @param BlockInterface $block   The block
+     * @param array          $options The options
+     */
+    public function addChild(BlockInterface $child, BlockInterface $block, array $options);
+
+    /**
+     * Action when the block removes a child.
+     *
+     * @param BlockInterface $child   The child block
+     * @param BlockInterface $block   The block
+     * @param array          $options The options
+     */
+    public function removeChild(BlockInterface $child, BlockInterface $block, array $options);
+
+    /**
      * Builds the block view.
      *
      * This method is called for each type in the hierarchy starting block the
@@ -82,14 +100,4 @@ interface BlockTypeInterface
      * @return string The name of this type
      */
     public function getName();
-
-    /**
-     * Validates the child when is added to this block.
-     *
-     * @param BlockBuilderInterface $builder
-     * @param BlockBuilderInterface $builderChild
-     *
-     * @throws \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidChildException When the child block is not allowed for this block
-     */
-    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild);
 }

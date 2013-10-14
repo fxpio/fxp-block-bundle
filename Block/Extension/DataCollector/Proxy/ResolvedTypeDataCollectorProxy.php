@@ -111,6 +111,22 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
     /**
      * {@inheritdoc}
      */
+    public function addChild(BlockInterface $child, BlockInterface $block, array $options)
+    {
+        $this->proxiedType->addChild($child, $block, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeChild(BlockInterface $child, BlockInterface $block, array $options)
+    {
+        $this->proxiedType->removeChild($child, $block, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(BlockView $view, BlockInterface $block, array $options)
     {
         $this->proxiedType->buildView($view, $block, $options);
@@ -141,14 +157,6 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
             // collected about the complete block tree.
             $this->dataCollector->buildFinalBlockTree($block, $view);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild)
-    {
-        $this->proxiedType->validateChild($builder, $builderChild);
     }
 
     /**

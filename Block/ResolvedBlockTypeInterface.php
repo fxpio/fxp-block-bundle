@@ -76,6 +76,24 @@ interface ResolvedBlockTypeInterface
     public function buildBlock(BlockBuilderInterface $builder, array $options);
 
     /**
+     * Action when the block adds a child.
+     *
+     * @param BlockInterface $child   The child block
+     * @param BlockInterface $block   The block
+     * @param array          $options The options
+     */
+    public function addChild(BlockInterface $child, BlockInterface $block, array $options);
+
+    /**
+     * Action when the block removes a child.
+     *
+     * @param BlockInterface $child   The child block
+     * @param BlockInterface $block   The block
+     * @param array          $options The options
+     */
+    public function removeChild(BlockInterface $child, BlockInterface $block, array $options);
+
+    /**
      * Configures a block view for the type hierarchy.
      *
      * It is called before the children of the block are built.
@@ -96,14 +114,6 @@ interface ResolvedBlockTypeInterface
      * @param array          $options The options used for the configuration.
      */
     public function finishView(BlockView $view, BlockInterface $block, array $options);
-
-    /**
-     * Validates the child when is added to the parent block.
-     *
-     * @param BlockBuilderInterface $builder
-     * @param BlockBuilderInterface $builderChild
-     */
-    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild);
 
     /**
      * Returns the configured options resolver used for this type.

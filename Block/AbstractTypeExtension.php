@@ -28,6 +28,20 @@ abstract class AbstractTypeExtension implements BlockTypeExtensionInterface
     /**
      * {@inheritdoc}
      */
+    public function addChild(BlockInterface $child, BlockInterface $block, array $options)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeChild(BlockInterface $child, BlockInterface $block, array $options)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(BlockView $view, BlockInterface $block, array $options)
     {
     }
@@ -43,13 +57,6 @@ abstract class AbstractTypeExtension implements BlockTypeExtensionInterface
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild)
     {
     }
 }

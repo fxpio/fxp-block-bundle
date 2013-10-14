@@ -149,6 +149,40 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
     /**
      * {@inheritdoc}
      */
+    public function addChild(BlockInterface $child, BlockInterface $block, array $options)
+    {
+        if (null !== $this->parent) {
+            $this->parent->addChild($child, $block, $options);
+        }
+
+        $this->innerType->addChild($child, $block, $options);
+
+        foreach ($this->typeExtensions as $extension) {
+            /* @var BlockTypeExtensionInterface $extension */
+            $extension->addChild($child, $block, $options);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeChild(BlockInterface $child, BlockInterface $block, array $options)
+    {
+        if (null !== $this->parent) {
+            $this->parent->removeChild($child, $block, $options);
+        }
+
+        $this->innerType->removeChild($child, $block, $options);
+
+        foreach ($this->typeExtensions as $extension) {
+            /* @var BlockTypeExtensionInterface $extension */
+            $extension->removeChild($child, $block, $options);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(BlockView $view, BlockInterface $block, array $options)
     {
         if (null !== $this->parent) {
@@ -177,23 +211,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         foreach ($this->typeExtensions as $extension) {
             /* @var BlockTypeExtensionInterface $extension */
             $extension->finishView($view, $block, $options);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateChild(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild)
-    {
-        if (null !== $this->parent) {
-            $this->parent->validateChild($builder, $builderChild);
-        }
-
-        $this->innerType->validateChild($builder, $builderChild);
-
-        foreach ($this->typeExtensions as $extension) {
-            /* @var BlockTypeExtensionInterface $extension */
-            $extension->validateChild($builder, $builderChild);
         }
     }
 
