@@ -95,7 +95,7 @@ class SuperblockNode extends \Twig_Node
 
         // create the block
         $compiler
-            ->raw('$this->env->getExtension(\'sonatra_block\')->createNamedBuilder(')
+            ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
             ->subcompile($this->type)
             ->raw(', ')
             ->subcompile($this->options)
@@ -118,7 +118,7 @@ class SuperblockNode extends \Twig_Node
                 ->raw("\n")
                 ->addDebugInfo($this->getNode('body'))
                 ->write('->add(')
-                ->raw('$this->env->getExtension(\'sonatra_block\')->createNamedBuilder(')
+                ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
                 ->raw('"closure"')
                 ->raw(', ')
                 ->raw('array("data" => function() {')
@@ -142,7 +142,7 @@ class SuperblockNode extends \Twig_Node
         if (null === $this->getParent()) {
             $compiler
                 // create block view
-                ->raw('->getBlock()->createView()')
+                ->raw('->createView()')
                 // renderer prefix
                 ->raw(', ')
                 ->raw('"widget"')

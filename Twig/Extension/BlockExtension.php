@@ -18,6 +18,7 @@ use Sonatra\Bundle\BlockBundle\Block\BlockRegistryInterface;
 use Sonatra\Bundle\BlockBundle\Twig\TokenParser\BlockThemeTokenParser;
 use Sonatra\Bundle\BlockBundle\Twig\TokenParser\SuperblockTokenParser;
 use Sonatra\Bundle\BlockBundle\Twig\Block\TwigRendererInterface;
+use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 
 /**
  * BlockExtension extends Twig with block capabilities.
@@ -190,33 +191,37 @@ class BlockExtension extends \Twig_Extension
     /**
      * Create and render a superblock.
      *
-     * @param string|BlockTypeInterface $type
-     * @param array                     $options
-     * @param array                     $variables    The twig variables
-     * @param boolean                   $renderAssets
+     * @param string|BlockTypeInterface|BlockInterface $type
+     * @param array                                    $options
+     * @param array                                    $variables    The twig variables
+     * @param boolean                                  $renderAssets
      *
      * @return string The html
      */
     public function createAndRenderSuperblock($type, array $options = array(), array $variables = array(), $renderAssets = true)
     {
-        $view = $this->createNamedBuilder($type, $options)->createView();
+        $view = $this->createNamed($type, $options)->createView();
 
         return $this->searchAndRenderBlockAssets($view, 'widget', $variables, $renderAssets);
     }
 
     /**
-     * Create block builder named with the 'block_name' options.
+     * Create block named with the 'block_name' options.
      *
-     * @param string|BlockTypeInterface $type
-     * @param array                     $options
+     * @param string|BlockTypeInterface|BlockInterface $type
+     * @param array                                    $options
      *
      * @return \Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface
      */
-    public function createNamedBuilder($type, array $options = array())
+    public function createNamed($type, array $options = array())
     {
+        if ($type instanceof BlockInterface) {
+            return $type;
+        }
+
         $name = $this->getBlockName($options);
 
-        return $this->factory->createNamedBuilder($name, $type, null, $options);
+        return $this->factory->createNamed($name, $type, null, $options);
     }
 
     /**
