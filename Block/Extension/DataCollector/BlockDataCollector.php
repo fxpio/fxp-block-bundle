@@ -255,11 +255,11 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
      */
     private function validateViewIds(BlockInterface $block = null, BlockView $view, &$output = null)
     {
+        $output['has_duplicate_id'] = false;
+
         if (!$block->getConfig()->getOption('display_id')) {
             return;
         }
-
-        $output['has_duplicate_id'] = false;
 
         if (in_array($view->vars['id'], $this->viewIds)) {
             $output['has_duplicate_id'] = true;
