@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Block;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -184,6 +185,15 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
      * @return self The configuration object.
      */
     public function setDataClass($dataClass);
+
+    /**
+     * Sets the initial form of the block.
+     *
+     * @param FormInterface $form The form of the block.
+     *
+     * @return self The configuration object.
+     */
+    public function setForm(FormInterface $form);
 
     /**
      * Builds and returns the block configuration.

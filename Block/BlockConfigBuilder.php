@@ -18,6 +18,7 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * A basic block configuration.
@@ -100,6 +101,11 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      * @var string
      */
     private $dataClass;
+
+    /**
+     * @var Form
+     */
+    private $form;
 
     /**
      * @var array
@@ -359,6 +365,14 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getOptions()
     {
         return $this->options;
@@ -534,6 +548,20 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
         }
 
         $this->dataClass = $dataClass;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setForm(FormInterface $form)
+    {
+        if ($this->locked) {
+            throw new BadMethodCallException('BlockConfigBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
+        }
+
+        $this->form = $form;
 
         return $this;
     }

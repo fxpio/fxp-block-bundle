@@ -199,6 +199,16 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
+     * Returns the form.
+     *
+     * @return Form|null
+     */
+    public function getForm()
+    {
+        return $this->config->getForm();
+    }
+
+    /**
      * Updates the block with default data.
      *
      * @param mixed $modelData The data formatted as expected for the underlying object

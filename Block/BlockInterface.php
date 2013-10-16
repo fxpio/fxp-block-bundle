@@ -164,6 +164,13 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     public function isRoot();
 
     /**
+     * Returns the form.
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    public function getForm();
+
+    /**
      * Creates a block.
      *
      * @param BlockView $parent The parent block

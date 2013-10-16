@@ -145,6 +145,13 @@ interface BlockConfigInterface
     public function getDataClass();
 
     /**
+     * Returns the form of the block or null if the block don't have a form.
+     *
+     * @return \Symfony\Component\Form\FormInterface The form or null.
+     */
+    public function getForm();
+
+    /**
      * Returns all options passed during the construction of the block.
      *
      * @return array The passed options.
