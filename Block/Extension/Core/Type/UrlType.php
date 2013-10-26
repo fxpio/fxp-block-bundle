@@ -33,7 +33,7 @@ class UrlType extends AbstractType
             $view->vars['value'] = $view->vars['value']($options);
         }
 
-        if (false === strpos($view->vars['value'], '://') && '/' !== substr($view->vars['value'], 0, 1)) {
+        if ('' !== $view->vars['value'] && false === strpos($view->vars['value'], '://') && '/' !== substr($view->vars['value'], 0, 1)) {
             $view->vars['value'] = 'http://' . $view->vars['value'];
         }
 
