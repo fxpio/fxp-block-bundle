@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
+use Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\LogicException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException;
@@ -219,6 +220,10 @@ class Block implements \IteratorAggregate, BlockInterface
     {
         if ($this->lockSetData) {
             throw new RuntimeException('A cycle was detected. Listeners to the PRE_SET_DATA event must not call setData(). You should call setData() on the BlockEvent object instead.');
+        }
+
+        if (null === $this->config->getDataMapper() && (is_object($modelData) || is_array($modelData))) {
+            throw new BadMethodCallException('Block::setData() method cannot be accessed if the "mapped" option of block is not true.');
         }
 
         $this->lockSetData = true;
