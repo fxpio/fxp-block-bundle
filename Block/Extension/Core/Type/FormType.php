@@ -91,8 +91,13 @@ class FormType extends AbstractType
         $form = $child->getForm();
 
         if (null !== $parentForm && null !== $form) {
-            $form->getConfig()->setAutoInitialize(false);
-            $parentForm->add($form);
+            if (!$parentForm->has($form->getName())) {
+                $form->getConfig()->setAutoInitialize(false);
+                $parentForm->add($form);
+
+            } else {
+                $child->setForm($parentForm->get($form->getName()));
+            }
         }
     }
 
