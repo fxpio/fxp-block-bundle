@@ -121,7 +121,7 @@ class SuperblockNode extends \Twig_Node
                 ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
                 ->raw('"closure"')
                 ->raw(', ')
-                ->raw('array("data" => function() {')
+                ->raw('array("data" => function () {')
                 ->write("\n")
                 ->indent()
                 ->subcompile($this->getNode('body'))

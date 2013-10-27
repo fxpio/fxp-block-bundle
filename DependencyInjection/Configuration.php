@@ -55,8 +55,8 @@ class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->defaultValue('block_div_layout.html.twig')->end()
                             ->example(array('MyBundle::block.html.twig'))
                             ->validate()
-                                ->ifTrue(function($v) { return !in_array('block_div_layout.html.twig', $v); })
-                                ->then(function($v){
+                                ->ifTrue(function ($v) { return !in_array('block_div_layout.html.twig', $v); })
+                                ->then(function ($v) {
                                     return array_merge(array('block_div_layout.html.twig'), $v);
                                 })
                             ->end()
