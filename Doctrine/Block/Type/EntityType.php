@@ -84,7 +84,7 @@ class EntityType extends AbstractType
                 'property'         => null,
                 'choice_list'      => $choiceList,
                 'route_name'       => null,
-                'route_parameters' => array('test' => function (){return 23;}),
+                'route_parameters' => array(),
                 'route_id_name'    => 'id',
         ));
 
