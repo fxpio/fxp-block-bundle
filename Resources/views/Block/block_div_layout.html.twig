@@ -62,7 +62,7 @@
 {% block choice_widget %}
 {% spaceless %}
     {% set type = type|default('choice') %}
-    {% set attr = attr|merge({'class': 'block_' ~ type ~ ' ' ~ attr.class|default('') }) %}
+    {% set attr = attr|merge({'class': 'block_' ~ type ~ ' ' ~ attr.class|default('')|trim }) %}
     {% if expanded %}
         {{ block('choice_widget_expanded') }}
     {% else %}
@@ -73,12 +73,7 @@
 
 {% block choice_widget_expanded %}
 {% spaceless %}
-    <div {{ block('widget_container_attributes') }}>
-    {% for child in block %}
-        {{ block_widget(child) }}
-        {{ block_label(child) }}
-    {% endfor %}
-    </div>
+    {{ block('choice_widget_collapsed') }}
 {% endspaceless %}
 {% endblock choice_widget_expanded %}
 
@@ -100,17 +95,19 @@
 {% block choice_widget_options %}
 {% spaceless %}
     {% for indice in choice_selections %}
+        <span class="choice-item{% if inline %} inline{% endif %}">
         {% if route_name is defined and route_name is not null %}
             {% set data_indice = data[indice]|default(data) %}
             {% set route_parameters = route_parameters|merge({(route_id_name): data_indice.id}) %}
-            <a class="choice_item{% if inline %} inline{% endif %}" href="{{ path(route_name, route_parameters) }}">{{ options[indice].label|trans({}, translation_domain) }}</a>
+            <a href="{{ path(route_name, route_parameters) }}">{{ options[indice].label|trans({}, translation_domain) }}</a>
         {% else %}
-            <span class="choice_item{% if inline %} inline{% endif %}">{{ options[indice].label|trans({}, translation_domain) }}</span>
+            <span>{{ options[indice].label|trans({}, translation_domain) }}</span>
         {% endif %}
+        </span>
     {% endfor %}
 
     {% if choice_selections|length == 0 %}
-        <span class="choice_empty">{{ empty_value|trans({}, translation_domain) }}</span>
+        <span class="choice-empty">{{ empty_value|trans({}, translation_domain) }}</span>
     {% endif %}
 {% endspaceless %}
 {% endblock choice_widget_options %}
