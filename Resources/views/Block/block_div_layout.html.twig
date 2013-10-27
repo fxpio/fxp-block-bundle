@@ -366,14 +366,14 @@
 
 
 {% block form_start_widget %}
-    {% if block_form.parent is empty and 'button' not in block_form.vars.block_prefixes %}
+    {% if block_form.parent is empty and block_form.children|length > 0 and 'button' not in block_form.vars.block_prefixes %}
         {{ form_start(block_form) }}
     {% endif %}
 {% endblock form_start_widget %}
 
 
 {% block form_end_widget %}
-    {% if block_form.parent is empty and 'button' not in block_form.vars.block_prefixes %}
+    {% if block_form.parent is empty and block_form.children|length > 0 and 'button' not in block_form.vars.block_prefixes %}
         {{ form_end(block_form) }}
     {% endif %}
 {% endblock form_end_widget %}
