@@ -24,12 +24,8 @@ class RepeatedType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(BlockBuilderInterface $builder, array $options)
+    public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
-        // Overwrite required option for child fields
-        $options['first_options']['required']  = $options['required'];
-        $options['second_options']['required'] = $options['required'];
-
         $builder
             ->addViewTransformer(new ValueToDuplicatesTransformer(array(
                 $options['first_name'],
