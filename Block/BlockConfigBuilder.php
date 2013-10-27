@@ -533,6 +533,10 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
             throw new BadMethodCallException('BlockConfigBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
         }
 
+        if (null !== $this->getForm()) {
+            $this->getForm()->setData($data);
+        }
+
         $this->data = $data;
 
         return $this;
@@ -545,6 +549,10 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     {
         if ($this->locked) {
             throw new BadMethodCallException('BlockConfigBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
+        }
+
+        if (null !== $this->getForm()) {
+            $this->getForm()->setDataClass($dataClass);
         }
 
         $this->dataClass = $dataClass;

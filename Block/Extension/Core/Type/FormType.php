@@ -18,7 +18,6 @@ use Sonatra\Bundle\BlockBundle\Block\BlockView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\OptionsResolver\Options;
-use Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataMapper\WrapperMapper;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -50,6 +49,7 @@ class FormType extends AbstractType
      * Constructor.
      *
      * @param FormFactoryInterface $formFactory
+     * @param string               $type
      */
     public function __construct(FormFactoryInterface $formFactory, $type = 'form')
     {
@@ -65,21 +65,21 @@ class FormType extends AbstractType
     public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
         $name = isset($options['block_name']) ? $options['block_name'] : $builder->getName();
-        $data = $builder->getData();
         $formOptions = array();
-
-        $builder->setData(null);
-        $builder->setDataClass(null);
-        $builder->setDataMapper(new WrapperMapper());
-        $builder->setInheritData(false);
-        $builder->setEmptyData(null);
-        $builder->setMapped(false);
 
         foreach ($this->formOptions as $formOption) {
             $formOptions[$formOption] = $options[$formOption];
         }
 
-        $builder->setForm($this->formFactory->createNamed($name, $this->type, $data, $formOptions));
+        if (null !== $builder->getData()) {
+            $formOptions['data'] = $builder->getData();
+        }
+
+        if (null !== $builder->getDataClass()) {
+            $formOptions['data_class'] = $builder->getDataClass();
+        }
+
+        $builder->setForm($this->formFactory->createNamed($name, $this->type, null, $formOptions));
     }
 
     /**
@@ -114,8 +114,18 @@ class FormType extends AbstractType
      */
     public function buildView(BlockView $view, BlockInterface $block, array $options)
     {
+        if ('form' !== $this->type) {
+            $pos = 0;
+
+            if (isset($view->vars['block_prefixes'][0]) && 'block' === $view->vars['block_prefixes'][0]) {
+                $pos = 1;
+            }
+
+            array_splice($view->vars['block_prefixes'], $pos, 0, 'form');
+        }
+
         $view->vars = array_replace($view->vars, array(
-            'block_form' => $block->getForm()->createView(),
+            'block_form' => $this->createFormView($view, $block),
         ));
     }
 
@@ -159,6 +169,43 @@ class FormType extends AbstractType
 
         if (null !== $block->getParent()) {
             return $this->getParentForm($block->getParent());
+        }
+
+        return null;
+    }
+
+    /**
+     * Create form view.
+     *
+     * @param BlockView      $view
+     * @param BlockInterface $block
+     */
+    protected function createFormView(BlockView $view, BlockInterface $block)
+    {
+        $parentForm = $this->getParentFormView($view);
+
+        if (null !== $parentForm) {
+            return $parentForm->vars['form']->children[$block->getName()];
+        }
+
+        return $block->getForm()->createView($parentForm);
+    }
+
+    /**
+     * Get the parent form view.
+     *
+     * @param BlockView $view
+     *
+     * @return BlockView
+     */
+    protected function getParentFormView(BlockView $view)
+    {
+        if (isset($view->vars['block_form']) && null !== $view->vars['block_form']) {
+            return $view->vars['block_form'];
+        }
+
+        if (null !== $view->parent) {
+            return $this->getParentFormView($view->parent);
         }
 
         return null;

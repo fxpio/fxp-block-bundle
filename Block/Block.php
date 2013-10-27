@@ -222,6 +222,10 @@ class Block implements \IteratorAggregate, BlockInterface
             throw new RuntimeException('A cycle was detected. Listeners to the PRE_SET_DATA event must not call setData(). You should call setData() on the BlockEvent object instead.');
         }
 
+        if (null !== $this->getForm()) {
+            $this->getForm()->setData($modelData);
+        }
+
         if (null === $this->config->getDataMapper() && (is_object($modelData) || is_array($modelData))) {
             throw new BadMethodCallException('Block::setData() method cannot be accessed if the "mapped" option of block is not true.');
         }
