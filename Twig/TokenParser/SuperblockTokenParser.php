@@ -51,19 +51,19 @@ class SuperblockTokenParser extends \Twig_TokenParser
         $variables = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
         $assets = true;
         $skip = false;
-        $tagNotSupported = 'All sblock form tag does not supported (current: "%s"). Constructs your "sblock form" directly in code.';
+        $tagNotSupported = 'The sblock form tag does not supported. Constructs your "block form" directly in code, otherwise it is impossible to recover the form in your code.';
 
         // {% sblock_checkbox ... :%}
         if (0 === strpos($this->tag, 'sblock_')) {
             $type = new \Twig_Node_Expression_Constant(substr($this->tag, 7), $lineno);
 
-            if (0 === strpos($this->tag, 'sblock_form')) {
+            if ('sblock_form' === $this->tag) {
                 throw new \Twig_Error_Syntax(sprintf($tagNotSupported, $this->tag));
             }
 
         // {% sblock 'checkbox', ... :%}
         } else {
-            if ($stream->test(\Twig_Token::STRING_TYPE) && 0 === strpos($stream->getCurrent()->getValue(), 'form')) {
+            if ($stream->test(\Twig_Token::STRING_TYPE) && 'form' === strpos($stream->getCurrent()->getValue())) {
                 throw new \Twig_Error_Syntax(sprintf($tagNotSupported, $stream->getCurrent()->getValue()));
             }
 
