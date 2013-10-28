@@ -61,9 +61,9 @@ class SuperblockTokenParser extends \Twig_TokenParser
                 throw new \Twig_Error_Syntax(sprintf($tagNotSupported, $this->tag));
             }
 
-        // {% sblock 'checkbox', ... :%}
+        // {% sblock 'checkbox' ... :%}
         } else {
-            if ($stream->test(\Twig_Token::STRING_TYPE) && 'form' === strpos($stream->getCurrent()->getValue())) {
+            if ($stream->test(\Twig_Token::STRING_TYPE) && 'form' === $stream->getCurrent()->getValue()) {
                 throw new \Twig_Error_Syntax(sprintf($tagNotSupported, $stream->getCurrent()->getValue()));
             }
 
