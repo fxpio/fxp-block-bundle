@@ -43,6 +43,7 @@ class BlockDataExtractor implements BlockDataExtractorInterface
     public function extractConfiguration(BlockInterface $block)
     {
         $data = array(
+            'id' => $this->buildId($block),
             'type' => $block->getConfig()->getType()->getName(),
             'type_class' => get_class($block->getConfig()->getType()->getInnerType()),
             'passed_options' => array(),
@@ -99,5 +100,17 @@ class BlockDataExtractor implements BlockDataExtractorInterface
         ksort($data['view_vars']);
 
         return $data;
+    }
+
+    /**
+     * Recursively builds an HTML ID for a block.
+     *
+     * @param BlockInterface $block The block
+     *
+     * @return string The HTML ID
+     */
+    private function buildId(BlockInterface $block)
+    {
+        return $block->getName();
     }
 }

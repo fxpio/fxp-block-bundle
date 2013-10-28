@@ -213,7 +213,7 @@
 
 {% macro block_tree_entry(hash, data) %}
     <li>
-        <a href="#details_{{ hash }}"{% if data.has_duplicate_id %} class="status-red"{% endif %}>{{ data.view_vars.name }}</a>
+        <a href="#details_{{ hash }}"{% if data.has_duplicate_id %} class="status-red"{% endif %}>{{ data.id }}</a>
 
         {% if data.children|length > 0 %}
             <ul>
@@ -226,7 +226,7 @@
 {% endmacro %}
 
 {% macro block_tree_details(hash, data) %}
-    {% set duplicate_id_text = 'The Id "'~ data.view_vars.name ~ '" is already used in the same render' %}
+    {% set duplicate_id_text = 'The Id "'~ data.id ~ '" is already used in the same render' %}
 
     <div class="tree-details" id="details_{{ hash }}">
         <h2>
@@ -320,6 +320,7 @@
         </table>
         {% endif %}
 
+        {% if data.view_vars is defined %}
         <h3>View Variables</h3>
 
         <table>
@@ -334,6 +335,7 @@
             </tr>
             {% endfor %}
         </table>
+        {% endif %}
     </div>
 
     {% for childHash, childData in data.children %}
