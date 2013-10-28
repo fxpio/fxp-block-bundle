@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Block;
 
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
+use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -69,9 +70,7 @@ class BlockFactory implements BlockFactoryInterface
      */
     public function createBuilder($type = 'block', $data = null, array $options = array())
     {
-        $name = function_exists('openssl_random_pseudo_bytes')
-            ? bin2hex(openssl_random_pseudo_bytes(5))
-            : uniqid();
+        $name = BlockUtil::createUniqueName();
 
         return $this->createNamedBuilder($name, $type, $data, $options);
     }

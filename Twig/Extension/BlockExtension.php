@@ -19,6 +19,7 @@ use Sonatra\Bundle\BlockBundle\Twig\TokenParser\BlockThemeTokenParser;
 use Sonatra\Bundle\BlockBundle\Twig\TokenParser\SuperblockTokenParser;
 use Sonatra\Bundle\BlockBundle\Twig\Block\TwigRendererInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
+use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 
 /**
  * BlockExtension extends Twig with block capabilities.
@@ -371,6 +372,6 @@ class BlockExtension extends \Twig_Extension
      */
     protected function getBlockName(array $options = array())
     {
-        return isset($options['block_name']) ? $options['block_name'] : null;
+        return isset($options['block_name']) ? $options['block_name'] : BlockUtil::createUniqueName();
     }
 }

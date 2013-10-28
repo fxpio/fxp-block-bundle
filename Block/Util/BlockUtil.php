@@ -206,4 +206,17 @@ class BlockUtil
         // not considered to be empty, ever.
         return null === $data || '' === $data;
     }
+
+    /**
+     * Create a unique block name.
+     * Uses the open ssl random function if presents, otherwise the uniqid function.
+     *
+     * @return string
+     */
+    public static function createUniqueName()
+    {
+        return function_exists('openssl_random_pseudo_bytes')
+            ? bin2hex(openssl_random_pseudo_bytes(5))
+            : uniqid();
+    }
 }
