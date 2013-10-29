@@ -98,7 +98,7 @@ class BlockType extends AbstractType
                 'block'               => $view,
                 'id'                  => $id,
                 'name'                => $name,
-                'display_id'          => $options['display_id'],
+                'render_id'           => $options['render_id'],
                 'value'               => $block->getViewData(),
                 'data'                => $block->getNormData(),
                 'label'               => $options['label'],
@@ -155,7 +155,7 @@ class BlockType extends AbstractType
 
         $resolver->setDefaults(array(
                 'block_name'         => null,
-                'display_id'         => false,
+                'render_id'          => false,
                 'chained_block'      => false,
                 'data_class'         => $dataClass,
                 'empty_data'         => $emptyData,

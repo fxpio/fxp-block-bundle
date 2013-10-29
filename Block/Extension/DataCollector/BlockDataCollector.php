@@ -257,7 +257,7 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
     {
         $output['has_duplicate_id'] = false;
 
-        if (!$block->getConfig()->getOption('display_id')) {
+        if (!$block->getConfig()->getOption('render_id')) {
             return;
         }
 
