@@ -36,9 +36,6 @@
 {% block block_widget_compound %}
 {% spaceless %}
     <div {{ block('widget_container_attributes') }}>
-        {% if block.parent is empty %}
-
-        {% endif %}
         {{ block('block_rows') }}
     </div>
 {% endspaceless %}
@@ -47,6 +44,7 @@
 {% block collection_widget %}
 {% spaceless %}
     {% set type = type|default('collection') %}
+    {% set attr = attr|merge({'class': ('block_' ~ type ~ ' ' ~ attr.class|default(''))|trim }) %}
     {{ block('block_widget') }}
 {% endspaceless %}
 {% endblock collection_widget %}
@@ -62,7 +60,7 @@
 {% block choice_widget %}
 {% spaceless %}
     {% set type = type|default('choice') %}
-    {% set attr = attr|merge({'class': 'block_' ~ type ~ ' ' ~ attr.class|default('')|trim }) %}
+    {% set attr = attr|merge({'class': ('block_' ~ type ~ ' ' ~ attr.class|default(''))|trim }) %}
     {% if expanded %}
         {{ block('choice_widget_expanded') }}
     {% else %}
@@ -274,10 +272,16 @@
 
 {% block block_row %}
 {% spaceless %}
+    {% if block.parent.vars.row|default(false) %}
     <div>
-        {{ block_label(block) }}
+    {% endif %}
+        {% if block.parent.vars.row|default(false) and block.parent.vars.row_label|default(false) %}
+            {{ block_label(block) }}
+        {% endif %}
         {{ block_widget(block) }}
+    {% if block.parent.vars.row|default(false) %}
     </div>
+    {% endif %}
 {% endspaceless %}
 {% endblock block_row %}
 
