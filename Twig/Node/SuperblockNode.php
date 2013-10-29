@@ -93,6 +93,16 @@ class SuperblockNode extends \Twig_Node
             $compiler->write('->add(');
         }
 
+        // checks if the type is an block view
+        if ($this->type instanceof \Twig_Node_Expression_Name) {
+            $compiler
+                ->subcompile($this->type)
+                ->raw(' instanceof \Sonatra\Bundle\BlockBundle\Block\BlockView ? ')
+                ->subcompile($this->type)
+                ->raw(' : ')
+            ;
+        }
+
         // create the block
         $compiler
             ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')

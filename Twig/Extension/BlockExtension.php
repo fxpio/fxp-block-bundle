@@ -192,16 +192,16 @@ class BlockExtension extends \Twig_Extension
     /**
      * Create and render a superblock.
      *
-     * @param string|BlockTypeInterface|BlockInterface $type
-     * @param array                                    $options
-     * @param array                                    $variables    The twig variables
-     * @param boolean                                  $renderAssets
+     * @param string|BlockTypeInterface|BlockInterface|BlockView $type
+     * @param array                                              $options
+     * @param array                                              $variables    The twig variables
+     * @param boolean                                            $renderAssets
      *
      * @return string The html
      */
     public function createAndRenderSuperblock($type, array $options = array(), array $variables = array(), $renderAssets = true)
     {
-        $view = $this->createNamed($type, $options)->createView();
+        $view = $type instanceof BlockView ? $type : $this->createNamed($type, $options)->createView();
 
         return $this->searchAndRenderBlockAssets($view, 'widget', $variables, $renderAssets);
     }
