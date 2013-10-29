@@ -43,6 +43,10 @@ services:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TwigType'
         tags: [ { name: sonatra_block.type, alias: 'twig' } ]
 
+    sonatra_block.type.raw:
+        class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\RawType'
+        tags: [ { name: sonatra_block.type, alias: raw } ]
+
     sonatra_block.type.object:
         class: 'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ObjectType'
         tags: [ { name: sonatra_block.type, alias: object } ]

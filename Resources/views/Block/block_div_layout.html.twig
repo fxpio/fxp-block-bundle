@@ -41,6 +41,12 @@
 {% endspaceless %}
 {% endblock block_widget_compound %}
 
+{% block raw_widget %}
+{% spaceless %}
+    {{ value|raw }}
+{% endspaceless %}
+{% endblock raw_widget %}
+
 {% block collection_widget %}
 {% spaceless %}
     {% set type = type|default('collection') %}
