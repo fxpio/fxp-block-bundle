@@ -255,12 +255,14 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
             return;
         }
 
-        if (in_array($view->vars['id'], $this->viewIds)) {
+        $id = $view->vars['id'];
+        $hash = spl_object_hash($block);
+
+        if (isset($this->viewIds[$id]) && $hash !== $this->viewIds[$id]) {
             $output['has_duplicate_id'] = true;
             $this->data['has_error'] = true;
         }
 
-        $this->viewIds[] = $view->vars['id'];
-        array_unique($this->viewIds);
+        $this->viewIds[$id] = $hash;
     }
 }
