@@ -372,6 +372,6 @@ class BlockExtension extends \Twig_Extension
      */
     protected function getBlockName(array $options = array())
     {
-        return isset($options['block_name']) ? $options['block_name'] : BlockUtil::createUniqueName();
+        return isset($options['block_name']) ? $options['block_name'] : (isset($options['id']) ? $options['id'] : BlockUtil::createUniqueName());
     }
 }
