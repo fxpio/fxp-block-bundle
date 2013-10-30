@@ -88,6 +88,7 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
+        $this->data['size'] = count($this->blocksByView);
     }
 
     /**
@@ -198,8 +199,6 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
      */
     private function recursiveBuildFinalBlockTree(BlockInterface $block = null, BlockView $view, &$output = null)
     {
-        ++$this->data['size'];
-
         $viewHash = spl_object_hash($view);
         $blockHash = null;
 
