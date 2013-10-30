@@ -43,7 +43,12 @@
 
 {% block raw_widget %}
 {% spaceless %}
-    {{ value|raw }}
+    {% if escape %}
+        {{ value }}
+    {% else %}
+        {{ value|raw }}
+    {% endif %}
+    {{ block('block_rows') }}
 {% endspaceless %}
 {% endblock raw_widget %}
 

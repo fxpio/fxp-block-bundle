@@ -12,6 +12,8 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractType;
+use Sonatra\Bundle\BlockBundle\Block\BlockView;
+use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -22,10 +24,18 @@ class RawType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function buildView(BlockView $view, BlockInterface $block, array $options)
+    {
+        $view->vars['escape'] = $options['escape'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'compound' => false,
+            'escape' => true,
         ));
     }
 
