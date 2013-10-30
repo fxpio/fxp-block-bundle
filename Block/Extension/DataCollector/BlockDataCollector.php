@@ -68,11 +68,6 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
     private $viewIds;
 
     /**
-     * @var array
-     */
-    private $viewDuplicateIds;
-
-    /**
      * Constructor.
      *
      * @param BlockDataExtractorInterface $dataExtractor
@@ -85,7 +80,6 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
             'has_error' => false,
         );
         $this->viewIds = array();
-        $this->viewDuplicateIds = array();
     }
 
     /**
