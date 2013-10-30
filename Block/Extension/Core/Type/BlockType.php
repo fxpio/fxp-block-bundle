@@ -157,6 +157,7 @@ class BlockType extends AbstractType
 
         $resolver->setDefaults(array(
                 'block_name'         => null,
+                'id'                 => null,
                 'render_id'          => false,
                 'row'                => false,
                 'row_label'          => false,
@@ -176,6 +177,16 @@ class BlockType extends AbstractType
         $resolver->setAllowedTypes(array(
                 'attr'       => 'array',
                 'label_attr' => 'array',
+        ));
+
+        $resolver->setNormalizers(array(
+            'block_name' => function (Options $options, $value = null) {
+                if (isset($options['id'])) {
+                    return $options['id'];
+                }
+
+                return $value;
+            },
         ));
     }
 
