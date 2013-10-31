@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class RawType extends AbstractType
+class OutputType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -44,6 +44,6 @@ class RawType extends AbstractType
      */
     public function getName()
     {
-        return 'raw';
+        return 'output';
     }
 }

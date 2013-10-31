@@ -41,7 +41,7 @@
 {% endspaceless %}
 {% endblock block_widget_compound %}
 
-{% block raw_widget %}
+{% block output_widget %}
 {% spaceless %}
     {% if escape %}
         {{ value }}
@@ -50,7 +50,7 @@
     {% endif %}
     {{ block('block_rows') }}
 {% endspaceless %}
-{% endblock raw_widget %}
+{% endblock output_widget %}
 
 {% block collection_widget %}
 {% spaceless %}
