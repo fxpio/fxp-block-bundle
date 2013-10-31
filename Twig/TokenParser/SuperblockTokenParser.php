@@ -111,19 +111,27 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
         if ($stream->test(\Twig_Token::NAME_TYPE, 'with')) {
             $stream->next();
+
             // {% sblock_checkbox, {data:true} with {foo:'bar'} :%}
-            $variables = $this->parser->getExpressionParser()->parseExpression();
+            do {
+                if ($stream->test(\Twig_Token::NAME_TYPE, 'noassets')) {
+                    $stream->next();
+                    $assets = false;
 
-            // {% sblock_checkbox, {data:true} with {foo:'bar'}, noassets :%}
-            if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
-                $stream->next();
-            }
+                } elseif ($stream->test(\Twig_Token::NAME_TYPE) || $stream->test(\Twig_Token::PUNCTUATION_TYPE, '{')) {
+                    $variables = $this->parser->getExpressionParser()->parseExpression();
+                }
 
-            // or {% sblock_checkbox, {data:true} with noassets :%}
-            if ($stream->test(\Twig_Token::NAME_TYPE, 'noassets')) {
-                $stream->next();
-                $assets = false;
-            }
+                if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
+                    $stream->next();
+
+                } elseif (!$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
+                        && !$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
+                    throw new \Twig_Error_Syntax("The parameters after 'with' must be separated by commas", $stream->getCurrent()->getLine(), $stream->getFilename());
+                }
+
+            } while (!$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
+                    && !$stream->test(\Twig_Token::BLOCK_END_TYPE));
         }
 
         // end schortcut
