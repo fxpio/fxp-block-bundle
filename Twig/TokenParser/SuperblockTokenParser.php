@@ -12,7 +12,9 @@
 namespace Sonatra\Bundle\BlockBundle\Twig\TokenParser;
 
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidConfigurationException;
-use Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockNode;
+use Sonatra\Bundle\BlockBundle\Twig\Node\Superblock;
+use Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockReference;
+use Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockClosure;
 
 /**
  * Token Parser for the 'sblock' tag.
@@ -132,34 +134,50 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        $superblock = new SuperblockNode($type, $options, $variables, $lineno, $this->getTag(), $assets);
+        $superblock = new Superblock($type, $options, $lineno, $this->getTag());
+        $name = $superblock->getAttribute('name');
+        $reference = new SuperblockReference($name, $variables, $lineno, $this->getTag(), $assets);
+
+        $this->parser->setBlock($name, $superblock);
+        $this->parser->pushLocalScope();
+        $this->parser->pushBlockStack($name);
 
         if ($skip) {
-            return $superblock;
+            $this->parser->popBlockStack();
+            $this->parser->popLocalScope();
+
+            return $reference;
         }
 
         // body content
+        $sBlocks = new \Twig_Node(array(), array(), $lineno);
         $body = $this->parser->subparse(array($this, 'decideBlockEnd'), true);
-        $bodyHasText = $body instanceof \Twig_Node_Text && '' !== trim($body->getAttribute('data'));
+        $addBody = false;
+
+        if (0 === count($body)) {
+            $body = new \Twig_Node(array($body), array(), $lineno);
+        }
 
         foreach ($body->getIterator() as $i => $node) {
-            if ($node instanceof SuperblockNode) {
-                $superblock->addChild($node);
+            if ($node instanceof SuperblockReference) {
+                $node->setAttribute('is_master', false);
+                $sBlocks->setNode($i, $node);
                 $body->removeNode($i);
+
+            } elseif ($node instanceof \Twig_Node_Set) {
+                $sBlocks->setNode($i, $node);
 
             } elseif ($node->hasNode('expr')
                     && $node->getNode('expr') instanceof \Twig_Node_Expression_Function
                     && $node->getNode('expr')->hasAttribute('name')
                     && ($this->tag === $node->getNode('expr')->getAttribute('name')
-                            || 0 === strpos($node->getNode('expr')->getAttribute('name'), 'sblock_'))) {
-                $superblock->addChild($this->convertTwigExpressionToNode($node->getNode('expr')));
+                            || 0 === strpos($node->getNode('expr')->getAttribute('name'), 'sblock'))) {
+                $sBlocks->setNode($i, $this->convertTwigExpressionToNode($node->getNode('expr')));
                 $body->removeNode($i);
             }
         }
 
-        if (count($body) > 0 || $bodyHasText) {
-            $addBody = $bodyHasText;
-
+        if (count($body) > 0) {
             foreach ($body as $node) {
                 if (!$node instanceof \Twig_Node_Text
                         || ($node instanceof \Twig_Node_Text && '' !== trim($node->getAttribute('data')))) {
@@ -167,15 +185,20 @@ class SuperblockTokenParser extends \Twig_TokenParser
                     break;
                 }
             }
+        }
 
-            if ($addBody) {
-                $superblock->setNode('body', $body);
-            }
+        $superblock->setNode('sblocks', $sBlocks);
+
+        if ($addBody) {
+            $superblock->setNode('body', new SuperblockClosure($body, $lineno));
         }
 
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        return $superblock;
+        $this->parser->popBlockStack();
+        $this->parser->popLocalScope();
+
+        return $reference;
     }
 
     /**
@@ -201,11 +224,11 @@ class SuperblockTokenParser extends \Twig_TokenParser
     }
 
     /**
-     * Convert the twig expression function to SuperblockNode.
+     * Convert the twig expression function to Superblock.
      *
      * @param \Twig_Node $node
      *
-     * @return \Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockNode
+     * @return \Sonatra\Bundle\BlockBundle\Twig\Node\Superblock
      *
      * @throws InvalidConfigurationException When the block type name is not present
      */
@@ -247,6 +270,14 @@ class SuperblockTokenParser extends \Twig_TokenParser
             $cRenderAssets = $args->getNode($pos);
         }
 
-        return new SuperblockNode($cType, $cOptions, $cVariables, $node->getLine(), $node->getNodeTag(), $cRenderAssets);
+        $superblock = new Superblock($cType, $cOptions, $node->getLine(), $node->getNodeTag());
+        $name = $superblock->getAttribute('name');
+
+        $this->parser->setBlock($name, $superblock);
+
+        $reference = new SuperblockReference($name, $cVariables, $node->getLine(), $node->getNodeTag(), $cRenderAssets);
+        $reference->setAttribute('is_master', false);
+
+        return $reference;
     }
 }

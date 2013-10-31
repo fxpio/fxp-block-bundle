@@ -250,6 +250,7 @@
 {% block closure_widget %}
 {% spaceless %}
     {{ value|raw_closure }}
+    {{ block('block_rows') }}
 {% endspaceless %}
 {% endblock closure_widget %}
 

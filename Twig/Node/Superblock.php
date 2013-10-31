@@ -11,62 +11,29 @@
 
 namespace Sonatra\Bundle\BlockBundle\Twig\Node;
 
+use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 /**
+ * Represents a sblock node.
+ *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class SuperblockNode extends \Twig_Node
+class Superblock extends \Twig_Node_Block
 {
-    /**
-     * @var \Twig_Node_Expression
-     */
-    protected $type;
-
-    /**
-     * @var \Twig_Node_Expression
-     */
-    protected $options;
-
-    /**
-     * @var \Twig_Node_Expression
-     */
-    protected $variables;
-
-    /**
-     * @var boolean
-     */
-    protected $assets;
-
-    /**
-     * @var SuperblockNode
-     */
-    protected $parent;
-
-    /**
-     * @var SuperblockNode[]
-     */
-    protected $children;
-
     /**
      * Constructor.
      *
      * @param \Twig_Node_Expression $type
      * @param \Twig_Node_Expression $options
-     * @param \Twig_Node_Expression $variables
      * @param int                   $lineno
      * @param string                $tag
-     * @param boolean               $assets
      */
     public function __construct(\Twig_Node_Expression $type,
-            \Twig_Node_Expression $options, \Twig_Node_Expression $variables,
-            $lineno, $tag = null, $assets = true)
+            \Twig_Node_Expression $options, $lineno, $tag = null)
     {
-        $this->type = $type;
-        $this->options = $options;
-        $this->variables = $variables;
-        $this->children = array();
-        $this->assets = $assets;
+        parent::__construct(BlockUtil::createUniqueName(), new \Twig_Node(array()), $lineno, $tag);
 
-        parent::__construct(array(), array(), $lineno, $tag);
+        $this->setAttribute('type', $type);
+        $this->setAttribute('options', $options);
     }
 
     /**
@@ -76,7 +43,49 @@ class SuperblockNode extends \Twig_Node
      */
     public function compile(\Twig_Compiler $compiler)
     {
-        $compiler->addDebugInfo($this);
+        $compiler
+            ->addDebugInfo($this)
+            ->write(sprintf("public function block_%s(\$context, array \$blocks = array())\n", $this->getAttribute('name')), "{\n")
+            ->indent()
+            ->write('$block = ')
+        ;
+
+        // checks if the type is an block view
+        if ($this->getAttribute('type') instanceof \Twig_Node_Expression_Name) {
+            $compiler
+                ->subcompile($this->getAttribute('type'))
+                ->raw(' instanceof \Sonatra\Bundle\BlockBundle\Block\BlockView ? ')
+                ->subcompile($this->getAttribute('type'))
+                ->raw(' : ')
+            ;
+        }
+
+        // create the block
+        $compiler
+            ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
+            ->subcompile($this->getAttribute('type'))
+            ->raw(', ')
+            ->subcompile($this->getAttribute('options'))
+            ->raw(')')
+            ->raw(";\n")
+        ;
+
+        if ($this->hasNode('sblocks')) {
+            $compiler->subcompile($this->getNode('sblocks'));
+        }
+
+        if ($this->hasNode('body')) {
+            $compiler->subcompile($this->getNode('body'));
+        }
+
+        $compiler
+            ->write('return $block;')
+            ->raw("\n")
+            ->outdent()
+            ->write("}\n\n")
+        ;
+
+        /*$compiler->addDebugInfo($this);
 
         // renderer start
         if (null === $this->getParent()) {
@@ -94,11 +103,11 @@ class SuperblockNode extends \Twig_Node
         }
 
         // checks if the type is an block view
-        if ($this->type instanceof \Twig_Node_Expression_Name) {
+        if ($this->getAttribute('type') instanceof \Twig_Node_Expression_Name) {
             $compiler
-                ->subcompile($this->type)
+                ->subcompile($this->getAttribute('type'))
                 ->raw(' instanceof \Sonatra\Bundle\BlockBundle\Block\BlockView ? ')
-                ->subcompile($this->type)
+                ->subcompile($this->getAttribute('type'))
                 ->raw(' : ')
             ;
         }
@@ -106,21 +115,13 @@ class SuperblockNode extends \Twig_Node
         // create the block
         $compiler
             ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
-            ->subcompile($this->type)
+            ->subcompile($this->getAttribute('type'))
             ->raw(', ')
-            ->subcompile($this->options)
+            ->subcompile($this->getAttribute('options'))
             ->raw(')')
         ;
 
         $compiler->indent();
-
-        // children of block
-        foreach ($this->children as $i => $child) {
-            $compiler
-                ->raw("\n")
-                ->subcompile($child)
-            ;
-        }
 
         // body of block
         if ($this->hasNode('body')) {
@@ -135,7 +136,7 @@ class SuperblockNode extends \Twig_Node
                 ->write("\n")
                 ->indent()
                 ->write('$context = array_merge($context, ')
-                ->subcompile($this->variables)
+                ->subcompile($this->getAttribute('variables'))
                 ->raw(');')
                 ->write("\n")
                 ->subcompile($this->getNode('body'))
@@ -147,6 +148,14 @@ class SuperblockNode extends \Twig_Node
                 ->outdent()
                 ->write('')
                 ->indent()
+            ;
+        }
+
+        // children of block
+        foreach ($this->children as $i => $child) {
+            $compiler
+                ->raw("\n")
+                ->subcompile($child)
             ;
         }
 
@@ -162,9 +171,9 @@ class SuperblockNode extends \Twig_Node
                 ->raw('"widget"')
                 ->raw(', ')
                 // variables
-                ->subcompile($this->variables)
+                ->subcompile($this->getAttribute('variables'))
                 // assets
-                ->raw(', ' . ($this->assets ? 'true' : 'false'))
+                ->raw(', ' . ($this->getAttribute('assets') ? 'true' : 'false'))
                 ->raw(")\n")
                 ->outdent()
                 ->write(";\n")
@@ -172,37 +181,6 @@ class SuperblockNode extends \Twig_Node
 
         } else {
             $compiler->raw(")");
-        }
-    }
-
-    /**
-     * Set parent node.
-     *
-     * @param SuperblockNode $parent
-     */
-    public function setParent(SuperblockNode $parent)
-    {
-        $this->parent = $parent;
-    }
-
-    /**
-     * Get parent node.
-     *
-     * @return \Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockNode
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * Add child node.
-     *
-     * @param SuperblockNode $child
-     */
-    public function addChild(SuperblockNode $child)
-    {
-        $child->setParent($this);
-        $this->children[] = $child;
+        }*/
     }
 }
