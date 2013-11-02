@@ -160,7 +160,6 @@ class SuperblockTokenParser extends \Twig_TokenParser
         // body content
         $sBlocks = new \Twig_Node(array(), array(), $lineno);
         $body = $this->parser->subparse(array($this, 'decideBlockEnd'), true);
-        $addBody = false;
 
         if (0 === count($body)) {
             $body = new \Twig_Node(array($body), array(), $lineno);
@@ -170,7 +169,6 @@ class SuperblockTokenParser extends \Twig_TokenParser
             if ($node instanceof SuperblockReference) {
                 $node->setAttribute('is_master', false);
                 $sBlocks->setNode($i, $node);
-                $body->removeNode($i);
 
             } elseif ($node instanceof \Twig_Node_Set) {
                 $sBlocks->setNode($i, $node);
@@ -180,26 +178,16 @@ class SuperblockTokenParser extends \Twig_TokenParser
                     && $node->getNode('expr')->hasAttribute('name')
                     && ($this->tag === $node->getNode('expr')->getAttribute('name')
                             || 0 === strpos($node->getNode('expr')->getAttribute('name'), 'sblock'))) {
-                $sBlocks->setNode($i, $this->convertTwigExpressionToNode($node->getNode('expr')));
-                $body->removeNode($i);
-            }
-        }
+                $subReference = $this->convertTwigExpressionToNode($node->getNode('expr'));
+                $subReference->setAttribute('is_master', false);
+                $sBlocks->setNode($i, $subReference);
 
-        if (count($body) > 0) {
-            foreach ($body as $node) {
-                if (!$node instanceof \Twig_Node_Text
-                        || ($node instanceof \Twig_Node_Text && '' !== trim($node->getAttribute('data')))) {
-                    $addBody = true;
-                    break;
-                }
+            } else {
+                $sBlocks->setNode($i, $this->convertTwigNodeToClosure($node, $i));
             }
         }
 
         $superblock->setNode('sblocks', $sBlocks);
-
-        if ($addBody) {
-            $superblock->setNode('body', new SuperblockClosure($body, $lineno));
-        }
 
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
@@ -283,9 +271,18 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
         $this->parser->setBlock($name, $superblock);
 
-        $reference = new SuperblockReference($name, $cVariables, $node->getLine(), $node->getNodeTag(), $cRenderAssets);
-        $reference->setAttribute('is_master', false);
+        return new SuperblockReference($name, $cVariables, $node->getLine(), $node->getNodeTag(), $cRenderAssets);
+    }
 
-        return $reference;
+    /**
+     * Convert the twig node Superblock closure.
+     *
+     * @param \Twig_Node $node
+     *
+     * @return \Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockClosure
+     */
+    protected function convertTwigNodeToClosure(\Twig_Node $node, $name)
+    {
+        return new SuperblockClosure($name, $node, $node->getLine());
     }
 }

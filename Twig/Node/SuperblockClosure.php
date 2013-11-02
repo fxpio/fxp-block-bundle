@@ -11,8 +11,6 @@
 
 namespace Sonatra\Bundle\BlockBundle\Twig\Node;
 
-use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
-
 /**
  * Represents a sblock closure node.
  *
@@ -23,13 +21,16 @@ class SuperblockClosure extends \Twig_Node implements \Twig_NodeOutputInterface
     /**
      * Constructor.
      *
+     * @param string              $name
      * @param \Twig_NodeInterface $body
      * @param integer             $lineno
      * @param string              $tag
      */
-    public function __construct(\Twig_NodeInterface $body, $lineno, $tag = null)
+    public function __construct($name, \Twig_NodeInterface $body, $lineno, $tag = null)
     {
-        parent::__construct(array('body' => $body), array('name' => BlockUtil::createUniqueName()), $lineno, $tag);
+        $name = strtolower(get_class($body)) . '_' . $name;
+
+        parent::__construct(array('body' => $body), array('name' => $name), $lineno, $tag);
     }
 
     /**
