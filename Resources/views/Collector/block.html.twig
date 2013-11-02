@@ -10,7 +10,7 @@
             {% if collector.data.has_error %}
                 {% set statut_bar = 'red' %}
             {% endif %}
-            <span class="sf-toolbar-status sf-toolbar-status-{{ statut_bar }}">{{ collector.data.size }}</span>
+            <span class="sf-toolbar-status sf-toolbar-status-{{ statut_bar }}">{{ collector.data.blocks|length }}</span>
         {% endset %}
 
         {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { 'link': profiler_url } %}
@@ -23,7 +23,7 @@
         <strong>Blocks</strong>
         {% if collector.data.blocks|length %}
             <span class="count">
-                <span>{{ collector.data.size }}</span>
+                <span>{{ collector.data.blocks|length }}</span>
                 {% if collector.data.has_error %}
 	                <span>Error</span>
 	            {% endif %}

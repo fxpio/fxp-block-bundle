@@ -77,7 +77,6 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
         $this->dataExtractor = $dataExtractor;
         $this->data = array(
             'blocks'    => array(),
-            'size'      => 0,
             'has_error' => false,
         );
         $this->viewIds = array();
@@ -88,7 +87,6 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        $this->data['size'] = count($this->blocksByView);
     }
 
     /**
