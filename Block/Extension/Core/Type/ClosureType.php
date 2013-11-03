@@ -25,7 +25,7 @@ class ClosureType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'compound' => false,
+            'compound' => true,
         ));
     }
 

@@ -11,26 +11,25 @@
 
 namespace Sonatra\Bundle\BlockBundle\Twig\Node;
 
+use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
+
 /**
  * Represents a sblock closure node.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class SuperblockClosure extends \Twig_Node implements \Twig_NodeOutputInterface
+class SuperblockClosure extends \Twig_Node_Block
 {
     /**
      * Constructor.
      *
-     * @param string              $name
      * @param \Twig_NodeInterface $body
      * @param integer             $lineno
      * @param string              $tag
      */
-    public function __construct($name, \Twig_NodeInterface $body, $lineno, $tag = null)
+    public function __construct(\Twig_NodeInterface $body, $lineno, $tag = null)
     {
-        $name = strtolower(get_class($body)) . '_' . $name;
-
-        parent::__construct(array('body' => $body), array('name' => $name), $lineno, $tag);
+        parent::__construct(BlockUtil::createUniqueName(), $body, $lineno, $tag);
     }
 
     /**
@@ -42,21 +41,12 @@ class SuperblockClosure extends \Twig_Node implements \Twig_NodeOutputInterface
     {
         $compiler
             ->addDebugInfo($this)
-            ->write('$block->add(')
-            ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
-            ->raw('"closure"')
-            ->raw(', ')
-            ->raw('array("data" => function () use ($context, $blocks) {')
-            ->raw("\n")
+            ->write(sprintf("public function block_%s(\$context, array \$blocks = array())\n", $this->getAttribute('name')), "{\n")
             ->indent()
-            ->raw("\n")
             ->subcompile($this->getNode('body'))
-            ->write(sprintf('}, "block_name" => "%s", "label" => "")', $this->getAttribute('name')))
-            ->raw(')')
-            ->outdent()
             ->raw("\n")
-            ->write(')')
-            ->raw(";\n")
+            ->outdent()
+            ->write("}\n\n")
         ;
     }
 }
