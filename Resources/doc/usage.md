@@ -7,14 +7,6 @@ Sonatra BlockBundle Usage
 
 ## Usage
 
-For rendering automatically all javascripts and stylesheets of all block, you must used the twig functions:
-
-- Block view: block_assets_widget()
-- Stylesheets: block_global_stylesheets() in global html stylesheet
-- Javascripts: block_global_javascripts() in global html javascript
-
-If you do not want to add the javascripts and stylesheet of a block, you must used the twig function `block_widget`.
-
 Controller:
 
 ``` php
@@ -58,19 +50,8 @@ Twig:
 
 ``` html
 <html>
-    <head>
-        <style type="text/css">
-        {{ block_global_stylesheets() }}
-        </style>
-    </head>
     <body>
-        {{ block_assets_widget(block) }}
-
-        <script type="text/javascript">
-            $( document ).ready( function() {
-                {{ block_global_javascripts() }}
-            });
-        </script>
+        {{ block_widget(block) }}
     </body>
 <html>
 ```

@@ -51,7 +51,6 @@ class SuperblockTokenParser extends \Twig_TokenParser
         $stream = $this->parser->getStream();
         $options = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
         $variables = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
-        $assets = true;
         $skip = false;
         $tagNotSupported = 'The sblock form tag does not supported. Constructs your "block form" directly in code, otherwise it is impossible to recover the form in your code.';
 
@@ -114,11 +113,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
             // {% sblock_checkbox, {data:true} with {foo:'bar'} :%}
             do {
-                if ($stream->test(\Twig_Token::NAME_TYPE, 'noassets')) {
-                    $stream->next();
-                    $assets = false;
-
-                } elseif ($stream->test(\Twig_Token::NAME_TYPE) || $stream->test(\Twig_Token::PUNCTUATION_TYPE, '{')) {
+                if ($stream->test(\Twig_Token::NAME_TYPE) || $stream->test(\Twig_Token::PUNCTUATION_TYPE, '{')) {
                     $variables = $this->parser->getExpressionParser()->parseExpression();
                 }
 
@@ -144,7 +139,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
         $superblock = new Superblock($type, $options, $lineno, $this->getTag());
         $name = $superblock->getAttribute('name');
-        $reference = new SuperblockReference($name, $variables, $lineno, $this->getTag(), $assets);
+        $reference = new SuperblockReference($name, $variables, $lineno, $this->getTag());
 
         $this->parser->setBlock($name, $superblock);
         $this->parser->pushLocalScope();
@@ -184,7 +179,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
                 $sBlocks->setNode($i, $subReference);
 
             } else {
-                $subReference = $this->convertTwigNodeToClosure($node, $variables, $assets);
+                $subReference = $this->convertTwigNodeToClosure($node, $variables);
                 $subReference->setAttribute('is_master', false);
                 $subReference->setAttribute('is_closure', true);
                 $sBlocks->setNode($i, $subReference);
@@ -252,7 +247,6 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
         $cOptions = new \Twig_Node_Expression_Array(array(), $node->getLine());
         $cVariables = new \Twig_Node_Expression_Array(array(), $node->getLine());
-        $cRenderAssets = true;
 
         if ($args->hasNode($pos)) {
             $cOptions = $args->getNode($pos);
@@ -264,18 +258,12 @@ class SuperblockTokenParser extends \Twig_TokenParser
             $cVariables = $args->getNode($pos);
         }
 
-        $pos++;
-
-        if ($args->hasNode($pos)) {
-            $cRenderAssets = $args->getNode($pos);
-        }
-
         $superblock = new Superblock($cType, $cOptions, $node->getLine(), $node->getNodeTag());
         $name = $superblock->getAttribute('name');
 
         $this->parser->setBlock($name, $superblock);
 
-        return new SuperblockReference($name, $cVariables, $node->getLine(), $node->getNodeTag(), $cRenderAssets);
+        return new SuperblockReference($name, $cVariables, $node->getLine(), $node->getNodeTag());
     }
 
     /**
@@ -283,17 +271,16 @@ class SuperblockTokenParser extends \Twig_TokenParser
      *
      * @param \Twig_Node            $node
      * @param \Twig_Node_Expression $variables
-     * @param boolean               $assets
      *
      * @return \Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockClosure
      */
-    protected function convertTwigNodeToClosure(\Twig_Node $node, \Twig_Node_Expression $variables, $assets = true)
+    protected function convertTwigNodeToClosure(\Twig_Node $node, \Twig_Node_Expression $variables)
     {
         $superblock = new SuperblockClosure($node, $node->getLine());
         $name = $superblock->getAttribute('name');
 
         $this->parser->setBlock($name, $superblock);
 
-        return new SuperblockReference($name, $variables, $node->getLine(), $node->getNodeTag(), $assets);
+        return new SuperblockReference($name, $variables, $node->getLine(), $node->getNodeTag());
     }
 }

@@ -25,9 +25,9 @@ class SuperblockReference extends \Twig_Node implements \Twig_NodeOutputInterfac
      * @param integer $lineno
      * @param string  $tag
      */
-    public function __construct($name, \Twig_Node_Expression $variables, $lineno, $tag = null, $assets = true)
+    public function __construct($name, \Twig_Node_Expression $variables, $lineno, $tag = null)
     {
-        $attr = array('name' => $name, 'variables' => $variables, 'assets' => $assets, 'is_master' => true, 'is_closure' => false);
+        $attr = array('name' => $name, 'variables' => $variables, 'is_master' => true, 'is_closure' => false);
 
         parent::__construct(array(), $attr, $lineno, $tag);
     }
@@ -59,7 +59,7 @@ class SuperblockReference extends \Twig_Node implements \Twig_NodeOutputInterfac
         } elseif ($this->getAttribute('is_master')) {
             $compiler
                 ->addDebugInfo($this)
-                ->write('echo $this->env->getExtension(\'sonatra_block\')->searchAndRenderBlockAssets(')
+                ->write('echo $this->env->getExtension(\'sonatra_block\')->renderer->searchAndRenderBlock(')
                 ->raw("\n")
                 ->indent()
                 ->write(sprintf("(\$b_%s = \$this->block_%s(\$context, \$blocks)) ", $name, $name))
@@ -73,10 +73,6 @@ class SuperblockReference extends \Twig_Node implements \Twig_NodeOutputInterfac
                 ->raw("\n")
                 ->write('')
                 ->subcompile($this->getAttribute('variables'))
-                // assets
-                ->raw(',')
-                ->raw("\n")
-                ->write(($this->getAttribute('assets') ? 'true' : 'false'))
                 ->raw(")\n")
                 ->outdent()
                 ->write(";\n")

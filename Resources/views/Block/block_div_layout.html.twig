@@ -13,18 +13,6 @@
 {% block block_component %}
 {% endblock block_component %}
 
-{% block block_javascript %}
-{% for child in block.children %}
-    {{ block_javascript(child) }}
-{% endfor %}
-{% endblock block_javascript %}
-
-{% block block_stylesheet %}
-{% for child in block.children %}
-    {{ block_stylesheet(child) }}
-{% endfor %}
-{% endblock block_stylesheet %}
-
 
 {% block block_widget_simple %}
 {% spaceless %}
@@ -254,12 +242,6 @@
 {% endspaceless %}
 {% endblock closure_widget %}
 
-{% block closure_javascript %}
-{% endblock closure_javascript %}
-
-{% block closure_stylesheet %}
-{% endblock closure_stylesheet %}
-
 {# Labels #}
 
 {% block block_label %}
@@ -346,22 +328,6 @@
 {{ block_twig_render(resource, block_rendered, options) }}
 </div>
 {% endblock twig_widget %}
-
-
-{# Twig Javascript #}
-{% block twig_javascript %}
-{% if rendered %}
-    {{ block_twig_render(resource, block_rendered ~ '_javascript', options) }}
-{% endif %}
-{% endblock twig_javascript %}
-
-
-{# Twig Stylesheet #}
-{% block twig_stylesheet %}
-{% if rendered %}
-    {{ block_twig_render(resource, block_rendered ~ '_stylesheet', options) }}
-{% endif %}
-{% endblock twig_stylesheet %}
 
 
 {# Form Widget #}
