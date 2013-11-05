@@ -139,8 +139,8 @@ class BlockRenderer implements BlockRendererInterface
         }
 
         // The cache key for storing the variables and types
-        $blockCacheKey = $view->vars[self::CACHE_KEY_VAR];
-        $blockAndSuffixCacheKey = $blockCacheKey . $blockNameSuffix;
+        $viewCacheKey = $view->vars[self::CACHE_KEY_VAR];
+        $viewAndSuffixCacheKey = $viewCacheKey . $blockNameSuffix;
 
         // In templates, we have to deal with two kinds of block hierarchies:
         //
@@ -169,7 +169,7 @@ class BlockRenderer implements BlockRendererInterface
         // widget() function again to render the block for the parent type.
         //
         // The second kind is implemented in the following blocks.
-        if (!isset($this->blockNameHierarchyMap[$blockAndSuffixCacheKey])) {
+        if (!isset($this->blockNameHierarchyMap[$viewAndSuffixCacheKey])) {
             // INITIAL CALL
             // Calculate the hierarchy of template blocks and start on
             // the bottom level of the hierarchy (= "_<id>_<section>" block)
@@ -184,15 +184,15 @@ class BlockRenderer implements BlockRendererInterface
             // RECURSIVE CALL
             // If a block recursively calls searchAndRenderBlock() again, resume rendering
             // using the parent type in the hierarchy.
-            $blockNameHierarchy = $this->blockNameHierarchyMap[$blockAndSuffixCacheKey];
-            $hierarchyLevel = $this->hierarchyLevelMap[$blockAndSuffixCacheKey] - 1;
+            $blockNameHierarchy = $this->blockNameHierarchyMap[$viewAndSuffixCacheKey];
+            $hierarchyLevel = $this->hierarchyLevelMap[$viewAndSuffixCacheKey] - 1;
 
             $hierarchyInit = false;
         }
 
         // The variables are cached globally for a block view (instead of for the
         // current suffix)
-        if (!isset($this->variableStack[$blockCacheKey])) {
+        if (!isset($this->variableStack[$viewCacheKey])) {
             // The default variable scope contains all block view variables, merged with
             // the variables passed explicitly to the helper
             $scopeVariables = $view->vars;
@@ -200,7 +200,7 @@ class BlockRenderer implements BlockRendererInterface
             $varInit = true;
         } else {
             // Reuse the current scope and merge it with the explicitly passed variables
-            $scopeVariables = end($this->variableStack[$blockCacheKey]);
+            $scopeVariables = end($this->variableStack[$viewCacheKey]);
 
             $varInit = false;
         }
@@ -246,28 +246,28 @@ class BlockRenderer implements BlockRendererInterface
         // We need to store these values in maps (associative arrays) because within a
         // call to widget() another call to widget() can be made, but for a different block view
         // object. These nested calls should not override each other.
-        $this->blockNameHierarchyMap[$blockAndSuffixCacheKey] = $blockNameHierarchy;
-        $this->hierarchyLevelMap[$blockAndSuffixCacheKey] = $hierarchyLevel;
+        $this->blockNameHierarchyMap[$viewAndSuffixCacheKey] = $blockNameHierarchy;
+        $this->hierarchyLevelMap[$viewAndSuffixCacheKey] = $hierarchyLevel;
 
         // We also need to store the variables for the block view so that we can render other
         // blocks for the same block using the same variables as in the outer block.
-        $this->variableStack[$blockCacheKey][] = $variables;
+        $this->variableStack[$viewCacheKey][] = $variables;
 
         // Do the rendering
         $html = $this->engine->renderBlock($view, $resource, $blockName, $variables);
 
         // Clear the stack
-        array_pop($this->variableStack[$blockCacheKey]);
+        array_pop($this->variableStack[$viewCacheKey]);
 
         // Clear the caches if they were filled for the first time within
         // this function call
         if ($hierarchyInit) {
-            unset($this->blockNameHierarchyMap[$blockAndSuffixCacheKey]);
-            unset($this->hierarchyLevelMap[$blockAndSuffixCacheKey]);
+            unset($this->blockNameHierarchyMap[$viewAndSuffixCacheKey]);
+            unset($this->hierarchyLevelMap[$viewAndSuffixCacheKey]);
         }
 
         if ($varInit) {
-            unset($this->variableStack[$blockCacheKey]);
+            unset($this->variableStack[$viewCacheKey]);
         }
 
         if ($renderOnlyOnce) {
