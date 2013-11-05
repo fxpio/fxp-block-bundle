@@ -29,7 +29,7 @@ class SuperblockClosure extends \Twig_Node_Block
      */
     public function __construct(\Twig_NodeInterface $body, $lineno, $tag = null)
     {
-        $name = sprintf('%s_%s', strtolower(get_class($body)), BlockUtil::createUniqueName());
+        $name = sprintf('twig_%s', BlockUtil::createUniqueName());
 
         parent::__construct($name, $body, $lineno, $tag);
     }

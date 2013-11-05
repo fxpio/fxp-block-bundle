@@ -155,6 +155,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
         // body content
         $sBlocks = new \Twig_Node(array(), array(), $lineno);
         $body = $this->parser->subparse(array($this, 'decideBlockEnd'), true);
+        $previousTwigNode = null;
 
         if (0 === count($body)) {
             $body = new \Twig_Node(array($body), array(), $lineno);
@@ -162,29 +163,38 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
         foreach ($body->getIterator() as $i => $node) {
             if ($node instanceof SuperblockReference) {
+                $previousTwigNode = $this->pushClosureNode($sBlocks, $variables, $previousTwigNode);
+
                 $node->setAttribute('is_master', false);
-                $sBlocks->setNode($i, $node);
+                $sBlocks->setNode(count($sBlocks), $node);
 
             } elseif ($node instanceof \Twig_Node_Set) {
-                $sBlocks->setNode($i, $node);
+                $previousTwigNode = $this->pushClosureNode($sBlocks, $variables, $previousTwigNode);
+
+                $sBlocks->setNode(count($sBlocks), $node);
 
             } elseif ($node->hasNode('expr')
                     && $node->getNode('expr') instanceof \Twig_Node_Expression_Function
                     && $node->getNode('expr')->hasAttribute('name')
                     && ($this->tag === $node->getNode('expr')->getAttribute('name')
                             || 0 === strpos($node->getNode('expr')->getAttribute('name'), 'sblock'))) {
+                $previousTwigNode = $this->pushClosureNode($sBlocks, $variables, $previousTwigNode);
+
                 $subReference = $this->convertTwigExpressionToNode($node->getNode('expr'));
                 $subReference->setAttribute('is_master', false);
 
-                $sBlocks->setNode($i, $subReference);
+                $sBlocks->setNode(count($sBlocks), $subReference);
 
             } else {
-                $subReference = $this->convertTwigNodeToClosure($node, $variables);
-                $subReference->setAttribute('is_master', false);
-                $subReference->setAttribute('is_closure', true);
-                $sBlocks->setNode($i, $subReference);
+                if (null === $previousTwigNode) {
+                    $previousTwigNode = new SuperblockClosure(new \Twig_Node(array(), array(), $lineno), $node->getLine());
+                }
+
+                $previousTwigNode->getNode('body')->setNode(count($previousTwigNode->getNode('body')), $node);
             }
         }
+
+        $previousTwigNode = $this->pushClosureNode($sBlocks, $variables, $previousTwigNode);
 
         $superblock->setNode('sblocks', $sBlocks);
 
@@ -267,20 +277,24 @@ class SuperblockTokenParser extends \Twig_TokenParser
     }
 
     /**
-     * Convert the twig node Superblock closure.
+     * Push the previous twig node on new blocks body.
      *
-     * @param \Twig_Node            $node
-     * @param \Twig_Node_Expression $variables
+     * @param \Twig_Node $blocks
+     * @param \Twig_Node $previous
      *
-     * @return \Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockClosure
+     * @return null
      */
-    protected function convertTwigNodeToClosure(\Twig_Node $node, \Twig_Node_Expression $variables)
+    protected function pushClosureNode(\Twig_Node $blocks, \Twig_Node_Expression $variables, \Twig_Node $previous)
     {
-        $superblock = new SuperblockClosure($node, $node->getLine());
-        $name = $superblock->getAttribute('name');
+        if (null === $previous) {
+            return;
+        }
 
-        $this->parser->setBlock($name, $superblock);
+        $name = $previous->getAttribute('name');
+        $reference = new SuperblockReference($name, $variables, $previous->getLine(), $previous->getNodeTag());
+        $reference->setAttribute('is_closure', true);
 
-        return new SuperblockReference($name, $variables, $node->getLine(), $node->getNodeTag());
+        $this->parser->setBlock($name, $previous);
+        $blocks->setNode(count($blocks), $reference);
     }
 }
