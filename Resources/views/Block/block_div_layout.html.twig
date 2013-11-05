@@ -16,8 +16,7 @@
 
 {% block block_widget_simple %}
 {% spaceless %}
-    {% set type = type|default('text') %}
-    <div class="block_{{ type }}" {{ block('widget_attributes') }}>{{ value|raw }}</div>
+    <div {{ block('widget_attributes') }}>{{ value|raw }}</div>
 {% endspaceless %}
 {% endblock block_widget_simple %}
 
@@ -42,15 +41,12 @@
 
 {% block collection_widget %}
 {% spaceless %}
-    {% set type = type|default('collection') %}
-    {% set attr = attr|merge({'class': ('block_' ~ type ~ ' ' ~ attr.class|default(''))|trim }) %}
     {{ block('block_widget') }}
 {% endspaceless %}
 {% endblock collection_widget %}
 
 {% block textarea_widget %}
 {% spaceless %}
-    {% set type = type|default('textarea') %}
     {% set value = value|raw|nl2br %}
     {{ block('block_widget_simple') }}
 {% endspaceless %}
@@ -58,8 +54,6 @@
 
 {% block choice_widget %}
 {% spaceless %}
-    {% set type = type|default('choice') %}
-    {% set attr = attr|merge({'class': ('block_' ~ type ~ ' ' ~ attr.class|default(''))|trim }) %}
     {% if expanded %}
         {{ block('choice_widget_expanded') }}
     {% else %}
@@ -133,58 +127,8 @@
 {% endspaceless %}
 {% endblock radio_widget %}
 
-{% block datetime_widget %}
-{% spaceless %}
-    {% set type = type|default('datetime') %}
-    {{ block('block_widget_simple') }}
-{% endspaceless %}
-{% endblock datetime_widget %}
-
-{% block date_widget %}
-{% spaceless %}
-    {% set type = type|default('date') %}
-    {{ block('block_widget_simple') }}
-{% endspaceless %}
-{% endblock date_widget %}
-
-{% block time_widget %}
-{% spaceless %}
-    {% set type = type|default('time') %}
-    {{ block('block_widget_simple') }}
-{% endspaceless %}
-{% endblock time_widget %}
-
-{% block timezone_widget %}
-{% spaceless %}
-    {% set type = type|default('timezone') %}
-    {{ block('block_widget_simple') }}
-{% endspaceless %}
-{% endblock timezone_widget %}
-
-{% block number_widget %}
-{% spaceless %}
-    {% set type = type|default('number') %}
-    {{ block('block_widget_simple') }}
-{% endspaceless %}
-{% endblock number_widget %}
-
-{% block integer_widget %}
-{% spaceless %}
-    {% set type = type|default('integer') %}
-    {{ block('block_widget_simple') }}
-{% endspaceless %}
-{% endblock integer_widget %}
-
-{% block money_widget %}
-{% spaceless %}
-    {% set type = type|default('money') %}
-    {{ block('block_widget_simple') }}
-{% endspaceless %}
-{% endblock money_widget %}
-
 {% block url_widget %}
 {% spaceless %}
-    {% set type = type|default('url') %}
     {% set title = title|default(value) %}
     {% set url_attr = url_attr|merge({'href': value, 'tabindex': 0 }) %}
     {% set value %}
@@ -194,42 +138,23 @@
 {% endspaceless %}
 {% endblock url_widget %}
 
-{% block percent_widget %}
-{% spaceless %}
-    {% set type = type|default('percent') %}
-    {{ block('block_widget_simple') }}
-{% endspaceless %}
-{% endblock percent_widget %}
-
-{% block password_widget %}
-{% spaceless %}
-    {% set type = type|default('password') %}
-    {{ block('block_widget_simple') }}
-{% endspaceless %}
-{% endblock password_widget %}
-
 {% block hidden_widget %}
 {% endblock hidden_widget %}
 
 {% block email_widget %}
 {% spaceless %}
-    {% set type = type|default('email') %}
-
     {% if mailto %}
         {% set label = label|default(value) %}
         {% set value %}
-            <a href="mailto:{{ value }}" tabindex="0">{{ label }}</a>
+            <a href="mailto:{{ value }}" tabindex="0">{{ label|trans({}, translation_domain) }}</a>
         {% endset %}
-        {{ block('block_widget_simple') }}
-    {% else %}
-        {{ block('block_widget_simple') }}
     {% endif %}
+    {{ block('block_widget_simple') }}
 {% endspaceless %}
 {% endblock email_widget %}
 
 {% block entity_widget %}
 {% spaceless %}
-    {% set type = type|default('entity') %}
     {{ block('choice_widget') }}
 {% endspaceless %}
 {% endblock entity_widget %}
