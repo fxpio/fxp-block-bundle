@@ -65,17 +65,20 @@ class BlockType extends AbstractType
         $name = $block->getName();
         $blockName = $options['block_name'] ?: $block->getName();
         $translationDomain = $options['translation_domain'];
+        $id = $name;
 
-        if ($view->parent && $options['chained_block']) {
-            $id = sprintf('%s_%s', $view->parent->vars['id'], $name);
+        if ($view->parent) {
             $uniqueBlockPrefix = sprintf('%s_%s', $view->parent->vars['unique_block_prefix'], $blockName);
 
-            if (!$translationDomain) {
-                $translationDomain = $view->parent->vars['translation_domain'];
+            if ($options['chained_block']) {
+                $id = sprintf('%s_%s', $view->parent->vars['id'], $name);
+
+                if (!$translationDomain) {
+                    $translationDomain = $view->parent->vars['translation_domain'];
+                }
             }
 
         } else {
-            $id = $name;
             $uniqueBlockPrefix = '_' . $blockName;
 
             // Strip leading underscores and digits. These are allowed in
