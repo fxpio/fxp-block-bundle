@@ -139,7 +139,7 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
     {
         $this->proxiedType->finishView($view, $block, $options);
 
-        if (!$block->getConfig()->hasOption('profiler') || !$block->getConfig()->getOption('profiler')) {
+        if (!$block->getConfig()->getOption('profiler')) {
             return;
         }
 
@@ -148,14 +148,10 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
         // available
         $this->dataCollector->associateBlockWithView($block, $view);
 
-        // Since the CSRF token is only present in the BlockView tree, we also
-        // need to check the BlockView tree instead of calling isRoot() on the
-        // BlockInterface tree
-        if (null === $view->parent) {
+        if (!$this->hasParentProfiled($block)) {
             $this->dataCollector->collectViewVariables($view);
 
-            // Re-assemble data, in case BlockView instances were added, for
-            // which no BlockInterface instances were present (e.g. CSRF token).
+            // Re-assemble data.
             // Since finishView() is called after finishing the views of all
             // children, we can safely assume that information has been
             // collected about the complete block tree.
@@ -169,5 +165,25 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
     public function getOptionsResolver()
     {
         return $this->proxiedType->getOptionsResolver();
+    }
+
+    /**
+     * Check if parent block has a profiler option activated.
+     *
+     * @param BlockInterface $block
+     *
+     * @return boolean
+     */
+    protected function hasParentProfiled(BlockInterface $block)
+    {
+        if (null === $block->getParent()) {
+            return false;
+        }
+
+        if ($block->getParent()->getConfig()->getOption('profiler', false)) {
+            return true;
+        }
+
+        return $this->hasParentProfiled($block->getParent());
     }
 }
