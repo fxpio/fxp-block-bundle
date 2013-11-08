@@ -33,10 +33,9 @@ class SonatraBlockExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $ymlLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $ymlLoader->load('block.yml');
-        $ymlLoader->load('twig.yml');
-        $ymlLoader->load('doctrine.yml');
+        $loader->load('block.xml');
+        $loader->load('twig.xml');
+        $loader->load('doctrine.xml');
 
         if (count($configs) > 1) {
             $initConfig = array_pop($configs);

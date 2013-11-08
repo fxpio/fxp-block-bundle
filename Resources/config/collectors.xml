@@ -16,6 +16,5 @@
             <tag name="data_collector" template="@SonatraBlock/Collector/block.html.twig" id="sonatra_block" priority="255" />
             <argument type="service" id="data_collector.sonatra_block.extractor" />
         </service>
-
     </services>
 </container>
