@@ -139,6 +139,10 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
     {
         $this->proxiedType->finishView($view, $block, $options);
 
+        if (!$block->getConfig()->hasOption('profiler') || !$block->getConfig()->getOption('profiler')) {
+            return;
+        }
+
         // Remember which view belongs to which block instance, so that we can
         // get the collected data for a view when its block instance is not
         // available

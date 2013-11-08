@@ -15,6 +15,7 @@ use Sonatra\Bundle\BlockBundle\Block\AbstractTypeExtension;
 use Sonatra\Bundle\BlockBundle\Block\Extension\DataCollector\EventListener\DataCollectorListener;
 use Sonatra\Bundle\BlockBundle\Block\Extension\DataCollector\BlockDataCollectorInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Type extension for collecting data of a block with this type.
@@ -44,6 +45,20 @@ class DataCollectorTypeExtension extends AbstractTypeExtension
     public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
         $builder->addEventSubscriber($this->listener);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'profiler' => false,
+        ));
+
+        $resolver->addAllowedTypes(array(
+            'profiler' => 'bool',
+        ));
     }
 
     /**
