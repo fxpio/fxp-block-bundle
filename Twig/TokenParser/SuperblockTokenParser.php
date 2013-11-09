@@ -185,7 +185,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
                 $sBlocks->setNode(count($sBlocks), $subReference);
 
-            } else {
+            } elseif (!$node instanceof \Twig_Node_Text || ($node instanceof \Twig_Node_Text && '' !== trim($node->getAttribute('data')))) {
                 if (null === $previousTwigNode) {
                     $previousTwigNode = new SuperblockClosure(new \Twig_Node(array(), array(), $lineno), $node->getLine());
                 }
@@ -279,12 +279,13 @@ class SuperblockTokenParser extends \Twig_TokenParser
     /**
      * Push the previous twig node on new blocks body.
      *
-     * @param \Twig_Node $blocks
-     * @param \Twig_Node $previous
+     * @param \Twig_Node            $blocks
+     * @param \Twig_Node_Expression $variables
+     * @param \Twig_Node            $previous
      *
      * @return null
      */
-    protected function pushClosureNode(\Twig_Node $blocks, \Twig_Node_Expression $variables, \Twig_Node $previous)
+    protected function pushClosureNode(\Twig_Node $blocks, \Twig_Node_Expression $variables, \Twig_Node $previous = null)
     {
         if (null === $previous) {
             return;
