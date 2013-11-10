@@ -209,13 +209,14 @@ class BlockExtension extends \Twig_Extension
      * Render closure value.
      *
      * @param string|\Closure $value
+     * @param BlockView       $view
      *
      * @return string
      */
-    public function rawClosure($value)
+    public function rawClosure($value, BlockView $view)
     {
         if ($value instanceof \Closure) {
-            $value = $value();
+            $value = $value($view);
         }
 
         return $value;
