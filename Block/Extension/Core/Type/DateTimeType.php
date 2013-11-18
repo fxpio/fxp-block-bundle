@@ -79,10 +79,6 @@ class DateTimeType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $compound = function (Options $options) {
-            return $options['widget'] !== 'single_text';
-        };
-
         $resolver->setDefaults(array(
                 'locale'      => null,
                 'timezone'    => null,
@@ -90,8 +86,7 @@ class DateTimeType extends AbstractType
                 'time_format' => null,
                 'calendar'    => null,
                 'data_class'  => null,
-                'widget'      => null,
-                'compound'    => $compound,
+                'compound'    => false,
         ));
     }
 
