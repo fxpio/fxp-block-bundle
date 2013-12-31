@@ -76,8 +76,8 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
     {
         $this->dataExtractor = $dataExtractor;
         $this->data = array(
-            'blocks'    => array(),
-            'has_error' => false,
+            'blocks'        => array(),
+            'duplicate_ids' => array(),
         );
         $this->viewIds = array();
     }
@@ -203,9 +203,6 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
         if (null !== $block) {
             $blockHash = spl_object_hash($block);
         } elseif (isset($this->blocksByView[$viewHash])) {
-            // The BlockInterface instance of the CSRF token is never contained in
-            // the BlockInterface tree of the block, so we need to get the
-            // corresponding BlockInterface instance for its view in a different way
             $blockHash = $this->blocksByView[$viewHash];
         }
 
@@ -249,20 +246,21 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
      */
     private function validateViewIds(BlockInterface $block = null, BlockView $view, &$output = null)
     {
-        $output['has_duplicate_id'] = false;
-
         if (!$block->getConfig()->getOption('render_id')) {
             return;
         }
 
         $id = $view->vars['id'];
         $hash = spl_object_hash($block);
+        $newIds = array($hash);
 
-        if (isset($this->viewIds[$id]) && $hash !== $this->viewIds[$id]) {
-            $output['has_duplicate_id'] = true;
-            $this->data['has_error'] = true;
+        if (isset($this->viewIds[$id]) && !in_array($hash, $this->viewIds[$id])) {
+            $this->data['duplicate_ids'][] = $id;
+            $this->data['duplicate_ids'] = array_unique($this->data['duplicate_ids']);
+
+            $newIds = array_merge($this->viewIds[$id], $newIds);
         }
 
-        $this->viewIds[$id] = $hash;
+        $this->viewIds[$id] = $newIds;
     }
 }

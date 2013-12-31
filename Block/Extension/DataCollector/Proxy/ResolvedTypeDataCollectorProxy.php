@@ -139,16 +139,12 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
     {
         $this->proxiedType->finishView($view, $block, $options);
 
-        if (!$block->getConfig()->getOption('profiler')) {
-            return;
-        }
-
         // Remember which view belongs to which block instance, so that we can
         // get the collected data for a view when its block instance is not
         // available
         $this->dataCollector->associateBlockWithView($block, $view);
 
-        if (!$this->hasParentProfiled($block)) {
+        if (null === $block->getParent()) {
             $this->dataCollector->collectViewVariables($view);
 
             // Re-assemble data.
@@ -165,25 +161,5 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
     public function getOptionsResolver()
     {
         return $this->proxiedType->getOptionsResolver();
-    }
-
-    /**
-     * Check if parent block has a profiler option activated.
-     *
-     * @param BlockInterface $block
-     *
-     * @return boolean
-     */
-    protected function hasParentProfiled(BlockInterface $block)
-    {
-        if (null === $block->getParent()) {
-            return false;
-        }
-
-        if ($block->getParent()->getConfig()->getOption('profiler', false)) {
-            return true;
-        }
-
-        return $this->hasParentProfiled($block->getParent());
     }
 }

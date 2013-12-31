@@ -7,10 +7,10 @@
         {% set icon %}
             <img width="14" height="28" alt="Sonatra Blocks" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAcCAYAAABRVo5BAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS4xLjIiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+MahxaQAAAAlwSFlzAAALEwAACxMBAJqcGAAAACBjSFJNAAB6JQAAgIMAAPn/AACA6AAAUggAARVYAAA6lwAAF2/XWh+QAAABBklEQVR42uSU3W2DMBSFPyLewwZtJygbYKz4OdkgdIOMkBEyAtmg75YsswHdADZwJqAvNxIhP1h5aFX1SDxcw+Ha95zjZBgGnsGCJ/HzxHS6YLTKgAOwAZbAF1Bb5w9zHV+BrZAA3oH97Fat8y1QjpZO8rMLJKuy8De65qOOAD3QTc9YRMziRZ4/pGMvw2IhRQ+8zZBOMjQFNKkUmXW+M1odRcNbqK3zAWgBlUoR5GX3oGO4kMNo9QkE63wFVA+IFbAXS+6SVVmcA9lEaHoEMmA9NnmMEba/m8fmTrTG3px+E5J7l5XRqpUsfljn66itGq12QkIkyGPPmJ89KciugvwP7tXvAQC5F0Yy3yEiEAAAAABJRU5ErkJggg==" />
             {% set statut_bar = 'green' %}
-            {% if collector.data.has_error %}
+            {% if collector.data.duplicate_ids|length > 0 %}
                 {% set statut_bar = 'red' %}
             {% endif %}
-            <span class="sf-toolbar-status sf-toolbar-status-{{ statut_bar }}">{{ collector.data.blocks|length }}</span>
+            <span class="sf-toolbar-status sf-toolbar-status-{{ statut_bar }}">{{ collector.data.duplicate_ids|length }}</span>
         {% endset %}
 
         {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { 'link': profiler_url } %}
@@ -23,8 +23,8 @@
         <strong>Blocks</strong>
         {% if collector.data.blocks|length %}
             <span class="count">
-                <span>{{ collector.data.blocks|length }}</span>
-                {% if collector.data.has_error %}
+                <span>{{ collector.data.duplicate_ids|length }}</span>
+                {% if collector.data.duplicate_ids|length > 0 %}
 	                <span>Error</span>
 	            {% endif %}
             </span>
@@ -198,17 +198,17 @@
 
                 <ul>
                 {% for blockHash, blockData in collector.data.blocks %}
-                    {{ block_tree_entry(blockHash, blockData, true) }}
+                    {{ block_tree_entry(blockHash, blockData, collector, false) }}
                 {% endfor %}
                 </ul>
             </div>
 
             {% for blockHash, blockData in collector.data.blocks %}
-                {{ block_tree_details(blockHash, blockData) }}
+                {{ block_tree_details(blockHash, blockData, collector) }}
             {% endfor %}
         </div>
     {% else %}
-        <p><em>No blocks were constructed with 'profiler' option for this request.</em></p>
+        <p><em>No blocks were constructed for this request.</em></p>
     {% endif %}
 
     <script>
@@ -355,31 +355,31 @@
     </script>
 {% endblock %}
 
-{% macro block_tree_entry(hash, data, expanded) %}
+{% macro block_tree_entry(hash, data, collector, expanded) %}
     <li>
         <div class="tree-inner" data-tab-target-id="{{ hash }}-details">
              {% if data.children is not empty %}
-                 <a class="toggle-button" data-toggle-target-id="{{ hash }}-children" href="#"{% if data.has_duplicate_id %} class="status-red"{% endif %}><span class="toggle-icon"></span></a>
+                 <a class="toggle-button" data-toggle-target-id="{{ hash }}-children" href="#"><span class="toggle-icon"></span></a>
              {% else %}
                  <div class="toggle-icon empty"></div>
              {% endif %}
              {{ data.id }}
-             {% if data.has_duplicate_id %}
+             {% if data.id in collector.data.duplicate_ids %}
              <div class="badge-error">!</div>
              {% endif %}
          </div>
 
         {% if data.children|length > 0 %}
-            <ul id="{{ data.id }}-children"{% if not expanded %} class="hidden"{% endif %}>
+            <ul id="{{ hash }}-children"{% if not expanded %} class="hidden"{% endif %}>
                 {% for childHash, childData in data.children %}
-                    {{ _self.block_tree_entry(childHash, childData, false) }}
+                    {{ _self.block_tree_entry(childHash, childData, collector, false) }}
                 {% endfor %}
             </ul>
         {% endif %}
     </li>
 {% endmacro %}
 
-{% macro block_tree_details(hash, data) %}
+{% macro block_tree_details(hash, data, collector) %}
     {% set duplicate_id_text = 'The Id "'~ data.id ~ '" is already used in the same render' %}
 
     <div class="tree-details" id="{{ hash }}-details">
@@ -390,7 +390,7 @@
             {% endif %}
         </h2>
 
-        {% if data.has_duplicate_id %}
+        {% if data.id in collector.data.duplicate_ids %}
             <div class="message-error">
                 <span>{{ duplicate_id_text }}.</span>
                 <p>Activate the "chain_block" option or change the block name.</p>
@@ -521,6 +521,6 @@
     </div>
 
     {% for childHash, childData in data.children %}
-        {{ _self.block_tree_details(childHash, childData) }}
+        {{ _self.block_tree_details(childHash, childData, collector) }}
     {% endfor %}
 {% endmacro %}
