@@ -121,9 +121,8 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
     /**
      * Sets the property path that the block should be mapped to.
      *
-     * @param null|string|\Symfony\Component\PropertyAccess\PropertyPathInterface $propertyPath
-     *                 The property path or null if the path should be set
-     *                 automatically based on the block's name.
+     * @param null|string|\Symfony\Component\PropertyAccess\PropertyPathInterface $propertyPath The property path or null if the path should be set
+     *                                                                                          automatically based on the block's name.
      *
      * @return self The configuration object.
      */

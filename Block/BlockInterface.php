@@ -109,8 +109,8 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
      * Returns the normalized data of the field.
      *
      * @return mixed When the field is not bound, the default data is returned.
-     *                When the field is bound, the normalized bound data is
-     *                returned if the field is valid, null otherwise.
+     *               When the field is bound, the normalized bound data is
+     *               returned if the field is valid, null otherwise.
      */
     public function getNormData();
 

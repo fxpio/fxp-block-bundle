@@ -36,11 +36,11 @@ interface BlockRendererEngineInterface
      * The type of the resource is decided by the implementation. The resource
      * is later passed to {@link renderBlock()} by the rendering algorithm.
      *
-     * @param BlockView $view The block view for determining the used themes.
+     * @param BlockView $view      The block view for determining the used themes.
      *                             First the themes attached directly to the
      *                             block with {@link setTheme()} are considered,
      *                             then the ones of its parent etc.
-     * @param string $blockName The name of the block to render.
+     * @param string    $blockName The name of the block to render.
      *
      * @return mixed The renderer resource or false, if none was found.
      */
@@ -70,15 +70,15 @@ interface BlockRendererEngineInterface
      * The type of the resource is decided by the implementation. The resource
      * is later passed to {@link renderBlock()} by the rendering algorithm.
      *
-     * @param BlockView $view The view for determining the
+     * @param BlockView $view               The view for determining the
      *                                      used themes. First the themes
      *                                      attached directly to the block
      *                                      with {@link setTheme()} are
      *                                      considered, then the ones of
      *                                      its parent etc.
-     * @param array $blockNameHierarchy The block name hierarchy, with
+     * @param array     $blockNameHierarchy The block name hierarchy, with
      *                                      the root block at the beginning.
-     * @param integer $hierarchyLevel The level in the hierarchy at
+     * @param integer   $hierarchyLevel     The level in the hierarchy at
      *                                      which to start looking. Level 0
      *                                      indicates the root block, i.e.
      *                                      the first element of
@@ -114,15 +114,15 @@ interface BlockRendererEngineInterface
      * The type of the resource is decided by the implementation. The resource
      * is later passed to {@link renderBlock()} by the rendering algorithm.
      *
-     * @param BlockView $view The view for determining the
+     * @param BlockView $view               The view for determining the
      *                                      used themes. First the themes
      *                                      attached directly to the block
      *                                      with {@link setTheme()} are
      *                                      considered, then the ones of
      *                                      its parent etc.
-     * @param array $blockNameHierarchy The block name hierarchy, with
+     * @param array     $blockNameHierarchy The block name hierarchy, with
      *                                      the root block at the beginning.
-     * @param integer $hierarchyLevel The level in the hierarchy at
+     * @param integer   $hierarchyLevel     The level in the hierarchy at
      *                                      which to start looking. Level 0
      *                                      indicates the root block, i.e.
      *                                      the first element of

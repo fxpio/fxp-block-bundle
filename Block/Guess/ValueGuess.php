@@ -29,7 +29,7 @@ class ValueGuess extends Guess
      *
      * @param string  $value      The guessed value
      * @param integer $confidence The confidence that the guessed class name
-     *                              is correct
+     *                            is correct
      */
     public function __construct($value, $confidence)
     {

@@ -34,11 +34,11 @@ class TypeGuess extends Guess
     /**
      * Constructor.
      *
-     * @param string $type    The guessed field type
-     * @param array  $options The options for creating instances of the
-     *                              guessed class
+     * @param string  $type       The guessed field type
+     * @param array   $options    The options for creating instances of the
+     *                            guessed class
      * @param integer $confidence The confidence that the guessed class name
-     *                              is correct
+     *                            is correct
      */
     public function __construct($type, array $options, $confidence)
     {

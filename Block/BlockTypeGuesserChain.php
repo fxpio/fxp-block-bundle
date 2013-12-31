@@ -58,7 +58,7 @@ class BlockTypeGuesserChain implements BlockTypeGuesserInterface
      * return values.
      *
      * @param \Closure $closure The closure to execute. Accepts a guesser
-     *                            as argument and should return a Guess instance
+     *                          as argument and should return a Guess instance
      *
      * @return Guess The guess with the highest confidence
      */

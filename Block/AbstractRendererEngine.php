@@ -140,13 +140,13 @@ abstract class AbstractRendererEngine implements BlockRendererEngineInterface
      *
      * @see getResourceForBlockHierarchy()
      *
-     * @param string $cacheKey The cache key used for storing the
+     * @param string    $cacheKey           The cache key used for storing the
      *                                      resource.
-     * @param BlockView $view The block view for finding the applying
+     * @param BlockView $view               The block view for finding the applying
      *                                      themes.
-     * @param array $blockNameHierarchy The block hierarchy, with the most
+     * @param array     $blockNameHierarchy The block hierarchy, with the most
      *                                      specific block name at the end.
-     * @param integer $hierarchyLevel The level in the block hierarchy that
+     * @param integer   $hierarchyLevel     The level in the block hierarchy that
      *                                      should be loaded.
      *
      * @return Boolean True if the resource could be loaded, false otherwise.

@@ -110,7 +110,7 @@ class BlockUtil
      *
      * @param  string       $plural A word in plural block
      * @return string|array The singular block or an array of possible singular
-     *                      blocks
+     *                             blocks
      */
     public static function singularify($plural)
     {
