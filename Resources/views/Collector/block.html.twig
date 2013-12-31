@@ -36,7 +36,18 @@
 {% block panel %}
     <style type="text/css">
     .window {
+        /*background: #F6F6F6;*/
         margin: -30px -40px -40px;
+    }
+    .toggle-icon {
+        display: inline-block;
+        background: url("{{ asset('bundles/framework/images/toggler.png') }}") no-repeat top left #5eb5e0;
+    }
+    .closed .toggle-icon, .closed.toggle-icon {
+        background-position: bottom left;
+    }
+    .toggle-icon.empty {
+        background-image: url("{{ asset('bundles/framework/images/toggler_empty.png') }}");
     }
     .tree {
         width: 230px;
@@ -54,40 +65,75 @@
         padding: 0;
         width: 100%;
     }
-    .tree a {
-        text-decoration: none;
-        display: block;
-        padding: 5px 7px;
+    .tree .tree-inner {
+        width: 100%;
+        padding: 5px 7px 5px 22px;
         border-radius: 6px;
         color: #313131;
+        cursor: pointer;
+        position: relative;
+
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
     }
-    .tree ul ul a {
-        padding-left: 22px;
+    .tree a {
+        text-decoration: none;
     }
-    .tree ul ul ul a {
+    .tree .toggle-button {
+        /* provide a bigger clickable area than just 10x10px */
+        width: 16px;
+        height: 16px;
+        /* vertically center the button */
+        position: absolute;
+        top: 50%;
+        margin-top: -8px;
+        margin-left: -18px;
+    }
+    .tree .toggle-icon {
+        width: 10px;
+        height: 10px;
+        /* position the icon in the center of the clickable area */
+        margin-left: 3px;
+        margin-top: 3px;
+        background-size: 10px 20px;
+        background-color: #ccc;
+    }
+    .tree .toggle-icon.empty {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 50%;
+        margin-top: -5px;
+        margin-left: -15px;
+        background-size: 10px 10px;
+    }
+    .tree ul ul .tree-inner {
         padding-left: 37px;
     }
-    .tree ul ul ul ul a {
+    .tree ul ul ul .tree-inner {
         padding-left: 52px;
     }
-    .tree ul ul ul ul ul a {
+    .tree ul ul ul ul .tree-inner {
         padding-left: 67px;
     }
-    .tree a:hover {
+    .tree ul ul ul ul ul .tree-inner {
+        padding-left: 82px;
+    }
+    .tree .tree-inner:hover {
         background: #dfdfdf;
     }
-    .tree a.active, a.active:hover {
+    .tree .tree-inner.active, .tree .tree-inner.active:hover {
         background: #dfdfdf;
         font-weight: bold;
         color: #313131;
     }
-    .tree a.status-red {
-        background: #fff5f2;
-        color: #a33;
+    .tree .tree-inner.active .toggle-icon, .tree .tree-inner:hover .toggle-icon, .tree .tree-inner.active:hover .toggle-icon {
+        background-image: url("{{ asset('bundles/framework/images/toggler_hover.png') }}");
+        background-color: #aaa;
     }
-    .tree a.active.status-red, a.status-red:hover {
-        background: #a33;
-        color: #fff;
+    .tree .tree-inner.active .toggle-icon.empty, .tree .tree-inner:hover .toggle-icon.empty, .tree .tree-inner.active:hover .toggle-icon.empty {
+        background-image: url("{{ asset('bundles/framework/images/toggler_hover_empty.png') }}");
     }
     .tree-details {
         border-left: 1px solid #dfdfdf;
@@ -95,13 +141,17 @@
         margin-left: 250px;
         padding: 30px 40px 40px;
     }
-    #collector-content table tr.status-red th,
-    #collector-content table tr.status-red td {
-        background-color: #fff5f2;
-        color: #a33;
+    .tree-details h3 {
+        position: relative;
     }
-    #collector-content table tr.status-red th {
-        background-color: #ffb0ad;
+    .tree-details .toggle-icon {
+        width: 16px;
+        height: 16px;
+        /* vertically center the button */
+        position: absolute;
+        top: 50%;
+        margin-top: -9px;
+        margin-left: 6px;
     }
     .block-type {
         color: #999999;
@@ -109,20 +159,35 @@
     .hidden {
         display: none;
     }
-    .alert-red {
+    .badge-error {
+        float: right;
+        background: #a33;
+        color: #fff;
+        padding: 1px 4px;
+        font-size: 10px;
+        font-weight: bold;
+        vertical-align: middle;
+        border-radius: 6px;
+    }
+    .message-error {
         display: block;
         margin: 14px 0;
         padding: 10px;
         background: #fff5f2;
         border: 1px solid #a33;
     }
-    #content #main .alert-red span {
+    .message-error > span {
         display: block;
+        margin-bottom: 7px;
+        font-weight: bold;
         color: #a33;
-        padding-bottom: 10px;
     }
-    #content #main .alert-red p:last-child {
-        padding-bottom: 0;
+    #content #main .message-error p {
+        padding-bottom: 0px;
+    }
+    h3 a, h3 a:hover, h3 a:focus {
+        color: inherit;
+        text-decoration: inherit;
     }
     </style>
 
@@ -133,7 +198,7 @@
 
                 <ul>
                 {% for blockHash, blockData in collector.data.blocks %}
-                    {{ block_tree_entry(blockHash, blockData) }}
+                    {{ block_tree_entry(blockHash, blockData, true) }}
                 {% endfor %}
                 </ul>
             </div>
@@ -147,78 +212,167 @@
     {% endif %}
 
     <script>
-    function TabView() {
-        var _activeLink = null,
-            _activeView = null;
+    function Toggler() {
+        "use strict";
 
-        this.init = function () {
-            var links = document.querySelectorAll('.tree a'),
-                views = document.querySelectorAll('.tree-details'),
-                i,
-                l;
+        var expand = function (button) {
+                var targetId = button.dataset.toggleTargetId,
+                    target = document.getElementById(targetId);
 
-            for (i = 0, l = links.length; i < l; ++i) {
-                (function () {
-                    var link = links[i];
+                if (!target) {
+                    throw "Toggle target " + targetId + " does not exist";
+                }
 
-                    link.addEventListener('click', function (e) {
-                        var href = link.getAttribute('href'),
-                            targetId = href.substr(href.indexOf('#') + 1),
-                            view = document.getElementById(targetId);
+                Sfjs.removeClass(button, 'closed');
+                Sfjs.removeClass(target, 'hidden');
+            },
 
-                        if (view) {
-                            if (null !== _activeLink) {
-                                Sfjs.removeClass(_activeLink, 'active');
-                            }
+            collapse = function (button) {
+                var targetId = button.dataset.toggleTargetId,
+                    target = document.getElementById(targetId);
 
-                            if (null !== _activeView) {
-                                Sfjs.addClass(_activeView, 'hidden');
-                            }
+                if (!target) {
+                    throw "Toggle target " + targetId + " does not exist";
+                }
 
-                            Sfjs.addClass(link, 'active');
-                            Sfjs.removeClass(view, 'hidden');
+                Sfjs.addClass(button, 'closed');
+                Sfjs.addClass(target, 'hidden');
+            },
 
-                            _activeLink = link;
-                            _activeView = view;
-                        }
+            toggle = function (button) {
+                if (Sfjs.hasClass(button, 'closed')) {
+                    expand(button);
+                } else {
+                    collapse(button);
+                }
+            },
+
+            initButtons = function (buttons) {
+                for (var i = 0, l = buttons.length; i < l; ++i) {
+                    var toggleTargetId = buttons[i].dataset.toggleTargetId,
+                        toggleTarget = document.getElementById(toggleTargetId);
+
+                    if (!toggleTarget) {
+                        throw "Toggle target " + toggleTargetId + " does not exist";
+                    }
+
+                    // correct the initial state of the button
+                    if (Sfjs.hasClass(toggleTarget, 'hidden')) {
+                        Sfjs.addClass(buttons[i], 'closed');
+                    }
+
+                    // attach listener for expanding/collapsing the target
+                    buttons[i].addEventListener('click', function (e) {
+                        toggle(this);
 
                         e.preventDefault();
+                        e.stopPropagation();
 
                         return false;
-                    })
-                }());
-            }
-
-            for (i = 0, l = views.length; i < l; ++i) {
-                Sfjs.addClass(views[i], 'hidden');
-            }
-
-            if (links.length > 0) {
-                Sfjs.addClass(links[0], 'active');
-                _activeLink = links[0];
-
-                if (views.length > 0) {
-                    Sfjs.removeClass(views[0], 'hidden');
-                    _activeView = views[0];
+                    });
                 }
-            }
-        }
+            };
+
+        return {
+            initButtons: initButtons,
+
+            toggle: toggle,
+
+            expand: expand,
+
+            collapse: collapse
+        };
     }
 
-    var tabView = new TabView();
+    function TabView() {
+        "use strict";
 
-    tabView.init();
+        var activeTab = null,
+
+            activeTarget = null,
+
+            select = function (tab) {
+                var targetId = tab.dataset.tabTargetId,
+                    target = document.getElementById(targetId);
+
+                if (!target) {
+                    throw "Tab target " + targetId + " does not exist";
+                }
+
+                if (activeTab) {
+                    Sfjs.removeClass(activeTab, 'active');
+                }
+
+                if (activeTarget) {
+                    Sfjs.addClass(activeTarget, 'hidden');
+                }
+
+                Sfjs.addClass(tab, 'active');
+                Sfjs.removeClass(target, 'hidden');
+
+                activeTab = tab;
+                activeTarget = target;
+            },
+
+            initTabs = function (tabs) {
+                for (var i = 0, l = tabs.length; i < l; ++i) {
+                    var targetId = tabs[i].dataset.tabTargetId,
+                        target = document.getElementById(targetId);
+
+                    if (!target) {
+                        throw "Tab target " + targetId + " does not exist";
+                    }
+
+                    tabs[i].addEventListener('click', function (e) {
+                        select(this);
+
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        return false;
+                    });
+
+                    Sfjs.addClass(target, 'hidden');
+                }
+
+                if (tabs.length > 0) {
+                    select(tabs[0]);
+                }
+            };
+
+        return {
+            initTabs: initTabs,
+
+            select: select
+        };
+    }
+
+    var tabTarget = new TabView(),
+        toggler = new Toggler();
+
+    tabTarget.initTabs(document.querySelectorAll('.tree .tree-inner'));
+    toggler.initButtons(document.querySelectorAll('a.toggle-button'));
     </script>
 {% endblock %}
 
-{% macro block_tree_entry(hash, data) %}
+{% macro block_tree_entry(hash, data, expanded) %}
     <li>
-        <a href="#details_{{ hash }}"{% if data.has_duplicate_id %} class="status-red"{% endif %}>{{ data.id }}</a>
+        <div class="tree-inner" data-tab-target-id="{{ hash }}-details">
+             {% if data.children is not empty %}
+                 <a class="toggle-button" data-toggle-target-id="{{ data.id }}-children" href="#"{% if data.has_duplicate_id %} class="status-red"{% endif %}><span class="toggle-icon"></span></a>
+             {% else %}
+                 <div class="toggle-icon empty"></div>
+             {% endif %}
+             {{ data.id }}
+             {% if data.has_duplicate_id %}
+             <div class="badge-error">!</div>
+             {% endif %}
+         </div>
 
         {% if data.children|length > 0 %}
-            <ul>
+            <ul id="{{ data.id }}-children"{% if not expanded %} class="hidden"{% endif %}>
                 {% for childHash, childData in data.children %}
-                    {{ _self.block_tree_entry(childHash, childData) }}
+                    {{ _self.block_tree_entry(childHash, childData, false) }}
                 {% endfor %}
             </ul>
         {% endif %}
@@ -228,7 +382,7 @@
 {% macro block_tree_details(hash, data) %}
     {% set duplicate_id_text = 'The Id "'~ data.id ~ '" is already used in the same render' %}
 
-    <div class="tree-details" id="details_{{ hash }}">
+    <div class="tree-details" id="{{ hash }}-details">
         <h2>
             {{ data.view_vars.id }}
             {% if data.type_class is defined %}
@@ -237,104 +391,132 @@
         </h2>
 
         {% if data.has_duplicate_id %}
-            <div class="alert-red">
+            <div class="message-error">
                 <span>{{ duplicate_id_text }}.</span>
                 <p>Activate the "chain_block" option or change the block name.</p>
             </div>
         {% endif %}
 
         {% if data.default_data is defined %}
-        <h3>Default Data</h3>
+        <h3>
+             <a class="toggle-button" data-toggle-target-id="{{ hash }}-default_data" href="#">
+                 Default Data
+                 <span class="toggle-icon"></span>
+             </a>
+         </h3>
 
-        <table>
-            <tr>
-                <th width="180">Model Format</th>
-                <td>
-                    {% if data.default_data.model is defined %}
-                        <pre>{{ data.default_data.model }}</pre>
-                    {% else %}
-                        <em>same as normalized format</em>
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Normalized Format</th>
-                <td><pre>{{ data.default_data.norm }}</pre></td>
-            </tr>
-            <tr>
-                <th>View Format</th>
-                <td>
-                    {% if data.default_data.view is defined %}
-                        <pre>{{ data.default_data.view }}</pre>
-                    {% else %}
-                        <em>same as normalized format</em>
-                    {% endif %}
-                </td>
-            </tr>
-        </table>
+         <div id="{{ hash }}-default_data">
+             <table>
+                 <tr>
+                     <th width="180">Model Format</th>
+                     <td>
+                         {% if data.default_data.model is defined %}
+                             <pre>{{ data.default_data.model }}</pre>
+                         {% else %}
+                             <em>same as normalized format</em>
+                         {% endif %}
+                     </td>
+                 </tr>
+                 <tr>
+                     <th>Normalized Format</th>
+                     <td><pre>{{ data.default_data.norm }}</pre></td>
+                 </tr>
+                 <tr>
+                     <th>View Format</th>
+                     <td>
+                         {% if data.default_data.view is defined %}
+                             <pre>{{ data.default_data.view }}</pre>
+                         {% else %}
+                             <em>same as normalized format</em>
+                         {% endif %}
+                     </td>
+                 </tr>
+             </table>
+         </div>
         {% endif %}
 
         {% if data.passed_options is defined %}
-        <h3>Passed Options</h3>
+        <h3>
+             <a class="toggle-button" data-toggle-target-id="{{ hash }}-passed_options" href="#">
+                 Passed Options
+                 <span class="toggle-icon"></span>
+             </a>
+         </h3>
 
-        {% if data.passed_options|length %}
-        <table>
-            <tr>
-                <th width="180">Option</th>
-                <th>Passed Value</th>
-                <th>Resolved Value</th>
-            </tr>
-            {% for option, value in data.passed_options %}
-            <tr>
-                <th>{{ option }}</th>
-                <td><pre>{{ value }}</pre></td>
-                <td>
-                    {% if data.resolved_options[option] is sameas(value) %}
-                        <em>same as passed value</em>
-                    {% else %}
-                        <pre>{{ data.resolved_options[option] }}</pre>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% else %}
-        <p><em>No options where passed when constructing this block.</em></p>
-        {% endif %}
+         <div id="{{ hash }}-passed_options">
+             {% if data.passed_options|length %}
+             <table>
+                 <tr>
+                     <th width="180">Option</th>
+                     <th>Passed Value</th>
+                     <th>Resolved Value</th>
+                 </tr>
+                 {% for option, value in data.passed_options %}
+                 <tr>
+                     <th>{{ option }}</th>
+                     <td><pre>{{ value }}</pre></td>
+                     <td>
+                         {% if data.resolved_options[option] is sameas(value) %}
+                             <em>same as passed value</em>
+                         {% else %}
+                             <pre>{{ data.resolved_options[option] }}</pre>
+                         {% endif %}
+                     </td>
+                 </tr>
+                 {% endfor %}
+             </table>
+             {% else %}
+             <p><em>No options where passed when constructing this block.</em></p>
+             {% endif %}
+         </div>
         {% endif %}
 
         {% if data.resolved_options is defined %}
-        <h3>Resolved Options</h3>
+        <h3>
+             <a class="toggle-button" data-toggle-target-id="{{ hash }}-resolved_options" href="#">
+                 Resolved Options
+                 <span class="toggle-icon"></span>
+             </a>
+         </h3>
 
-        <table>
-            <tr>
-                <th width="180">Option</th>
-                <th>Value</th>
-            </tr>
-            {% for option, value in data.resolved_options %}
-            <tr>
-                <th>{{ option }}</th>
-                <td><pre>{{ value }}</pre></td>
-            </tr>
-            {% endfor %}
-        </table>
+         <div id="{{ hash }}-resolved_options" class="hidden">
+             <table>
+                 <tr>
+                     <th width="180">Option</th>
+                     <th>Value</th>
+                 </tr>
+                 {% for option, value in data.resolved_options %}
+                 <tr>
+                     <th>{{ option }}</th>
+                     <td><pre>{{ value }}</pre></td>
+                 </tr>
+                 {% endfor %}
+             </table>
+         </div>
         {% endif %}
 
         {% if data.view_vars is defined %}
-        <h3>View Variables</h3>
+        <h3>
+            <a class="toggle-button" data-toggle-target-id="{{ hash }}-view_vars" href="#">
+                View Variables
+                <span class="toggle-icon"></span>
+            </a>
+        </h3>
 
-        <table>
-            <tr>
-                <th width="180">Variable</th>
-                <th>Value</th>
-            </tr>
-            {% for variable, value in data.view_vars %}
-            <tr{% if variable == 'id' and data.has_duplicate_id %} class="status-red"{% endif %}>
-                <th>{% if variable == 'id' and data.has_duplicate_id %}<abbr title="{{ duplicate_id_text }}">{% endif %}{{ variable }}{% if variable == 'id' and data.has_duplicate_id %}</abbr>{% endif %}</th>
-                <td><pre>{{ value }}</pre></td>
-            </tr>
-            {% endfor %}
-        </table>
+        <div id="{{ hash }}-view_vars" class="hidden">
+            <table>
+                <tr>
+                    <th width="180">Variable</th>
+                    <th>Value</th>
+                </tr>
+                {% for variable, value in data.view_vars %}
+                <tr>
+                    <th>{{ variable }}</th>
+                    <td><pre>{{ value }}</pre></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
         {% endif %}
     </div>
 
