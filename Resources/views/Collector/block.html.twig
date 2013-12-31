@@ -359,7 +359,7 @@
     <li>
         <div class="tree-inner" data-tab-target-id="{{ hash }}-details">
              {% if data.children is not empty %}
-                 <a class="toggle-button" data-toggle-target-id="{{ data.id }}-children" href="#"{% if data.has_duplicate_id %} class="status-red"{% endif %}><span class="toggle-icon"></span></a>
+                 <a class="toggle-button" data-toggle-target-id="{{ hash }}-children" href="#"{% if data.has_duplicate_id %} class="status-red"{% endif %}><span class="toggle-icon"></span></a>
              {% else %}
                  <div class="toggle-icon empty"></div>
              {% endif %}
