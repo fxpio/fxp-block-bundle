@@ -69,13 +69,13 @@ class BlockExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'block_widget'      => new \Twig_Function_Node('Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
-            'block_component'   => new \Twig_Function_Node('Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
-            'block_label'       => new \Twig_Function_Node('Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
-            'block_row'         => new \Twig_Function_Node('Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
-            'block_javascript'  => new \Twig_Function_Node('Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
-            'block_stylesheet'  => new \Twig_Function_Node('Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
-            'block_twig_render' => new \Twig_Function_Method($this, 'renderBlock', array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_widget',      'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_component',   'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_label',       'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_row',         'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_javascript',  'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_stylesheet',  'compile', array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
+            new \Twig_SimpleFunction('block_twig_render', 'renderBlock', array('is_safe' => array('html'))),
         );
     }
 
@@ -85,7 +85,7 @@ class BlockExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'humanize' => new \Twig_Filter_Method($this, 'renderer->humanize'),
+            new \Twig_SimpleFilter('block_humanize', 'renderer::humanize'),
         );
     }
 

@@ -1,0 +1,310 @@
+{# Widgets #}
+
+{% block block_widget %}
+{% spaceless %}
+    {% if compound %}
+        {{ block('block_widget_compound') }}
+    {% else %}
+        {{ block('block_widget_simple') }}
+    {% endif %}
+{% endspaceless %}
+{% endblock block_widget %}
+
+{% block block_component %}
+{% endblock block_component %}
+
+{% block block_javascript %}
+{% for child in block.children %}
+    {{ block_javascript(child) }}
+{% endfor %}
+{% endblock block_javascript %}
+
+{% block block_stylesheet %}
+{% for child in block.children %}
+    {{ block_stylesheet(child) }}
+{% endfor %}
+{% endblock block_stylesheet %}
+
+
+{% block block_widget_simple %}
+{% spaceless %}
+    {% set type = type|default('text') %}
+    <div class="block_{{ type }}" {{ block('widget_attributes') }}>{{ value|raw }}</div>
+{% endspaceless %}
+{% endblock block_widget_simple %}
+
+{% block block_widget_compound %}
+{% spaceless %}
+    <div {{ block('widget_container_attributes') }}>
+        {% if block.parent is empty %}
+
+        {% endif %}
+        {{ block('block_rows') }}
+    </div>
+{% endspaceless %}
+{% endblock block_widget_compound %}
+
+{% block collection_widget %}
+{% spaceless %}
+    {% set type = type|default('collection') %}
+    {{ block('block_widget') }}
+{% endspaceless %}
+{% endblock collection_widget %}
+
+{% block textarea_widget %}
+{% spaceless %}
+    {% set type = type|default('textarea') %}
+    {% set value = value|raw|nl2br %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock textarea_widget %}
+
+{% block choice_widget %}
+{% spaceless %}
+    {% set type = type|default('choice') %}
+    {% set attr = attr|merge({'class': 'block_' ~ type ~ ' ' ~ attr.class|default('') }) %}
+    {% if expanded %}
+        {{ block('choice_widget_expanded') }}
+    {% else %}
+        {{ block('choice_widget_collapsed') }}
+    {% endif %}
+{% endspaceless %}
+{% endblock choice_widget %}
+
+{% block choice_widget_expanded %}
+{% spaceless %}
+    <div {{ block('widget_container_attributes') }}>
+    {% for child in block %}
+        {{ block_widget(child) }}
+        {{ block_label(child) }}
+    {% endfor %}
+    </div>
+{% endspaceless %}
+{% endblock choice_widget_expanded %}
+
+{% block choice_widget_collapsed %}
+{% spaceless %}
+    {% if multiple %}
+        {% set attr = attr|merge({'class': attr.class|default('') ~ ' choice_multiple' }) %}
+    {% else %}
+        {% set attr = attr|merge({'class': attr.class|default('') ~ ' choice' }) %}
+    {% endif %}
+
+    <div {{ block('widget_attributes') }}>
+        {% set options = choices %}
+        {{ block('choice_widget_options') }}
+    </div>
+{% endspaceless %}
+{% endblock choice_widget_collapsed %}
+
+{% block choice_widget_options %}
+{% spaceless %}
+    {% for indice in choice_selections %}
+        {% if route_name is defined and route_name is not null %}
+            {% set data_indice = data[indice]|default(data) %}
+            {% set route_parameters = route_parameters|merge({(route_id_name): data_indice.id}) %}
+            <a class="choice_item{% if inline %} inline{% endif %}" href="{{ path(route_name, route_parameters) }}">{{ options[indice].label|trans({}, translation_domain) }}</a>
+        {% else %}
+            <span class="choice_item{% if inline %} inline{% endif %}">{{ options[indice].label|trans({}, translation_domain) }}</span>
+        {% endif %}
+    {% endfor %}
+
+    {% if choice_selections|length == 0 %}
+        <span class="choice_empty">{{ empty_value|trans({}, translation_domain) }}</span>
+    {% endif %}
+{% endspaceless %}
+{% endblock choice_widget_options %}
+
+{% block checkbox_widget %}
+{% spaceless %}
+    {% if value %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_checkbox checked')|trim}) %}
+    {% else %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_checkbox')|trim}) %}
+    {% endif %}
+
+    <div {{ block('widget_attributes') }}></div>
+{% endspaceless %}
+{% endblock checkbox_widget %}
+
+{% block radio_widget %}
+{% spaceless %}
+    {% if value %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_radio checked')|trim}) %}
+    {% else %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_radio')|trim}) %}
+    {% endif %}
+
+    <div {{ block('widget_attributes') }}></div>
+{% endspaceless %}
+{% endblock radio_widget %}
+
+{% block datetime_widget %}
+{% spaceless %}
+    {% set type = type|default('datetime') %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock datetime_widget %}
+
+{% block date_widget %}
+{% spaceless %}
+    {% set type = type|default('date') %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock date_widget %}
+
+{% block time_widget %}
+{% spaceless %}
+    {% set type = type|default('time') %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock time_widget %}
+
+{% block timezone_widget %}
+{% spaceless %}
+    {% set type = type|default('timezone') %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock timezone_widget %}
+
+{% block number_widget %}
+{% spaceless %}
+    {% set type = type|default('number') %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock number_widget %}
+
+{% block integer_widget %}
+{% spaceless %}
+    {% set type = type|default('integer') %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock integer_widget %}
+
+{% block money_widget %}
+{% spaceless %}
+    {% set type = type|default('money') %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock money_widget %}
+
+{% block url_widget %}
+{% spaceless %}
+    {% set type = type|default('url') %}
+    {% set title = title|default(value) %}
+    {% set url_attr = url_attr|merge({'href': value, 'tabindex': 0 }) %}
+    {% set value %}
+        <a {% for attrname, attrvalue in url_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ title|trans({}, translation_domain) }}</a>
+    {% endset %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock url_widget %}
+
+{% block percent_widget %}
+{% spaceless %}
+    {% set type = type|default('percent') %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock percent_widget %}
+
+{% block password_widget %}
+{% spaceless %}
+    {% set type = type|default('password') %}
+    {{ block('block_widget_simple') }}
+{% endspaceless %}
+{% endblock password_widget %}
+
+{% block hidden_widget %}
+{% endblock hidden_widget %}
+
+{% block email_widget %}
+{% spaceless %}
+    {% set type = type|default('email') %}
+
+    {% if mailto %}
+        {% set label = label|default(value) %}
+        {% set value %}
+            <a href="mailto:{{ value }}" tabindex="0">{{ label }}</a>
+        {% endset %}
+        {{ block('block_widget_simple') }}
+    {% else %}
+        {{ block('block_widget_simple') }}
+    {% endif %}
+{% endspaceless %}
+{% endblock email_widget %}
+
+{% block entity_widget %}
+{% spaceless %}
+    {% set type = type|default('entity') %}
+    {{ block('choice_widget') }}
+{% endspaceless %}
+{% endblock entity_widget %}
+
+{# Labels #}
+
+{% block block_label %}
+{% spaceless %}
+    {% if not compound %}
+        {% set label_attr = label_attr %}
+    {% endif %}
+
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' block_label')|trim}) %}
+
+    {% if label is empty %}
+        {% set label = name|block_humanize %}
+    {% endif %}
+    <div{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</div>
+{% endspaceless %}
+{% endblock block_label %}
+
+{# Rows #}
+
+{% block repeated_row %}
+{% spaceless %}
+    {#
+    No need to render the errors here, as all errors are mapped
+    to the first child (see RepeatedTypeValidatorExtension).
+    #}
+    {{ block('block_rows') }}
+{% endspaceless %}
+{% endblock repeated_row %}
+
+{% block block_row %}
+{% spaceless %}
+    <div>
+        {{ block_label(block) }}
+        {{ block_widget(block) }}
+    </div>
+{% endspaceless %}
+{% endblock block_row %}
+
+{% block hidden_row %}
+    {{ block_widget(block) }}
+{% endblock hidden_row %}
+
+{# Misc #}
+
+
+{# Support #}
+
+{% block block_rows %}
+{% spaceless %}
+    {% for child in block %}
+        {{ block_row(child) }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock block_rows %}
+
+{% block widget_attributes %}
+{% spaceless %}
+    id="{{ id }}"
+    {% for attrname, attrvalue in attr %}{% if attrname in ['title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
+{% endspaceless %}
+{% endblock widget_attributes %}
+
+{% block widget_container_attributes %}
+{% spaceless %}
+    {% if id is not empty %}id="{{ id }}" {% endif %}
+    {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
+{% endspaceless %}
+{% endblock widget_container_attributes %}
