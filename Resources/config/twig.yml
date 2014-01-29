@@ -1,0 +1,23 @@
+parameters:
+    sonatra.block.twig.extension.base.class: Sonatra\Bundle\BlockBundle\Twig\Extension\BlockExtension
+    sonatra.block.twig.renderer.base.class: Sonatra\Bundle\BlockBundle\Twig\Block\TwigRenderer
+    sonatra.block.twig.engine.base.class: Sonatra\Bundle\BlockBundle\Twig\Block\TwigRendererEngine
+
+    sonatra.block.twig.resources:
+
+services:
+    sonatra.block.twig.extension:
+        public: false
+        class: '%sonatra.block.twig.extension.base.class%'
+        arguments: ['@sonatra.block.twig.renderer']
+        tags: [ { name: twig.extension } ]
+
+    sonatra.block.twig.renderer:
+        public: false
+        class: '%sonatra.block.twig.renderer.base.class%'
+        arguments: ['@sonatra.block.twig.engine']
+
+    sonatra.block.twig.engine:
+        public: false
+        class: '%sonatra.block.twig.engine.base.class%'
+        arguments: ['%sonatra.block.twig.resources%']

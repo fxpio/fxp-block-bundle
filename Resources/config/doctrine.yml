@@ -1,0 +1,13 @@
+parameters:
+    sonatra.block.type_guesser.doctrine.base.class: Sonatra\Bundle\BlockBundle\Doctrine\Block\DoctrineOrmTypeGuesser
+
+services:
+    sonatra.block.type_guesser.doctrine:
+        class: '%sonatra.block.type_guesser.doctrine.base.class%'
+        arguments: ['@doctrine']
+        tags: [ { name: sonatra.block.type_guesser } ]
+
+    sonatra.block.type.entity:
+        class: 'Sonatra\Bundle\BlockBundle\Doctrine\Block\Type\EntityType'
+        arguments: ['@doctrine']
+        tags: [ { name: sonatra.block.type, alias: entity } ]

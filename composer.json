@@ -1,0 +1,46 @@
+﻿{
+    "name": "sonatra/block-bundle",
+    "type": "symfony-bundle",
+    "description": "Sonatra Block Bundle",
+    "keywords": ["block", "user interface", "ui"],
+    "homepage": "http://sonatra.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "François Pluchino",
+            "email": "francois.pluchino@sonatra.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "~2.3"
+    },
+    "require-dev": {
+        "symfony/console": "~2.3",
+        "symfony/finder": "~2.3",
+        "symfony/twig-bundle": "~2.3",
+        "symfony/class-loader": "~2.3",
+        "symfony/yaml": "~2.3",
+        "symfony/form": "~2.3",
+        "symfony/dom-crawler": "~2.3",
+        "symfony/css-selector": "~2.3",
+        "symfony/browser-kit": "~2.3",
+        "symfony/process": "~2.3"
+    },
+    "suggest": {
+        "doctrine/orm": "For doctrine block type",
+        "sonatra/panel-bundle": "The bundle of panel builder",
+        "sonatra/grid-bundle": "The bundle of grid builder",
+        "sonatra/ajax-bundle": "Add ajax interaction directly in block type",
+    }
+    "autoload": {
+        "psr-0": { "Sonatra\\Bundle\\BlockBundle": "" }
+    },
+    "target-dir": "Sonatra/Bundle/BlockBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
