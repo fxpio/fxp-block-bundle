@@ -23,7 +23,7 @@ class RadioType extends AbstractType
      */
     public function getParent()
     {
-        return 'field';
+        return 'checkbox';
     }
 
     /**
