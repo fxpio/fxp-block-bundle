@@ -84,6 +84,10 @@ class BlockFactory implements BlockFactoryInterface
             $options['data'] = $data;
         }
 
+        if (!array_key_exists('id', $options)) {
+            $options['id'] = array_key_exists('block_name', $options) ? $options['block_name'] : $name;
+        }
+
         if ($type instanceof BlockTypeInterface) {
             $type = $this->resolveType($type);
 
