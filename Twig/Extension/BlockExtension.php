@@ -243,7 +243,7 @@ class BlockExtension extends \Twig_Extension
             $value = $block->getConfig()->getEmptyData();
 
             if ($value instanceof \Closure) {
-                $value = $value($block->getConfig()->getOptions());
+                $value = call_user_func($value, $block, $block->getConfig()->getOptions());
             }
         }
 
