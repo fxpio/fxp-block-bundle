@@ -12,8 +12,8 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractType;
-use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
-use Sonatra\Bundle\BlockBundle\Block\BlockView;
+use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\ViewTransformer\TwigTemplateTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -22,20 +22,28 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class TwigType extends AbstractType
 {
     /**
+     * @var \Twig_Environment
+     */
+    protected $twig;
+
+    /**
+     * Constructor.
+     *
+     * @param \Twig_Environment $twig
+     */
+    public function __construct(\Twig_Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function finishView(BlockView $view, BlockInterface $block, array $options)
+    public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
-        $view->vars = array_replace($view->vars, array(
-                'block_rendered' => $options['block_rendered'],
-                'rendered'       => $options['rendered'],
-                'resource'       => $options['resource'],
-                'options'        => array_replace($options['options'],
-                        $view->vars,
-                        array(
-                                'block_rendered' => $options['block_rendered'],
-                        )),
-        ));
+        $transformer = new TwigTemplateTransformer($this->twig, $options['resource'],
+            $options['resource_block'], $options['variables']);
+        $builder->addViewTransformer($transformer);
     }
 
     /**
@@ -44,17 +52,16 @@ class TwigType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'inherit_data'   => true,
-                'rendered'       => true,
-                'block_rendered' => 'content',
-                'resource'       => null,
-                'options'        => array(),
+            'inherit_data'   => true,
+            'resource'       => null,
+            'resource_block' => null,
+            'variables'      => array(),
         ));
 
         $resolver->setAllowedTypes(array(
-                'block_rendered' => 'string',
-                'resource'       => 'string',
-                'options'        => 'array',
+            'resource'       => 'string',
+            'resource_block' => array('null', 'string'),
+            'variables'      => 'array',
         ));
     }
 

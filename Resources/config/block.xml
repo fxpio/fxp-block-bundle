@@ -58,6 +58,7 @@
         </service>
         <service id="sonatra_block.type.twig" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TwigType">
             <tag name="sonatra_block.type" alias="twig" />
+            <argument type="service" id="twig" />
         </service>
         <service id="sonatra_block.type.output" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\OutputType">
             <tag name="sonatra_block.type" alias="output" />

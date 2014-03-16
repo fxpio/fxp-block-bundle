@@ -244,14 +244,7 @@
 
 {# Twig Widget #}
 {% block twig_widget %}
-{% if attr.id is not defined %}
-    {% if render_id %}
-        {% set attr = attr|merge({'id': id}) %}
-    {% endif %}
-{% endif %}
-<div {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}>
-{{ block_twig_render(resource, block_rendered, options) }}
-</div>
+{{ block('block_widget_simple') }}
 {% endblock twig_widget %}
 
 
