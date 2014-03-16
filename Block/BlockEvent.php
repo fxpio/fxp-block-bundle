@@ -12,7 +12,6 @@
 namespace Sonatra\Bundle\BlockBundle\Block;
 
 use Symfony\Component\EventDispatcher\Event;
-use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
