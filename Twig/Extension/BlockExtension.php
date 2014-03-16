@@ -236,12 +236,18 @@ class BlockExtension extends \Twig_Extension
     {
         $options = array_merge($options, array('data' => $value));
         $name = $this->getBlockName($options);
-        $view = $this->factory->createNamed($name, $type, null, $options)->createView();
+        $block = $this->factory->createNamed($name, $type, null, $options);
+        $value = $block->getViewData();
 
-        $this->renderer->setTheme($view, '@SonatraBlock/Block/block_formatter_theme.html.twig');
-        $output = $this->renderer->searchAndRenderBlock($view, 'widget', $variables);
+        if ('' === $value) {
+            $value = $block->getConfig()->getEmptyData();
 
-        return $output;
+            if ($value instanceof \Closure) {
+                $value = $value($block->getConfig()->getOptions());
+            }
+        }
+
+        return $value;
     }
 
     /**
