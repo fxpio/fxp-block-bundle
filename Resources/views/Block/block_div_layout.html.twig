@@ -16,13 +16,13 @@
 
 {% block block_widget_simple %}
 {% spaceless %}
-    <div {{ block('widget_attributes') }}>{{ value|raw }}</div>
+    <div{{ block('widget_attributes') }}>{{ value|raw }}</div>
 {% endspaceless %}
 {% endblock block_widget_simple %}
 
 {% block block_widget_compound %}
 {% spaceless %}
-    <div {{ block('widget_container_attributes') }}>
+    <div{{ block('widget_container_attributes') }}>
         {{ block('block_rows') }}
     </div>
 {% endspaceless %}
@@ -76,7 +76,7 @@
         {% set attr = attr|merge({'class': attr.class|default('') ~ ' choice' }) %}
     {% endif %}
 
-    <div {{ block('widget_attributes') }}>
+    <div{{ block('widget_attributes') }}>
         {% set options = choices %}
         {{ block('choice_widget_options') }}
     </div>
@@ -111,7 +111,7 @@
         {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_checkbox')|trim}) %}
     {% endif %}
 
-    <div {{ block('widget_attributes') }}></div>
+    <div{{ block('widget_attributes') }}></div>
 {% endspaceless %}
 {% endblock checkbox_widget %}
 
@@ -123,7 +123,7 @@
         {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_radio')|trim}) %}
     {% endif %}
 
-    <div {{ block('widget_attributes') }}></div>
+    <div{{ block('widget_attributes') }}></div>
 {% endspaceless %}
 {% endblock radio_widget %}
 
@@ -228,17 +228,11 @@
 {% endblock block_rows %}
 
 {% block widget_attributes %}
-{% spaceless %}
-    {% if render_id %}id="{{ id }}" {% endif %}
-    {% for attrname, attrvalue in attr %}{% if attrname in ['title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
-{% endspaceless %}
+{% if render_id %} id="{{ id }}"{% endif %}{% for attrname, attrvalue in attr %} {% if attrname in ['title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}"{% endif %}{% endfor %}
 {% endblock widget_attributes %}
 
 {% block widget_container_attributes %}
-{% spaceless %}
-    {% if render_id %}id="{{ id }}" {% endif %}
-    {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
-{% endspaceless %}
+{% if render_id %} id="{{ id }}"{% endif %}{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}
 {% endblock widget_container_attributes %}
 
 
