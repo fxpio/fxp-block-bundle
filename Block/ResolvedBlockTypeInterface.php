@@ -76,6 +76,14 @@ interface ResolvedBlockTypeInterface
     public function buildBlock(BlockBuilderInterface $builder, array $options);
 
     /**
+     * Finishes a block builder for the type hierarchy.
+     *
+     * @param BlockBuilderInterface $builder The builder to configure.
+     * @param array                 $options The options used for the configuration.
+     */
+    public function finishBlock(BlockBuilderInterface $builder, array $options);
+
+    /**
      * Action when the block adds a child.
      *
      * @param BlockInterface $child   The child block

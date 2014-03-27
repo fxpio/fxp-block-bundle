@@ -103,6 +103,7 @@ class BlockFactory implements BlockFactoryInterface
         // Explicitly call buildBlock() in order to be able to override either
         // createBuilder() or buildBlock() in the resolved block type
         $type->buildBlock($builder, $builder->getOptions());
+        $type->finishBlock($builder, $builder->getOptions());
 
         return $builder;
     }

@@ -32,6 +32,19 @@ interface BlockTypeExtensionInterface
     public function buildBlock(BlockBuilderInterface $builder, array $options);
 
     /**
+     * Finishes the block.
+     *
+     * This method is called after the extended type has built the block to
+     * further modify it.
+     *
+     * @see BlockTypeInterface::finishBlock()
+     *
+     * @param BlockBuilderInterface $builder The block builder
+     * @param array                 $options The options
+     */
+    public function finishBlock(BlockBuilderInterface $builder, array $options);
+
+    /**
      * Action when the block adds a child.
      *
      * @param BlockInterface $child   The child block

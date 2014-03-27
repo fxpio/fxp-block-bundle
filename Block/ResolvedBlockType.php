@@ -149,6 +149,23 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
     /**
      * {@inheritdoc}
      */
+    public function finishBlock(BlockBuilderInterface $builder, array $options)
+    {
+        if (null !== $this->parent) {
+            $this->parent->finishBlock($builder, $options);
+        }
+
+        $this->innerType->finishBlock($builder, $options);
+
+        foreach ($this->typeExtensions as $extension) {
+            /* @var BlockTypeExtensionInterface $extension */
+            $extension->finishBlock($builder, $options);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addChild(BlockInterface $child, BlockInterface $block, array $options)
     {
         if (null !== $this->parent) {

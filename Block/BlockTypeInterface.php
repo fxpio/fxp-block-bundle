@@ -30,6 +30,17 @@ interface BlockTypeInterface
     public function buildBlock(BlockBuilderInterface $builder, array $options);
 
     /**
+     * Finishes the block.
+     *
+     * This method is called for each type in the hierarchy ending block the
+     * top most type. Type extensions can further modify the block.
+     *
+     * @param BlockBuilderInterface $builder The block builder
+     * @param array                 $options The options
+     */
+    public function finishBlock(BlockBuilderInterface $builder, array $options);
+
+    /**
      * Action when the block adds a child.
      *
      * @param BlockInterface $child   The child block
