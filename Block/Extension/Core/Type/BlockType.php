@@ -110,6 +110,7 @@ class BlockType extends AbstractType
                 'attr'                => $options['attr'],
                 'label_attr'          => $options['label_attr'],
                 'compound'            => $block->getConfig()->getCompound(),
+                'wrapped'             => $options['wrapped'],
                 'block_prefixes'      => $blockPrefixes,
                 'unique_block_prefix' => $uniqueBlockPrefix,
                 'translation_domain'  => $translationDomain,
@@ -174,6 +175,7 @@ class BlockType extends AbstractType
                 'label_attr'         => array(),
                 'inherit_data'       => false,
                 'compound'           => true,
+                'wrapped'            => true,
                 'translation_domain' => null,
         ));
 

@@ -16,15 +16,15 @@
 
 {% block block_widget_simple %}
 {% spaceless %}
-    <div{{ block('widget_attributes') }}>{{ value|raw }}</div>
+{% if wrapped %}<div{{ block('widget_attributes') }}>{% endif %}{{ value|raw }}{% if wrapped %}</div>{% endif %}
 {% endspaceless %}
 {% endblock block_widget_simple %}
 
 {% block block_widget_compound %}
 {% spaceless %}
-    <div{{ block('widget_container_attributes') }}>
+    {% if wrapped %}<div{{ block('widget_container_attributes') }}>{% endif %}
         {{ block('block_rows') }}
-    </div>
+    {% if wrapped %}</div>{% endif %}
 {% endspaceless %}
 {% endblock block_widget_compound %}
 
