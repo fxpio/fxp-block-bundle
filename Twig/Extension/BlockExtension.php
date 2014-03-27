@@ -237,17 +237,8 @@ class BlockExtension extends \Twig_Extension
         $options = array_merge($options, array('data' => $value));
         $name = $this->getBlockName($options);
         $block = $this->factory->createNamed($name, $type, null, $options);
-        $value = $block->getViewData();
 
-        if ('' === $value) {
-            $value = $block->getConfig()->getEmptyData();
-
-            if ($value instanceof \Closure) {
-                $value = call_user_func($value, $block, $block->getConfig()->getOptions());
-            }
-        }
-
-        return $value;
+        return $block->getViewData();
     }
 
     /**

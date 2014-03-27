@@ -275,6 +275,13 @@ class Block implements \IteratorAggregate, BlockInterface
                         $dataClass . '.'
                 );
             }
+
+        } else {
+            $viewData = $this->getConfig()->getEmptyData();
+
+            if ($viewData instanceof \Closure) {
+                $viewData = call_user_func($viewData, $this, $this->getConfig()->getOptions());
+            }
         }
 
         $this->modelData = $modelData;
