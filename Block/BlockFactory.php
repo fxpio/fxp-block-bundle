@@ -70,7 +70,8 @@ class BlockFactory implements BlockFactoryInterface
      */
     public function createBuilder($type = 'block', $data = null, array $options = array())
     {
-        $name = BlockUtil::createUniqueName();
+        $name = array_key_exists('block_name', $options) ? $options['block_name'] : BlockUtil::createUniqueName();
+        $name = array_key_exists('id', $options) ? $options['id'] : $name;
 
         return $this->createNamedBuilder($name, $type, $data, $options);
     }
