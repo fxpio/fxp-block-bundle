@@ -45,12 +45,6 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
     private $unresolvedChildren = array();
 
     /**
-     * The parent of this builder
-     * @var BlockBuilder
-     */
-    private $parent;
-
-    /**
      * Creates a new block builder.
      *
      * @param string                   $name
