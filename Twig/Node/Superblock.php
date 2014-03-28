@@ -44,17 +44,22 @@ class Superblock extends \Twig_Node_Block
     public function compile(\Twig_Compiler $compiler)
     {
         $compiler
-            ->addDebugInfo($this)
             ->write(sprintf("public function block_%s(\$context, array \$blocks = array())\n", $this->getAttribute('name')), "{\n")
             ->indent()
+            ->addDebugInfo($this)
             ->write('$block = ')
         ;
 
-        // checks if the type is an block view
+        // checks if the type is an block builder, block, or block view
         if ($this->getAttribute('type') instanceof \Twig_Node_Expression_Name) {
             $compiler
+                ->raw('(')
                 ->subcompile($this->getAttribute('type'))
-                ->raw(' instanceof \Sonatra\Bundle\BlockBundle\Block\BlockView ? ')
+                ->raw(' instanceof \Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface || ')
+                ->subcompile($this->getAttribute('type'))
+                ->raw(' instanceof \Sonatra\Bundle\BlockBundle\Block\BlockInterface || ')
+                ->subcompile($this->getAttribute('type'))
+                ->raw(' instanceof \Sonatra\Bundle\BlockBundle\Block\BlockView) ? ')
                 ->subcompile($this->getAttribute('type'))
                 ->raw(' : ')
             ;
@@ -69,6 +74,19 @@ class Superblock extends \Twig_Node_Block
             ->raw(')')
             ->raw(";\n")
         ;
+
+        if ($this->getAttribute('type') instanceof \Twig_Node_Expression_Name) {
+            $compiler
+                ->write('if ($block instanceof \Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface) {')
+                ->raw("\n")
+                ->indent()
+                ->write('$block = $block->getBlock();')
+                ->raw("\n")
+                ->outdent()
+                ->write('}')
+                ->raw("\n")
+            ;
+        }
 
         if ($this->hasNode('sblocks')) {
             $compiler->subcompile($this->getNode('sblocks'));
