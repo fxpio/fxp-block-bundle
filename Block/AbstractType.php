@@ -35,6 +35,20 @@ abstract class AbstractType implements BlockTypeInterface
     /**
      * {@inheritdoc}
      */
+    public function addParent(BlockInterface $parent, BlockInterface $block, array $options)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeParent(BlockInterface $parent, BlockInterface $block, array $options)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addChild(BlockInterface $child, BlockInterface $block, array $options)
     {
     }

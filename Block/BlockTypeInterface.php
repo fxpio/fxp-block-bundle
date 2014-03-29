@@ -41,6 +41,24 @@ interface BlockTypeInterface
     public function finishBlock(BlockBuilderInterface $builder, array $options);
 
     /**
+     * Action when the block is added to parent block.
+     *
+     * @param BlockInterface $parent  The child block
+     * @param BlockInterface $block   The block
+     * @param array          $options The options
+     */
+    public function addParent(BlockInterface $parent, BlockInterface $block, array $options);
+
+    /**
+     * Action when the block is removed to parent block.
+     *
+     * @param BlockInterface $parent  The child block
+     * @param BlockInterface $block   The block
+     * @param array          $options The options
+     */
+    public function removeParent(BlockInterface $parent, BlockInterface $block, array $options);
+
+    /**
      * Action when the block adds a child.
      *
      * @param BlockInterface $child   The child block

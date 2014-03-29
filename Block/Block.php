@@ -422,6 +422,7 @@ class Block implements \IteratorAggregate, BlockInterface
         $this->children[$child->getName()] = $child;
 
         $child->setParent($this);
+        $child->getConfig()->getType()->addParent($this, $child, $child->getConfig()->getOptions());
         $this->getConfig()->getType()->addChild($child, $this, $this->getConfig()->getOptions());
 
         if (!$this->lockSetData && $this->config->getMapped()) {
@@ -439,8 +440,10 @@ class Block implements \IteratorAggregate, BlockInterface
     public function remove($name)
     {
         if (isset($this->children[$name])) {
-            $this->getConfig()->getType()->removeChild($this->children[$name], $this, $this->getConfig()->getOptions());
-            $this->children[$name]->setParent(null);
+            $child = $this->children[$name];
+            $this->getConfig()->getType()->removeChild($child, $this, $this->getConfig()->getOptions());
+            $child->getConfig()->getType()->removeParent($this, $child, $child->getConfig()->getOptions());
+            $child->setParent(null);
 
             unset($this->children[$name]);
         }

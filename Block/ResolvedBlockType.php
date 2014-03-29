@@ -166,6 +166,40 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
     /**
      * {@inheritdoc}
      */
+    public function addParent(BlockInterface $parent, BlockInterface $block, array $options)
+    {
+        if (null !== $this->parent) {
+            $this->parent->addParent($parent, $block, $options);
+        }
+
+        $this->innerType->addParent($parent, $block, $options);
+
+        foreach ($this->typeExtensions as $extension) {
+            /* @var BlockTypeExtensionInterface $extension */
+            $extension->addParent($parent, $block, $options);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeParent(BlockInterface $parent, BlockInterface $block, array $options)
+    {
+        if (null !== $this->parent) {
+            $this->parent->removeParent($parent, $block, $options);
+        }
+
+        $this->innerType->removeParent($parent, $block, $options);
+
+        foreach ($this->typeExtensions as $extension) {
+            /* @var BlockTypeExtensionInterface $extension */
+            $extension->removeParent($parent, $block, $options);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addChild(BlockInterface $child, BlockInterface $block, array $options)
     {
         if (null !== $this->parent) {

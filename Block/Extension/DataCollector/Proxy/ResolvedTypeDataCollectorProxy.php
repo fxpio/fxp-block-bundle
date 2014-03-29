@@ -119,6 +119,22 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
     /**
      * {@inheritdoc}
      */
+    public function addParent(BlockInterface $parent, BlockInterface $block, array $options)
+    {
+        $this->proxiedType->addParent($parent, $block, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeParent(BlockInterface $parent, BlockInterface $block, array $options)
+    {
+        $this->proxiedType->removeParent($parent, $block, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addChild(BlockInterface $child, BlockInterface $block, array $options)
     {
         $this->proxiedType->addChild($child, $block, $options);
