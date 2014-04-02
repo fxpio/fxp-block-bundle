@@ -44,6 +44,12 @@ class Block implements \IteratorAggregate, BlockInterface
     protected $options = array();
 
     /**
+     * The attributes of this block.
+     * @var array
+     */
+    protected $attributes = array();
+
+    /**
      * The children of this block.
      * @var array An array of BlockInterface instances
      */
@@ -103,6 +109,7 @@ class Block implements \IteratorAggregate, BlockInterface
 
         $this->config = $config;
         $this->options = $config->getOptions();
+        $this->attributes = $config->getAttributes();
     }
 
     public function __clone()
@@ -274,6 +281,72 @@ class Block implements \IteratorAggregate, BlockInterface
     public function getOption($name, $default = null)
     {
         return isset($this->options[$name]) ? $this->options[$name] : $default;
+    }
+
+    /**
+     * Sets the value for an attribute.
+     *
+     * @param string $name  The name of the attribute
+     * @param string $value The value of the attribute
+     *
+     * @return BlockInterface The block instance
+     */
+    public function setAttribute($name, $value)
+    {
+        $this->attributes[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Sets the attributes.
+     *
+     * @param array $attributes The attributes.
+     *
+     * @return BlockInterface The block instance
+     */
+    public function setAttributes(array $attributes)
+    {
+        foreach ($attributes as $name => $value) {
+            $this->setAttribute($name, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns all attributes of this Block instance.
+     *
+     * @return array The passed attributes.
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Returns whether a specific attribute exists.
+     *
+     * @param string $name The attribute name,
+     *
+     * @return Boolean Whether the attribute exists.
+     */
+    public function hasAttribute($name)
+    {
+        return isset($this->attributes[$name]);
+    }
+
+    /**
+     * Returns the value of a specific attribute.
+     *
+     * @param string $name    The attribute name.
+     * @param mixed  $default The value returned if the attribute does not exist.
+     *
+     * @return mixed The attribute value.
+     */
+    public function getAttribute($name, $default = null)
+    {
+        return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
     }
 
     /**

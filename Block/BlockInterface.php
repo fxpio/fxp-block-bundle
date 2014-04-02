@@ -87,6 +87,51 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     public function getOption($name, $default = null);
 
     /**
+     * Sets the value for an attribute.
+     *
+     * @param string $name  The name of the attribute
+     * @param string $value The value of the attribute
+     *
+     * @return BlockInterface The block instance
+     */
+    public function setAttribute($name, $value);
+
+    /**
+     * Sets the attributes.
+     *
+     * @param array $attributes The attributes.
+     *
+     * @return BlockInterface The block instance
+     */
+    public function setAttributes(array $attributes);
+
+    /**
+     * Returns all attributes of this Block instance.
+     *
+     * @return array The passed attributes.
+     */
+    public function getAttributes();
+
+    /**
+     * Returns whether a specific attribute exists.
+     *
+     * @param string $name The attribute name,
+     *
+     * @return Boolean Whether the attribute exists.
+     */
+    public function hasAttribute($name);
+
+    /**
+     * Returns the value of a specific attribute.
+     *
+     * @param string $name    The attribute name.
+     * @param mixed  $default The value returned if the attribute does not exist.
+     *
+     * @return mixed The attribute value.
+     */
+    public function getAttribute($name, $default = null);
+
+    /**
      * Adds a child to the block.
      *
      * @param BlockInterface|string|integer $child   The BlockInterface instance or the name of the child.
