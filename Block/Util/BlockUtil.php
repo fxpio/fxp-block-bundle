@@ -218,9 +218,9 @@ class BlockUtil
      */
     public static function createUniqueName()
     {
-        return function_exists('openssl_random_pseudo_bytes')
+        return 'block' . (function_exists('openssl_random_pseudo_bytes')
             ? bin2hex(openssl_random_pseudo_bytes(5))
-            : uniqid();
+            : uniqid());
     }
 
     /**
