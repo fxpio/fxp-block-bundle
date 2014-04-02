@@ -11,6 +11,9 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block\Util;
 
+use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
+use Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface;
+
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
@@ -218,5 +221,38 @@ class BlockUtil
         return function_exists('openssl_random_pseudo_bytes')
             ? bin2hex(openssl_random_pseudo_bytes(5))
             : uniqid();
+    }
+
+    /**
+     * Check if block is allowed.
+     *
+     * @param string|array   $allowed
+     * @param BlockInterface $block
+     *
+     * @return boolean
+     */
+    public static function isValidBlock($allowed, BlockInterface $block)
+    {
+        return static::isValidType((array) $allowed, $block->getConfig()->getType());
+    }
+
+    /**
+     * Check if the parent type of the current type is allowed.
+     *
+     * @param array                      $allowed
+     * @param ResolvedBlockTypeInterface $rType
+     *
+     * @return boolean
+     */
+    protected static function isValidType(array $allowed, ResolvedBlockTypeInterface $rType = null)
+    {
+        if (null === $rType) {
+            return false;
+
+        } elseif (!in_array($rType->getName(), $allowed)) {
+            return static::isValidType($allowed, $rType->getParent());
+        }
+
+        return true;
     }
 }
