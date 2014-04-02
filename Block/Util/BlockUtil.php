@@ -224,6 +224,24 @@ class BlockUtil
     }
 
     /**
+     * Creates the block id.
+     *
+     * @param BlockInterface $block
+     *
+     * @return string
+     */
+    public static function createBlockId(BlockInterface $block)
+    {
+        $id = '_' . $block->getName();
+
+        if ($block->getParent() && $block->getOption('chained_block')) {
+            $id = static::createBlockId($block->getParent()) . $id;
+        }
+
+        return ltrim($id, '_0123456789');
+    }
+
+    /**
      * Check if block is allowed.
      *
      * @param string|array   $allowed
