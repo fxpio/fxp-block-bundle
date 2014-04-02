@@ -14,6 +14,7 @@ namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type;
 use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
+use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -33,7 +34,7 @@ class UrlType extends AbstractType
             $view->vars['value'] = $view->vars['value']($options);
         }
 
-        if ('' !== $view->vars['value'] && false === strpos($view->vars['value'], '://') && '/' !== substr($view->vars['value'], 0, 1)) {
+        if (!BlockUtil::isEmpty($view->vars['value']) && false === strpos($view->vars['value'], '://') && '/' !== substr($view->vars['value'], 0, 1)) {
             $view->vars['value'] = 'http://' . $view->vars['value'];
         }
 
