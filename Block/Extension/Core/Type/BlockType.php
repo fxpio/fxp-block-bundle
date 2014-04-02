@@ -144,7 +144,7 @@ class BlockType extends AbstractType
             }
 
             return function (BlockInterface $block) {
-                return $block->getConfig()->getMapped() ? array() : '';
+                return $block->getConfig()->getMapped() ? null : '';
             };
         };
 
