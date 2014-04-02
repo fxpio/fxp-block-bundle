@@ -216,6 +216,10 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function setOption($name, $value)
     {
+        if (!$this->hasOption($name)) {
+            throw new InvalidArgumentException(sprintf('The option "%s" does not exist', $name));
+        }
+
         $this->options[$name] = $value;
 
         return $this;
@@ -230,7 +234,9 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function setOptions(array $options)
     {
-        $this->options = array_replace_recursive($this->options, $options);
+        foreach ($options as $name => $value) {
+            $this->setOption($name, $value);
+        }
 
         return $this;
     }
