@@ -38,6 +38,12 @@ class Block implements \IteratorAggregate, BlockInterface
     protected $parent;
 
     /**
+     * The options of this block.
+     * @var array
+     */
+    protected $options = array();
+
+    /**
      * The children of this block.
      * @var array An array of BlockInterface instances
      */
@@ -96,6 +102,7 @@ class Block implements \IteratorAggregate, BlockInterface
         }
 
         $this->config = $config;
+        $this->options = $config->getOptions();
     }
 
     public function __clone()
@@ -200,6 +207,70 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
+     * Sets the value for an option.
+     *
+     * @param string $name  The name of the option
+     * @param string $value The value of the option
+     *
+     * @return BlockInterface The block instance
+     */
+    public function setOption($name, $value)
+    {
+        $this->options[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Sets the options.
+     *
+     * @param array $options The options.
+     *
+     * @return BlockInterface The block instance
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = array_replace_recursive($this->options, $options);
+
+        return $this;
+    }
+
+    /**
+     * Returns all options of this Block instance.
+     *
+     * @return array The passed options.
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Returns whether a specific option exists.
+     *
+     * @param string $name The option name,
+     *
+     * @return Boolean Whether the option exists.
+     */
+    public function hasOption($name)
+    {
+        return isset($this->options[$name]);
+    }
+
+    /**
+     * Returns the value of a specific option.
+     *
+     * @param string $name    The option name.
+     * @param mixed  $default The value returned if the option does not exist.
+     *
+     * @return mixed The option value.
+     */
+    public function getOption($name, $default = null)
+    {
+        return isset($this->options[$name]) ? $this->options[$name] : $default;
+    }
+
+    /**
      * Returns the form.
      *
      * @return Form|null
@@ -280,7 +351,7 @@ class Block implements \IteratorAggregate, BlockInterface
             $viewData = $this->getConfig()->getEmptyData();
 
             if ($viewData instanceof \Closure) {
-                $viewData = call_user_func($viewData, $this, $this->getConfig()->getOptions());
+                $viewData = call_user_func($viewData, $this, $this->getOptions());
             }
         }
 
@@ -422,8 +493,8 @@ class Block implements \IteratorAggregate, BlockInterface
         $this->children[$child->getName()] = $child;
 
         $child->setParent($this);
-        $child->getConfig()->getType()->addParent($this, $child, $child->getConfig()->getOptions());
-        $this->getConfig()->getType()->addChild($child, $this, $this->getConfig()->getOptions());
+        $child->getConfig()->getType()->addParent($this, $child, $child->getOptions());
+        $this->getConfig()->getType()->addChild($child, $this, $this->getOptions());
 
         if (!$this->lockSetData && $this->config->getMapped()) {
             $childrenIterator = new InheritDataAwareIterator(array($child));
@@ -441,8 +512,8 @@ class Block implements \IteratorAggregate, BlockInterface
     {
         if (isset($this->children[$name])) {
             $child = $this->children[$name];
-            $this->getConfig()->getType()->removeChild($child, $this, $this->getConfig()->getOptions());
-            $child->getConfig()->getType()->removeParent($this, $child, $child->getConfig()->getOptions());
+            $this->getConfig()->getType()->removeChild($child, $this, $this->getOptions());
+            $child->getConfig()->getType()->removeParent($this, $child, $child->getOptions());
             $child->setParent(null);
 
             unset($this->children[$name]);

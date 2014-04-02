@@ -246,7 +246,7 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
      */
     private function validateViewIds(BlockInterface $block = null, BlockView $view, &$output = null)
     {
-        if (!$block->getConfig()->getOption('render_id')) {
+        if (!$block->getOption('render_id')) {
             return;
         }
 

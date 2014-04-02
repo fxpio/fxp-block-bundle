@@ -54,7 +54,7 @@ class BlockDataExtractor implements BlockDataExtractorInterface
             $data['passed_options'][$option] = $this->valueExporter->exportValue($value);
         }
 
-        foreach ($block->getConfig()->getOptions() as $option => $value) {
+        foreach ($block->getOptions() as $option => $value) {
             $data['resolved_options'][$option] = $this->valueExporter->exportValue($value);
         }
 
