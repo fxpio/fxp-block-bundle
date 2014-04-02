@@ -679,7 +679,7 @@ class Block implements \IteratorAggregate, BlockInterface
         }
 
         $type = $this->config->getType();
-        $options = $this->config->getOptions();
+        $options = $this->getOptions();
 
         // The methods createView(), buildView() and finishView() are called
         // explicitly here in order to be able to override either of them
