@@ -569,11 +569,11 @@ class Block implements \IteratorAggregate, BlockInterface
             }
         }
 
-        $this->children[$child->getName()] = $child;
-
         $child->setParent($this);
         $child->getConfig()->getType()->addParent($this, $child, $child->getOptions());
         $this->getConfig()->getType()->addChild($child, $this, $this->getOptions());
+
+        $this->children[$child->getName()] = $child;
 
         if (!$this->lockSetData && $this->config->getMapped()) {
             $childrenIterator = new InheritDataAwareIterator(array($child));
@@ -591,11 +591,12 @@ class Block implements \IteratorAggregate, BlockInterface
     {
         if (isset($this->children[$name])) {
             $child = $this->children[$name];
+
+            unset($this->children[$name]);
+
             $this->getConfig()->getType()->removeChild($child, $this, $this->getOptions());
             $child->getConfig()->getType()->removeParent($this, $child, $child->getOptions());
             $child->setParent(null);
-
-            unset($this->children[$name]);
         }
 
         return $this;
