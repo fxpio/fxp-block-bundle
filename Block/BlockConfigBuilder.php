@@ -335,7 +335,7 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      */
     public function hasAttribute($name)
     {
-        return isset($this->attributes[$name]);
+        return array_key_exists($name, $this->attributes);
     }
 
     /**
@@ -343,7 +343,7 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      */
     public function getAttribute($name, $default = null)
     {
-        return isset($this->attributes[$name]) ? $this->attributes[$name] : $default;
+        return $this->hasAttribute($name) ? $this->attributes[$name] : $default;
     }
 
     /**
@@ -383,7 +383,7 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      */
     public function hasOption($name)
     {
-        return isset($this->options[$name]);
+        return array_key_exists($name, $this->options);
     }
 
     /**
@@ -391,7 +391,7 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      */
     public function getOption($name, $default = null)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : $default;
+        return $this->hasOption($name) ? $this->options[$name] : $default;
     }
 
     /**
