@@ -573,7 +573,9 @@ class Block implements \IteratorAggregate, BlockInterface
         $child->getConfig()->getType()->addParent($this, $child, $child->getOptions());
         $this->getConfig()->getType()->addChild($child, $this, $this->getOptions());
 
-        $this->children[$child->getName()] = $child;
+        if ($child->getParent() === $this) {
+            $this->children[$child->getName()] = $child;
+        }
 
         if (!$this->lockSetData && $this->config->getMapped()) {
             $childrenIterator = new InheritDataAwareIterator(array($child));
