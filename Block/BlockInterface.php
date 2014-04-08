@@ -212,6 +212,22 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     public function getViewData();
 
     /**
+     * Sets the data class of the block.
+     *
+     * @param string $dataClass The data class of the block in application format.
+     *
+     * @return BlockInterface The child block
+     */
+    public function setDataClass($dataClass);
+
+    /**
+     * Returns the class of the block data or null if the data is scalar or an array.
+     *
+     * @return string The data class or null.
+     */
+    public function getDataClass();
+
+    /**
      * Returns the block's configuration.
      *
      * @return BlockConfigInterface The configuration.

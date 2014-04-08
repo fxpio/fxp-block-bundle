@@ -74,6 +74,11 @@ class Block implements \IteratorAggregate, BlockInterface
     protected $viewData;
 
     /**
+     * @var string
+     */
+    protected $dataClass;
+
+    /**
      * Whether the block's data has been initialized.
      *
      * When the data is initialized with its default value, that default value
@@ -148,7 +153,7 @@ class Block implements \IteratorAggregate, BlockInterface
             return null;
         }
 
-        if ($this->hasParent() && null === $this->getParent()->getConfig()->getDataClass()) {
+        if ($this->hasParent() && null === $this->getParent()->getDataClass()) {
             return new PropertyPath('[' . $this->getName() . ']');
         }
 
@@ -400,7 +405,7 @@ class Block implements \IteratorAggregate, BlockInterface
 
         // Validate if view data matches data class (unless empty)
         if (!BlockUtil::isEmpty($viewData)) {
-            $dataClass = $this->config->getDataClass();
+            $dataClass = $this->getDataClass();
 
             $actualType = is_object($viewData) ? 'an instance of class ' . get_class($viewData) : ' a(n) ' . gettype($viewData);
 
@@ -500,6 +505,34 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
+     * Sets the data class of the block.
+     *
+     * @param string $dataClass The data class of the block in application format.
+     *
+     * @return BlockInterface The child block
+     */
+    public function setDataClass($dataClass)
+    {
+        $this->dataClass = $dataClass;
+
+        return $this;
+    }
+
+    /**
+     * Returns the class of the block data or null if the data is scalar or an array.
+     *
+     * @return string The data class or null.
+     */
+    public function getDataClass()
+    {
+        if (null === $this->dataClass) {
+            return $this->config->getDataClass();
+        }
+
+        return $this->dataClass;
+    }
+
+    /**
      * Returns whether the block is empty.
      *
      * @return Boolean
@@ -561,7 +594,7 @@ class Block implements \IteratorAggregate, BlockInterface
             }
 
             if (null === $type) {
-                $child = $this->config->getBlockFactory()->createForProperty($this->config->getDataClass(), $child, null, $options);
+                $child = $this->config->getBlockFactory()->createForProperty($this->getDataClass(), $child, null, $options);
             } elseif (null === $child) {
                 $child = $this->config->getBlockFactory()->create($type, null, $options);
             } else {

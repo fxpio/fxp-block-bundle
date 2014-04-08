@@ -34,6 +34,10 @@ class WrapperMapper implements DataMapperInterface
             $config = $block->getConfig();
 
             if ($config->getMapped()) {
+                if (is_object($data)) {
+                    $block->setDataClass(get_class($data));
+                }
+
                 $block->setData($data);
             }
         }
