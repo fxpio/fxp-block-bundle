@@ -736,7 +736,7 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->children);
+        return $this->children;
     }
 
     /**
