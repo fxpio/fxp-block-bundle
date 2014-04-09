@@ -25,21 +25,5 @@ class WrapperMapper implements DataMapperInterface
      */
     public function mapDataToViews($data, $blocks)
     {
-        if (!is_array($data) && !is_object($data)) {
-            return;
-        }
-
-        foreach ($blocks as $block) {
-            /* @var BlockInterface $block */
-            $config = $block->getConfig();
-
-            if ($config->getMapped()) {
-                if (is_object($data)) {
-                    $block->setDataClass(get_class($data));
-                }
-
-                $block->setData($data);
-            }
-        }
     }
 }

@@ -11,13 +11,13 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
-use Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\LogicException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 use Sonatra\Bundle\BlockBundle\Block\Util\InheritDataAwareIterator;
+use Sonatra\Bundle\BlockBundle\Block\Util\OrderedHashMap;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
@@ -51,9 +51,9 @@ class Block implements \IteratorAggregate, BlockInterface
 
     /**
      * The children of this block.
-     * @var array An array of BlockInterface instances
+     * @var BlockInterface[] A map of BlockInterface instances
      */
-    protected $children = array();
+    protected $children;
 
     /**
      * The block data in model format.
@@ -105,20 +105,29 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function __construct(BlockConfigInterface $config)
     {
-        // Mapped blocks always need a data mapper, otherwise calls to
+        // Compound blocks always need a data mapper, otherwise calls to
         // `setData` and `add` will not lead to the correct population of
         // the child blocks.
-        if ($config->getMapped() && !$config->getDataMapper()) {
-            throw new LogicException('Mapped blocks need a data mapper');
+        if ($config->getCompound() && !$config->getDataMapper()) {
+            throw new LogicException('Compound blocks need a data mapper');
+        }
+
+        // If the block inherits the data from its parent, it is not necessary
+        // to call setData() with the default data.
+        if ($config->getInheritData()) {
+            $this->defaultDataSet = true;
         }
 
         $this->config = $config;
+        $this->children = new OrderedHashMap();
         $this->options = $config->getOptions();
         $this->attributes = $config->getAttributes();
     }
 
     public function __clone()
     {
+        $this->children = clone $this->children;
+
         foreach ($this->children as $key => $child) {
             $this->children[$key] = clone $child;
         }
@@ -153,8 +162,14 @@ class Block implements \IteratorAggregate, BlockInterface
             return null;
         }
 
-        if ($this->hasParent() && null === $this->getParent()->getDataClass()) {
-            return new PropertyPath('[' . $this->getName() . ']');
+        $parent = $this->parent;
+
+        while ($parent && $parent->getConfig()->getInheritData()) {
+            $parent = $parent->getParent();
+        }
+
+        if ($parent && null === $parent->getConfig()->getDataClass()) {
+            return new PropertyPath('['.$this->getName().']');
         }
 
         return new PropertyPath($this->getName());
@@ -373,16 +388,18 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function setData($modelData)
     {
+        // If the block inherits its parent's data, disallow data setting to
+        // prevent merge conflicts
+        if ($this->config->getInheritData()) {
+            throw new RuntimeException('You cannot change the data of a block inheriting its parent data.');
+        }
+
         if ($this->lockSetData) {
             throw new RuntimeException('A cycle was detected. Listeners to the PRE_SET_DATA event must not call setData(). You should call setData() on the BlockEvent object instead.');
         }
 
         if (null !== $this->getForm()) {
             $this->getForm()->setData($modelData);
-        }
-
-        if (null === $this->config->getDataMapper() && (is_object($modelData) || is_array($modelData))) {
-            throw new BadMethodCallException('Block::setData() method cannot be accessed if the "mapped" option of block is not true.');
         }
 
         $this->lockSetData = true;
@@ -469,6 +486,14 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function getData()
     {
+        if ($this->config->getInheritData()) {
+            if (!$this->parent) {
+                throw new RuntimeException('The block is configured to inherit its parent\'s data, but does not have a parent.');
+            }
+
+            return $this->parent->getData();
+        }
+
         if (!$this->defaultDataSet) {
             $this->setData($this->config->getData());
         }
@@ -483,6 +508,14 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function getNormData()
     {
+        if ($this->config->getInheritData()) {
+            if (!$this->parent) {
+                throw new RuntimeException('The block is configured to inherit its parent\'s data, but does not have a parent.');
+            }
+
+            return $this->parent->getNormData();
+        }
+
         if (!$this->defaultDataSet) {
             $this->setData($this->config->getData());
         }
@@ -497,6 +530,14 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function getViewData()
     {
+        if ($this->config->getInheritData()) {
+            if (!$this->parent) {
+                throw new RuntimeException('The block is configured to inherit its parent\'s data, but does not have a parent.');
+            }
+
+            return $this->parent->getViewData();
+        }
+
         if (!$this->defaultDataSet) {
             $this->setData($this->config->getData());
         }
@@ -580,7 +621,7 @@ class Block implements \IteratorAggregate, BlockInterface
         //  * getViewData() is called
         //  * setData() is called since the block is not initialized yet
         //  * ... endless recursion ...
-        if (!$this->lockSetData) {
+        if (!$this->lockSetData && $this->defaultDataSet && !$this->config->getInheritData()) {
             $viewData = $this->getViewData();
         }
 
@@ -610,8 +651,9 @@ class Block implements \IteratorAggregate, BlockInterface
             $this->children[$child->getName()] = $child;
         }
 
-        if (!$this->lockSetData && $this->config->getMapped()) {
-            $childrenIterator = new InheritDataAwareIterator(array($child));
+        if (!$this->lockSetData && $this->defaultDataSet && !$this->config->getInheritData()) {
+            var_dump('add child');
+            $childrenIterator = new InheritDataAwareIterator(new \ArrayIterator(array($child)));
             $childrenIterator = new \RecursiveIteratorIterator($childrenIterator);
             $this->config->getDataMapper()->mapDataToViews($viewData, $childrenIterator);
         }

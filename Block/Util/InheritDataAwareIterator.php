@@ -19,14 +19,14 @@ namespace Sonatra\Bundle\BlockBundle\Block\Util;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class InheritDataAwareIterator extends \ArrayIterator implements \RecursiveIterator
+class InheritDataAwareIterator extends \IteratorIterator implements \RecursiveIterator
 {
     /**
      * {@inheritdoc}
      */
     public function getChildren()
     {
-        return new self($this->current()->all());
+        return new static($this->current());
     }
 
     /**
@@ -34,6 +34,6 @@ class InheritDataAwareIterator extends \ArrayIterator implements \RecursiveItera
      */
     public function hasChildren()
     {
-        return $this->current()->getConfig()->getInheritData();
+        return (bool) $this->current()->getConfig()->getInheritData();
     }
 }

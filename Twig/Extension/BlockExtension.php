@@ -234,7 +234,7 @@ class BlockExtension extends \Twig_Extension
      */
     public function formatter($value, $type, array $options = array(), array $variables = array())
     {
-        $options = array_replace(array('wrapped' => false), $options, array('data' => $value));
+        $options = array_replace(array('wrapped' => false, 'inherit_data' => false), $options, array('data' => $value));
         $block = $this->createNamed($type, $options);
 
         return $this->renderer->searchAndRenderBlock($block->createView(), 'widget', $variables);

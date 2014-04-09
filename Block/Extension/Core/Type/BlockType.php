@@ -46,14 +46,16 @@ class BlockType extends AbstractType
      */
     public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
+        $isDataOptionSet = array_key_exists('data', $options);
+
         $builder
             ->setEmptyData($options['empty_data'])
             ->setMapped($options['mapped'])
             ->setPropertyPath(is_string($options['property_path']) ? $options['property_path'] : null)
             ->setInheritData($options['inherit_data'])
             ->setCompound($options['compound'])
-            ->setData(isset($options['data']) ? $options['data'] : null)
-            ->setDataMapper($options['mapped'] ? new PropertyPathMapper($this->propertyAccessor) : null)
+            ->setData($isDataOptionSet ? $options['data'] : null)
+            ->setDataMapper($options['compound'] ? new PropertyPathMapper($this->propertyAccessor) : null)
         ;
     }
 
@@ -148,11 +150,6 @@ class BlockType extends AbstractType
             };
         };
 
-        // former property_path=false now equals mapped=false
-        $mapped = function (Options $options) {
-            return isset($options['data']) && (is_object($options['data']) || is_array($options['data']));
-        };
-
         // If data is given, the block is locked to that data
         // (independent of its value)
         $resolver->setOptional(array(
@@ -169,7 +166,7 @@ class BlockType extends AbstractType
                 'data_class'         => $dataClass,
                 'empty_data'         => $emptyData,
                 'property_path'      => null,
-                'mapped'             => $mapped,
+                'mapped'             => false,
                 'label'              => null,
                 'attr'               => array(),
                 'label_attr'         => array(),

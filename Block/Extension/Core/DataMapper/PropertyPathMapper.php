@@ -12,7 +12,6 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataMapper;
 
 use Sonatra\Bundle\BlockBundle\Block\DataMapperInterface;
-use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
@@ -41,21 +40,20 @@ class PropertyPathMapper implements DataMapperInterface
      */
     public function mapDataToViews($data, $blocks)
     {
-        if (null === $data || array() === $data) {
+        $empty = null === $data || array() === $data;
+
+        if (!$empty && !is_array($data) && !is_object($data)) {
             return;
         }
 
-        if (!is_array($data) && !is_object($data)) {
-            throw new UnexpectedTypeException($data, 'object, array or empty');
-        }
-
         foreach ($blocks as $block) {
-            /* @var BlockInterface $block */
             $propertyPath = $block->getPropertyPath();
             $config = $block->getConfig();
 
-            if (null !== $propertyPath && $config->getMapped()) {
+            if (!$empty && null !== $propertyPath && $config->getMapped()) {
                 $block->setData($this->propertyAccessor->getValue($data, $propertyPath));
+            } else {
+                $block->setData($block->getConfig()->getData());
             }
         }
     }
