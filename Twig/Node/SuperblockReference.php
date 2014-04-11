@@ -27,7 +27,7 @@ class SuperblockReference extends \Twig_Node implements \Twig_NodeOutputInterfac
      */
     public function __construct($name, \Twig_Node_Expression $variables, $lineno, $tag = null)
     {
-        $attr = array('name' => $name, 'variables' => $variables, 'is_master' => true, 'is_closure' => false);
+        $attr = array('name' => $name, 'variables' => $variables, 'is_root' => true, 'is_closure' => false);
 
         parent::__construct(array(), $attr, $lineno, $tag);
     }
@@ -40,30 +40,49 @@ class SuperblockReference extends \Twig_Node implements \Twig_NodeOutputInterfac
     public function compile(\Twig_Compiler $compiler)
     {
         $name = $this->getAttribute('name');
+        $parentName = $this->getAttribute('parent_name');
 
         // closure block
         if ($this->getAttribute('is_closure')) {
             $compiler
-            ->addDebugInfo($this)
-            ->write('$block->add(')
-            ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
-            ->raw('"closure"')
-            ->raw(', ')
-            ->raw(sprintf('array("data" => function ($blockView) use ($context, $blocks) {$this->block_%s(array_merge($context, array(\'closure\' => $blockView)), $blocks);}', $name))
-            ->raw(sprintf(', "block_name" => "%s", "label" => "")', $name))
-            ->raw('))')
-            ->raw(";\n")
+                ->addDebugInfo($this)
+                ->write(sprintf('$%s = ', $name))
+                ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
+                ->raw('"closure"')
+                ->raw(', ')
+                ->raw(sprintf('array("data" => function ($blockView) use ($context, $blocks) {$this->block_%s(array_merge($context, array(\'closure\' => $blockView)), $blocks);}', $name))
+                ->raw(sprintf(', "block_name" => "%s", "label" => "")', $name))
+                ->raw(');')
+                ->raw("\n")
+                ->write(sprintf('$%sChildren[] = array(\'parent\' => $%s, \'child\' => $%s);', $parentName, $parentName, $name))
+                ->raw("\n")
             ;
 
         // master block
-        } elseif ($this->getAttribute('is_master')) {
+        } elseif ($this->getAttribute('is_root')) {
             $compiler
                 ->addDebugInfo($this)
+                // create block
+                ->write(sprintf('list($%s, $%sChildren) = $this->block_%s($context, $blocks);', $name, $name, $name))
+
+                // inject children in parents
+                ->raw("\n")
+                ->write(sprintf('foreach ($%sChildren as $index => $cConfig) {', $name))
+                ->raw("\n")
+                ->indent()
+                ->write(sprintf('$cConfig[\'parent\']->add($cConfig[\'child\']);'))
+                ->raw("\n")
+                ->outdent()
+                ->write('}')
+                ->raw("\n")
+                ->write(sprintf('$%s = $%s ', $name, $name))
+                ->raw(sprintf('instanceof \Sonatra\Bundle\BlockBundle\Block\BlockView ? $%s : $%s->createView();', $name, $name))
+                ->raw("\n")
+                // render
                 ->write('echo $this->env->getExtension(\'sonatra_block\')->renderer->searchAndRenderBlock(')
                 ->raw("\n")
                 ->indent()
-                ->write(sprintf("(\$b_%s = \$this->block_%s(\$context, \$blocks)) ", $name, $name))
-                ->raw(sprintf("instanceof \Sonatra\Bundle\BlockBundle\Block\BlockView ? \$b_%s : \$b_%s->createView()", $name, $name))
+                ->write(sprintf('$%s', $name))
                 // renderer prefix
                 ->raw(',')
                 ->raw("\n")
@@ -82,7 +101,12 @@ class SuperblockReference extends \Twig_Node implements \Twig_NodeOutputInterfac
         } else {
             $compiler
                 ->addDebugInfo($this)
-                ->write(sprintf("\$block->add(\$this->block_%s(\$context, \$blocks));\n", $name))
+                ->write(sprintf('list($%s, $%sChildren) = $this->block_%s($context, $blocks);', $name, $name, $name))
+                ->raw("\n")
+                ->write(sprintf('$%sChildren[] = array(\'parent\' => $%s, \'child\' => $%s);', $parentName, $parentName, $name))
+                ->raw("\n")
+                ->write(sprintf('$%sChildren = array_merge($%sChildren, $%sChildren);', $parentName, $parentName, $name))
+                ->raw("\n")
             ;
         }
     }

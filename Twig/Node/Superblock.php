@@ -43,11 +43,13 @@ class Superblock extends \Twig_Node_Block
      */
     public function compile(\Twig_Compiler $compiler)
     {
+        $name = $this->getAttribute('name');
+
         $compiler
             ->write(sprintf("public function block_%s(\$context, array \$blocks = array())\n", $this->getAttribute('name')), "{\n")
             ->indent()
             ->addDebugInfo($this)
-            ->write('$block = ')
+            ->write(sprintf('$%s = ', $name))
         ;
 
         // checks if the type is an block builder, block, or block view
@@ -77,10 +79,10 @@ class Superblock extends \Twig_Node_Block
 
         if ($this->getAttribute('type') instanceof \Twig_Node_Expression_Name) {
             $compiler
-                ->write('if ($block instanceof \Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface) {')
+                ->write(sprintf('if ($%s instanceof \Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface) {', $name))
                 ->raw("\n")
                 ->indent()
-                ->write('$block = $block->getBlock();')
+                ->write(sprintf('$%s = $%s->getBlock();', $name, $name))
                 ->raw("\n")
                 ->outdent()
                 ->write('}')
@@ -88,12 +90,19 @@ class Superblock extends \Twig_Node_Block
             ;
         }
 
+        // list of children
+        $compiler
+            ->write(sprintf('$%sChildren = array();', $name))
+            ->raw("\n")
+        ;
+
         if ($this->hasNode('sblocks')) {
             $compiler->subcompile($this->getNode('sblocks'));
         }
 
         $compiler
-            ->write('return $block;')
+            ->raw("\n")
+            ->write(sprintf('return array($%s, $%sChildren);', $name, $name))
             ->raw("\n")
             ->outdent()
             ->write("}\n\n")
