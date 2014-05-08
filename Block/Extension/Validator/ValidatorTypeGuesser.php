@@ -12,11 +12,12 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Validator;
 
 use Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface;
-use Symfony\Component\Validator\MetadataFactoryInterface;
 use Sonatra\Bundle\BlockBundle\Block\Guess\Guess;
 use Sonatra\Bundle\BlockBundle\Block\Guess\TypeGuess;
 use Sonatra\Bundle\BlockBundle\Block\Guess\ValueGuess;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -58,6 +59,7 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
     {
         switch (get_class($constraint)) {
             case 'Symfony\Component\Validator\Constraints\Type':
+                /* @var \Symfony\Component\Validator\Constraints\Type $constraint */
                 switch ($constraint->type) {
                     case 'array':
                         return new TypeGuess('collection', array(), Guess::MEDIUM_CONFIDENCE);
@@ -128,12 +130,6 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
             case 'Symfony\Component\Validator\Constraints\MaxCount':
                 return new TypeGuess('collection', array(), Guess::LOW_CONFIDENCE);
 
-            case 'Symfony\Component\Validator\Constraints\Time':
-                return new TypeGuess('time', array('input'=>'string'), Guess::HIGH_CONFIDENCE);
-
-            case 'Symfony\Component\Validator\Constraints\Url':
-                return new TypeGuess('url', array(), Guess::HIGH_CONFIDENCE);
-
             case 'Symfony\Component\Validator\Constraints\True':
             case 'Symfony\Component\Validator\Constraints\False':
                 return new TypeGuess('checkbox', array(), Guess::MEDIUM_CONFIDENCE);
@@ -156,6 +152,7 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
     protected function guess($class, $property, \Closure $closure, $defaultValue = null)
     {
         $guesses = array();
+        /* @var ClassMetadata $classMetadata */
         $classMetadata = $this->metadataFactory->getMetadataFor($class);
 
         if ($classMetadata->hasMemberMetadatas($property)) {

@@ -189,16 +189,9 @@ class EntityChoiceList implements ChoiceListInterface
         $class = $cm->getName();
         $identifier = $cm->getIdentifierFieldNames();
         $idField = null;
-        $idAsValue = false;
-        $idAsIndex = false;
 
         if (1 === count($identifier)) {
             $idField = $identifier[0];
-            $idAsValue = true;
-
-            if ('integer' === $cm->getTypeOfField($idField)) {
-                $idAsIndex = true;
-            }
         }
 
         $methodId = $this->getPropertyLabel($class, $idField);
@@ -218,7 +211,7 @@ class EntityChoiceList implements ChoiceListInterface
     }
 
     /**
-     * Get the mathod name of property identifier.
+     * Get the method name of property identifier.
      *
      * @param string $class
      * @param string $property
@@ -238,7 +231,7 @@ class EntityChoiceList implements ChoiceListInterface
     }
 
     /**
-     * Get the mathod name of property label.
+     * Get the method name of property label.
      *
      * @param string $class
      * @param string $property

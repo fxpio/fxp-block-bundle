@@ -29,9 +29,6 @@ class SonatraBlockExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('block.xml');
         $loader->load('twig.xml');
@@ -47,19 +44,18 @@ class SonatraBlockExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('sonatra_block.twig.resources', $config['block']['resources']);
-        $this->registerProfilerConfiguration($config['profiler'], $container, $loader);
+        $this->registerProfilerConfiguration($config['profiler'], $loader);
     }
 
     /**
      * Loads the profiler configuration.
      *
-     * @param array            $config    A profiler configuration array
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     * @param XmlFileLoader    $loader    An XmlFileLoader instance
+     * @param array         $config A profiler configuration array
+     * @param XmlFileLoader $loader An XmlFileLoader instance
      *
      * @throws \LogicException
      */
-    private function registerProfilerConfiguration(array $config, ContainerBuilder $container, XmlFileLoader $loader)
+    private function registerProfilerConfiguration(array $config, XmlFileLoader $loader)
     {
         if ($config['enabled'] && $config['collect']) {
             $loader->load('block_debug.xml');
