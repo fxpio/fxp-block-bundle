@@ -12,7 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Doctrine\Block;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractExtension;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -24,9 +24,9 @@ class DoctrineOrmExtension extends AbstractExtension
     /**
      * Constructor.
      *
-     * @param ManagerRegistry $registry
+     * @param RegistryInterface $registry
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(RegistryInterface $registry)
     {
         $this->registry = $registry;
     }

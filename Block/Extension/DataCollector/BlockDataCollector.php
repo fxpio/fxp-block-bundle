@@ -219,7 +219,7 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
             );
         }
 
-        $this->validateViewIds($block, $view, $output);
+        $this->validateViewIds($block, $view);
 
         $output['children'] = array();
 
@@ -242,9 +242,8 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
      *
      * @param BlockInterface $block
      * @param BlockView      $view
-     * @param string         $output
      */
-    private function validateViewIds(BlockInterface $block = null, BlockView $view, &$output = null)
+    private function validateViewIds(BlockInterface $block = null, BlockView $view)
     {
         if (!$block->getOption('render_id')) {
             return;
