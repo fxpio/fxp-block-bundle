@@ -14,6 +14,7 @@ namespace Sonatra\Bundle\BlockBundle\Block;
 use Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Form;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
