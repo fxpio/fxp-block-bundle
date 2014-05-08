@@ -46,7 +46,7 @@ class BlockEvent extends Event
     /**
      * Returns the data associated with this event.
      *
-     * @return type
+     * @return mixed
      */
     public function getData()
     {

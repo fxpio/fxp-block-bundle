@@ -44,6 +44,8 @@ class SuperblockTokenParser extends \Twig_TokenParser
      * @param \Twig_Token $token A Twig_Token instance
      *
      * @return \Twig_NodeInterface A Twig_NodeInterface instance
+     *
+     * @throws \Twig_Error_Syntax When error syntax
      */
     public function parse(\Twig_Token $token)
     {
@@ -162,7 +164,8 @@ class SuperblockTokenParser extends \Twig_TokenParser
             $body = new \Twig_Node(array($body), array(), $lineno);
         }
 
-        foreach ($body->getIterator() as $i => $node) {
+        /* @var \Twig_Node $node */
+        foreach ($body->getIterator() as $node) {
             if ($node instanceof SuperblockReference) {
                 $previousTwigNode = $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
 
@@ -197,7 +200,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
             }
         }
 
-        $previousTwigNode = $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
+        //$previousTwigNode = $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
 
         $superblock->setNode('sblocks', $sBlocks);
 
@@ -285,11 +288,11 @@ class SuperblockTokenParser extends \Twig_TokenParser
      * @param \Twig_Node            $blocks
      * @param \Twig_Node_Expression $variables
      * @param string                $parentName
-     * @param \Twig_Node            $previous
+     * @param \Twig_Node_Block      $previous
      *
      * @return null
      */
-    protected function pushClosureNode(\Twig_Node $blocks, \Twig_Node_Expression $variables, $parentName, \Twig_Node $previous = null)
+    protected function pushClosureNode(\Twig_Node $blocks, \Twig_Node_Expression $variables, $parentName, \Twig_Node_Block $previous = null)
     {
         if (null === $previous) {
             return;

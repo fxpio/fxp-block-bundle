@@ -65,6 +65,7 @@ class TwigTemplateTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
+        /* @var \Twig_Template $template */
         $template = $this->twig->loadTemplate($this->resource);
         $variables = array_replace($this->variables, array('data' => $value));
 

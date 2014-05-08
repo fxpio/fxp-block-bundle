@@ -219,6 +219,7 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
      */
     public function getBlockConfig()
     {
+        /* @var BlockBuilder $config */
         $config = parent::getBlockConfig();
 
         $config->children = array();
@@ -240,6 +241,7 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
 
         $block = new Block($this->getBlockConfig());
 
+        /* @var BlockBuilderInterface $child */
         foreach ($this->children as $child) {
             $block->add($child->getBlock());
         }

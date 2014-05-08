@@ -88,6 +88,7 @@ class BlockFactoryBuilder implements BlockFactoryBuilderInterface
      */
     public function addTypes(array $types)
     {
+        /* @var BlockTypeInterface $type */
         foreach ($types as $type) {
             $this->types[$type->getName()] = $type;
         }
@@ -110,6 +111,7 @@ class BlockFactoryBuilder implements BlockFactoryBuilderInterface
      */
     public function addTypeExtensions(array $typeExtensions)
     {
+        /* @var BlockTypeExtensionInterface $typeExtension */
         foreach ($typeExtensions as $typeExtension) {
             $this->typeExtensions[$typeExtension->getExtendedType()][] = $typeExtension;
         }

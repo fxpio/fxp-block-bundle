@@ -26,11 +26,11 @@ class RepeatedType extends AbstractType
      */
     public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
+        $builder->addViewTransformer(new ValueToDuplicatesTransformer(array(
+            $options['first_name'],
+            $options['second_name'],
+        )));
         $builder
-            ->addViewTransformer(new ValueToDuplicatesTransformer(array(
-                $options['first_name'],
-                $options['second_name'],
-            )))
             ->add($options['first_name'], $options['type'], array_merge($options['options'], $options['first_options']))
             ->add($options['second_name'], $options['type'], array_merge($options['options'], $options['second_options']))
         ;

@@ -21,9 +21,10 @@ class SuperblockReference extends \Twig_Node implements \Twig_NodeOutputInterfac
     /**
      * Constructor.
      *
-     * @param string  $name
-     * @param integer $lineno
-     * @param string  $tag
+     * @param array                 $name
+     * @param \Twig_Node_Expression $variables
+     * @param int                   $lineno
+     * @param string                $tag
      */
     public function __construct($name, \Twig_Node_Expression $variables, $lineno, $tag = null)
     {

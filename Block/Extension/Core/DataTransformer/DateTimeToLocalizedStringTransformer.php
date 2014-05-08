@@ -29,9 +29,13 @@ class DateTimeToLocalizedStringTransformer implements DataTransformerInterface
     protected $locale;
 
     /**
-     * Construcotr.
+     * Constructor.
      *
-     * @param array $options
+     * @param int    $calendar
+     * @param int    $dateFormat
+     * @param int    $timeFormat
+     * @param int    $timezone
+     * @param string $locale
      */
     public function __construct($calendar = null, $dateFormat = null, $timeFormat = null, $timezone = null, $locale = null)
     {
@@ -61,7 +65,7 @@ class DateTimeToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * Transforms a normalized date into a localized date string/array.
      *
-     * @param DateTime $dateTime Normalized date.
+     * @param \DateTime $dateTime Normalized date.
      *
      * @return string|null Localized date string.
      *

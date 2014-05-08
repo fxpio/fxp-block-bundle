@@ -18,6 +18,7 @@ use Sonatra\Bundle\BlockBundle\Block\BlockView;
 use Sonatra\Bundle\BlockBundle\Doctrine\Block\ChoiceList\EntityChoiceList;
 use Sonatra\Bundle\BlockBundle\Doctrine\Block\DataTransformer\CollectionToArrayTransformer;
 use Sonatra\Bundle\BlockBundle\Doctrine\Block\DataTransformer\EntityToArrayTransformer;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -61,9 +62,12 @@ class EntityType extends AbstractType
      */
     public function buildView(BlockView $view, BlockInterface $block, array $options)
     {
+        /* @var ChoiceListInterface $choiceList */
+        $choiceList = $options['choice_list'];
+
         $view->vars = array_replace($view->vars, array(
-                'choice_selections' => $options['choice_list']->getIndicesForChoices((array) $view->vars['value']),
-                'choices'           => $options['choice_list']->getRemainingViews(),
+                'choice_selections' => $choiceList->getIndicesForChoices((array) $view->vars['value']),
+                'choices'           => $choiceList->getRemainingViews(),
                 'route_name'        => $options['route_name'],
                 'route_parameters'  => array_merge($options['route_parameters'], array($options['route_id_name'] => null)),
                 'route_id_name'     => $options['route_id_name'],

@@ -11,8 +11,8 @@
 
 namespace Sonatra\Bundle\BlockBundle\Twig\Extension;
 
-use Sonatra\Bundle\BlockBundle\Block\Block;
 use Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface;
+use Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
 use Sonatra\Bundle\BlockBundle\Block\BlockRegistryInterface;
 use Sonatra\Bundle\BlockBundle\Twig\TokenParser\BlockThemeTokenParser;
@@ -58,7 +58,9 @@ class BlockExtension extends \Twig_Extension
     /**
      * Constructor.
      *
-     * @param TwigRendererInterface $renderer
+     * @param TwigRendererInterface  $renderer
+     * @param BlockFactoryInterface  $factory
+     * @param BlockRegistryInterface $registry
      */
     public function __construct(TwigRendererInterface $renderer, BlockFactoryInterface $factory, BlockRegistryInterface $registry)
     {
@@ -161,7 +163,14 @@ class BlockExtension extends \Twig_Extension
      */
     public function createAndRenderSuperblock($type, array $options = array(), array $variables = array())
     {
-        $view = $type instanceof BlockView ? $type : $this->createNamed($type, $options)->createView();
+        if ($type instanceof BlockView) {
+            $view = $type;
+
+        } else {
+            /* @var BlockInterface $type */
+            $type = $this->createNamed($type, $options);
+            $view = $type->createView();
+        }
 
         return $this->renderer->searchAndRenderBlock($view, 'widget', $variables);
     }
@@ -197,6 +206,7 @@ class BlockExtension extends \Twig_Extension
     public function renderTwigBlock($resource, $blockName, array $options = array())
     {
         if (null !== $this->environment) {
+            /* @var \Twig_Template $template */
             $template = $this->environment->loadTemplate($resource);
 
             return $template->renderBlock($blockName, $options);
@@ -235,6 +245,7 @@ class BlockExtension extends \Twig_Extension
     public function formatter($value, $type, array $options = array(), array $variables = array())
     {
         $options = array_replace(array('wrapped' => false, 'inherit_data' => false), $options, array('data' => $value));
+        /* @var BlockInterface $block */
         $block = $this->createNamed($type, $options);
 
         return $this->renderer->searchAndRenderBlock($block->createView(), 'widget', $variables);

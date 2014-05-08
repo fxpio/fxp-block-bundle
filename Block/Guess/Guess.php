@@ -71,6 +71,8 @@ abstract class Guess
     public static function getBestGuess(array $guesses)
     {
         usort($guesses, function ($a, $b) {
+            /* @var Guess $a */
+            /* @var Guess $b */
             return $b->getConfidence() - $a->getConfidence();
         });
 

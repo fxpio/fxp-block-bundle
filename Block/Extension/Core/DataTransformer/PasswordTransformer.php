@@ -27,10 +27,9 @@ class PasswordTransformer implements DataTransformerInterface
     /**
      * Constructor.
      *
-     * @param integer $precision
-     * @param boolean $grouping
-     * @param integer $roundingMode
-     * @param string  $locale
+     * @param bool   $mask
+     * @param int    $maskLength
+     * @param string $maskSymbol
      */
     public function __construct($mask = true, $maskLength = 6, $maskSymbol = '*')
     {

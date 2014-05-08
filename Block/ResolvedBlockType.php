@@ -50,7 +50,8 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
      * @param BlockTypeExtensionInterface[] $typeExtensions
      * @param ResolvedBlockTypeInterface    $parent
      *
-     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws UnexpectedTypeException
      */
     public function __construct(BlockTypeInterface $innerType, array $typeExtensions = array(), ResolvedBlockTypeInterface $parent = null)
     {

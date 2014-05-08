@@ -18,6 +18,7 @@ use Sonatra\Bundle\BlockBundle\Block\BlockView;
 use Sonatra\Bundle\BlockBundle\Block\Exception\LogicException;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer\ChoicesToValuesTransformer;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer\ChoiceToValueTransformer;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
@@ -55,12 +56,15 @@ class ChoiceType extends AbstractType
      */
     public function buildView(BlockView $view, BlockInterface $block, array $options)
     {
+        /* @var ChoiceListInterface $choiceList */
+        $choiceList = $options['choice_list'];
+
         $view->vars = array_replace($view->vars, array(
             'multiple'          => $options['multiple'],
             'expanded'          => $options['expanded'],
-            'preferred_choices' => $options['choice_list']->getPreferredViews(),
-            'choices'           => $options['choice_list']->getRemainingViews(),
-            'choice_selections' => $options['choice_list']->getIndicesForChoices((array) $view->vars['value']),
+            'preferred_choices' => $choiceList->getPreferredViews(),
+            'choices'           => $choiceList->getRemainingViews(),
+            'choice_selections' => $choiceList->getIndicesForChoices((array) $view->vars['value']),
             'empty_value'       => $options['empty_value'],
             'inline'            => $options['inline'],
         ));

@@ -13,6 +13,8 @@ namespace Sonatra\Bundle\BlockBundle\Doctrine\Block;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\MappingException;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException as LegacyMappingException;
 use Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface;
 use Sonatra\Bundle\BlockBundle\Block\Guess\Guess;
@@ -43,6 +45,7 @@ class DoctrineOrmTypeGuesser implements BlockTypeGuesserInterface
             return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
         }
 
+        /* @var ClassMetadataInfo $metadata */
         list($metadata, $name) = $ret;
 
         if ($metadata->hasAssociation($property)) {
@@ -95,7 +98,7 @@ class DoctrineOrmTypeGuesser implements BlockTypeGuesserInterface
      *
      * @param string $class
      *
-     * @return ClassMetadata
+     * @return ClassMetadata|null
      */
     protected function getMetadata($class)
     {
@@ -115,5 +118,7 @@ class DoctrineOrmTypeGuesser implements BlockTypeGuesserInterface
                 // not an entity or mapped super class, using Doctrine ORM 2.2
             }
         }
+
+        return null;
     }
 }

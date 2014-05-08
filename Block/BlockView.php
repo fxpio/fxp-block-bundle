@@ -74,6 +74,7 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
         }
 
         if ($hasChildren) {
+            /* @var BlockView $child */
             foreach ($this->children as $child) {
                 if (!$child->isRendered()) {
                     return false;

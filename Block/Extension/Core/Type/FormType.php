@@ -15,9 +15,10 @@ use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
+use Symfony\Component\Form\FormConfigBuilderInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -89,10 +90,12 @@ class FormType extends AbstractType
     {
         $parentForm = $this->getParentForm($block);
         $form = $child->getForm();
+        /* @var FormConfigBuilderInterface $formConfig */
+        $formConfig = $form->getConfig();
 
         if (null !== $parentForm && null !== $form) {
             if (!$parentForm->has($form->getName())) {
-                $form->getConfig()->setAutoInitialize(false);
+                $formConfig->setAutoInitialize(false);
                 $parentForm->add($form);
 
             } else {
@@ -184,9 +187,12 @@ class FormType extends AbstractType
      *
      * @param BlockView      $view
      * @param BlockInterface $block
+     *
+     * @return FormView
      */
     protected function createFormView(BlockView $view, BlockInterface $block)
     {
+        /* @var FormView $parentForm */
         $parentForm = $this->getParentFormView($view);
 
         if (null !== $parentForm) {

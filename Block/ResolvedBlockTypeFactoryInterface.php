@@ -31,8 +31,8 @@ interface ResolvedBlockTypeFactoryInterface
      *
      * @return ResolvedBlockTypeInterface
      *
-     * @throws Exception\UnexpectedTypeException If the types parent {@link BlockTypeInterface::getParent()} is not a string
-     * @throws Exception\Exception               If the types parent can not be retrieved block any extension
+     * @throws Exception\UnexpectedTypeException  If the types parent {@link BlockTypeInterface::getParent()} is not a string
+     * @throws Exception\InvalidArgumentException If the types parent can not be retrieved block any extension
      */
     public function createResolvedType(BlockTypeInterface $type, array $typeExtensions, ResolvedBlockTypeInterface $parent = null);
 }

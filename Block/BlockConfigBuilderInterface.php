@@ -170,7 +170,7 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
     /**
      * Sets the initial data of the block.
      *
-     * @param array $data The data of the block in application format.
+     * @param mixed $data The data of the block in application format.
      *
      * @return self The configuration object.
      */

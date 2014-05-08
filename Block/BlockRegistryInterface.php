@@ -27,8 +27,8 @@ interface BlockRegistryInterface
      *
      * @return ResolvedBlockTypeInterface The type
      *
-     * @throws Exception\UnexpectedTypeException If the passed name is not a string
-     * @throws Exception\Exception               If the type can not be retrieved block any extension
+     * @throws Exception\UnexpectedTypeException  If the passed name is not a string
+     * @throws Exception\InvalidArgumentException If the type can not be retrieved block any extension
      */
     public function getType($name);
 

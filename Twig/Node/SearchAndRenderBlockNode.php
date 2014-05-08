@@ -26,6 +26,7 @@ class SearchAndRenderBlockNode extends \Twig_Node_Expression_Function
 
         preg_match('/_([^_]+)$/', $this->getAttribute('name'), $matches);
 
+        /* @var \Twig_Node_Expression $label */
         $label = null;
         $arguments = iterator_to_array($this->getNode('arguments'));
         $blockNameSuffix = $matches[1];
@@ -50,6 +51,7 @@ class SearchAndRenderBlockNode extends \Twig_Node_Expression_Function
 
                         // Only insert the label into the array if it is not empty
                         if (!twig_test_empty($label->getAttribute('value'))) {
+                            /* @var \Twig_Node_Expression_Array $originalVariables */
                             $originalVariables = $variables;
                             $variables = new \Twig_Node_Expression_Array(array(), $lineno);
                             $labelKey = new \Twig_Node_Expression_Constant('label', $lineno);

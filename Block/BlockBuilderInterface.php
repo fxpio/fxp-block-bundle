@@ -49,7 +49,7 @@ interface BlockBuilderInterface extends \Traversable, \Countable, BlockConfigBui
      *
      * @return BlockBuilderInterface The builder for the child
      *
-     * @throws Exception\Exception if the given child does not exist
+     * @throws Exception\InvalidArgumentException if the given child does not exist
      */
     public function get($name);
 

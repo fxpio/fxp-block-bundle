@@ -140,7 +140,6 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
      *
      * @return BlockInterface The block instance
      *
-     * @throws Exception\BlockException          When trying to add a child to a non-compound block.
      * @throws Exception\UnexpectedTypeException If $child or $type has an unexpected type.
      */
     public function add($child, $type = null, array $options = array());
@@ -182,7 +181,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Updates the field with default data.
      *
-     * @param array $modelData The data formatted as expected for the underlying object
+     * @param mixed $modelData The data formatted as expected for the underlying object
      *
      * @return BlockInterface The block instance
      */

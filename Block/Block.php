@@ -18,6 +18,7 @@ use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 use Sonatra\Bundle\BlockBundle\Block\Util\InheritDataAwareIterator;
 use Sonatra\Bundle\BlockBundle\Block\Util\OrderedHashMap;
+use Symfony\Component\Form\Form;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
@@ -102,6 +103,8 @@ class Block implements \IteratorAggregate, BlockInterface
      * Creates a new block based on the given configuration.
      *
      * @param BlockConfigInterface $config The block configuration.
+     *
+     * @throws LogicException When compound block has not a data mapper
      */
     public function __construct(BlockConfigInterface $config)
     {
@@ -181,6 +184,8 @@ class Block implements \IteratorAggregate, BlockInterface
      * @param BlockInterface $parent The parent block
      *
      * @return Block The current block
+     *
+     * @throws LogicException When block with an empty name has a parent block
      */
     public function setParent(BlockInterface $parent = null)
     {
@@ -383,6 +388,9 @@ class Block implements \IteratorAggregate, BlockInterface
      * @param mixed $modelData The data formatted as expected for the underlying object
      *
      * @return Block The current block
+     *
+     * @throws RuntimeException
+     * @throws LogicException
      */
     public function setData($modelData)
     {
@@ -481,6 +489,8 @@ class Block implements \IteratorAggregate, BlockInterface
      * Returns the data in the format needed for the underlying object.
      *
      * @return mixed
+     *
+     * @throws RuntimeException
      */
     public function getData()
     {
@@ -503,6 +513,8 @@ class Block implements \IteratorAggregate, BlockInterface
      * Returns the normalized data of the block.
      *
      * @return mixed
+     *
+     * @throws RuntimeException
      */
     public function getNormData()
     {
@@ -525,6 +537,8 @@ class Block implements \IteratorAggregate, BlockInterface
      * Returns the data transformed by the value transformer.
      *
      * @return string
+     *
+     * @throws RuntimeException
      */
     public function getViewData()
     {
@@ -632,12 +646,15 @@ class Block implements \IteratorAggregate, BlockInterface
                 throw new UnexpectedTypeException($type, 'string or Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
             }
 
+            /* @var BlockBuilder $config */
+            $config = $this->config;
+
             if (null === $type) {
-                $child = $this->config->getBlockFactory()->createForProperty($this->getDataClass(), $child, null, $options);
+                $child = $config->getBlockFactory()->createForProperty($this->getDataClass(), $child, null, $options);
             } elseif (null === $child) {
-                $child = $this->config->getBlockFactory()->create($type, null, $options);
+                $child = $config->getBlockFactory()->create($type, null, $options);
             } else {
-                $child = $this->config->getBlockFactory()->createNamed($child, $type, null, $options);
+                $child = $config->getBlockFactory()->createNamed($child, $type, null, $options);
             }
         }
 
@@ -782,6 +799,7 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     protected function modelToNorm($value)
     {
+        /* @var DataTransformerInterface $transformer */
         foreach ($this->config->getModelTransformers() as $transformer) {
             $value = $transformer->transform($value);
         }
@@ -807,6 +825,7 @@ class Block implements \IteratorAggregate, BlockInterface
             return null === $value || is_scalar($value) ? (string) $value : $value;
         }
 
+        /* @var DataTransformerInterface $transformer */
         foreach ($this->config->getViewTransformers() as $transformer) {
             $value = $transformer->transform($value);
         }
