@@ -12,8 +12,8 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractType;
+use Symfony\Component\Intl\Intl;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Locale\Locale;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -26,7 +26,7 @@ class CountryType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'choices' => Locale::getDisplayCountries(\Locale::getDefault()),
+                'choices' => Intl::getRegionBundle()->getCountryNames(\Locale::getDefault()),
         ));
     }
 

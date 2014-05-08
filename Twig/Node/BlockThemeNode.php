@@ -19,12 +19,12 @@ class BlockThemeNode extends \Twig_Node
     /**
      * Constructor.
      *
-     * @param \Twig_NodeInterface $block
-     * @param \Twig_NodeInterface $resources
-     * @param string              $lineno
-     * @param string              $tag
+     * @param \Twig_Node $block
+     * @param \Twig_Node $resources
+     * @param string     $lineno
+     * @param string     $tag
      */
-    public function __construct(\Twig_NodeInterface $block, \Twig_NodeInterface $resources, $lineno, $tag = null)
+    public function __construct(\Twig_Node $block, \Twig_Node $resources, $lineno, $tag = null)
     {
         parent::__construct(array('block' => $block, 'resources' => $resources), array(), $lineno, $tag);
     }

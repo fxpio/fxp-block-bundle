@@ -12,8 +12,8 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractType;
+use Symfony\Component\Intl\Intl;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Locale\Stub\StubLocale;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -26,7 +26,7 @@ class CurrencyType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                'choices' => StubLocale::getDisplayCurrencies('en'),
+                'choices' => Intl::getCurrencyBundle()->getCurrencyNames('en'),
         ));
     }
 

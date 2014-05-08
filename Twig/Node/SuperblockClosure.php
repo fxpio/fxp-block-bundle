@@ -23,11 +23,11 @@ class SuperblockClosure extends \Twig_Node_Block
     /**
      * Constructor.
      *
-     * @param \Twig_NodeInterface $body
-     * @param integer             $lineno
-     * @param string              $tag
+     * @param \Twig_Node $body
+     * @param integer    $lineno
+     * @param string     $tag
      */
-    public function __construct(\Twig_NodeInterface $body, $lineno, $tag = null)
+    public function __construct(\Twig_Node $body, $lineno, $tag = null)
     {
         $name = sprintf('twig_%s', BlockUtil::createUniqueName());
 

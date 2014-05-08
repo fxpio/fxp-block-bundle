@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataMapper;
 
+use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\DataMapperInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -32,7 +33,7 @@ class PropertyPathMapper implements DataMapperInterface
      */
     public function __construct(PropertyAccessorInterface $propertyAccessor = null)
     {
-        $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::getPropertyAccessor();
+        $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -46,6 +47,7 @@ class PropertyPathMapper implements DataMapperInterface
             return;
         }
 
+        /* @var BlockInterface $block */
         foreach ($blocks as $block) {
             $propertyPath = $block->getPropertyPath();
             $config = $block->getConfig();
