@@ -200,7 +200,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
             }
         }
 
-        //$previousTwigNode = $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
+        $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
 
         $superblock->setNode('sblocks', $sBlocks);
 
