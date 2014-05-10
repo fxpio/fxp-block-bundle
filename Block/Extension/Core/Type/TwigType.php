@@ -52,7 +52,6 @@ class TwigType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'inherit_data'   => true,
             'resource'       => null,
             'resource_block' => null,
             'variables'      => array(),
