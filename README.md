@@ -1,11 +1,14 @@
 Sonatra Block Bundle
 ====================
 
-The Sonatra BlockBundle provides tools for defining UI blocks, rendering and mapping response data to related models. 
-This bundle can easily create user interface elements, and render the fields of an object in the locale/currency desired. 
-It was intended as a basis for designing elements of user interface, such as, panel, navbar, sidebar, data table/grid, etc...
+The Sonatra BlockBundle provides tools for defining UI blocks, rendering and mapping
+response data to related models. This bundle can easily create user interface elements,
+and render the fields of an object in the locale/currency desired. It was intended as a
+basis for designing elements of user interface, such as, panel, navbar, sidebar, data
+table/grid, etc...
 
-It was largely inspired by the [Symfony Form](https://github.com/symfony/form) in all the features available in this bundle.
+It was largely inspired by the [Symfony Form](https://github.com/symfony/form) in all
+the features available in this bundle.
 
 Features include:
 

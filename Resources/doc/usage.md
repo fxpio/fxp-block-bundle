@@ -1,17 +1,9 @@
-Sonatra BlockBundle Usage
-=========================
-
-## Prerequisites
-
-[Installation and Configuration](index.md)
-
-## Usage
+Usage
+=====
 
 Controller:
 
-``` php
-<?php
-
+```php
 namespace Acme\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,12 +35,11 @@ class DefaultController extends Controller
         return $this->render("AcmeBlogBundle:Default:post_create.html.twig", array('block' => $block->createView()));
     }
 }
-
 ```
 
 Twig:
 
-``` html
+```html+jinja
 <html>
     <body>
         {{ block_widget(block) }}

@@ -1,5 +1,5 @@
-Getting Started With Sonatra BlockBundle
-========================================
+Getting Started
+===============
 
 ## Prerequisites
 
@@ -9,15 +9,15 @@ This version of the bundle requires Symfony 2.4+.
 
 Installation is a quick, 2 step process:
 
-1. Download Sonatra BlockBundle using composer
+1. Download the bundle using composer
 2. Enable the bundle
-3. Configure the bundle (optionnal)
+3. Configure the bundle (optional)
 
-### Step 1: Download Sonatra BlockBundle using composer
+### Step 1: Download the bundle using composer
 
 Add Sonatra BlockBundle in your composer.json:
 
-``` js
+```js
 {
     "require": {
         "sonatra/block-bundle": "~1.0"
@@ -27,7 +27,7 @@ Add Sonatra BlockBundle in your composer.json:
 
 Or tell composer to download the bundle by running the command:
 
-``` bash
+```bash
 $ php composer.phar update sonatra/block-bundle
 ```
 
@@ -37,8 +37,7 @@ Composer will install the bundle to your project's `vendor/sonatra` directory.
 
 Enable the bundle in the kernel:
 
-``` php
-<?php
+```php
 // app/AppKernel.php
 
 public function registerBundles()
@@ -50,12 +49,12 @@ public function registerBundles()
 }
 ```
 
-### Step 3: Configure the bundle (optionnal)
+### Step 3: Configure the bundle (optional)
 
 You can override the default configuration adding `sonatra_block` tree in `app/config/config.yml`.
 For see the reference of Sonatra Block Configuration, execute command:
 
-``` bash
+```bash
 $ php app/console config:dump-reference SonatraBlockBundle 
 ```
 
@@ -66,4 +65,4 @@ Sonatra BlockBundle, you are ready to learn about usages of the bundle.
 
 The following documents are available:
 
-- [Usage](usage.md)
+- [Enjoy!](usage.md)
