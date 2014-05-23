@@ -14,19 +14,19 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "~2.3"
+        "symfony/framework-bundle": "~2.4"
     },
     "require-dev": {
-        "symfony/console": "~2.3",
-        "symfony/finder": "~2.3",
-        "symfony/twig-bundle": "~2.3",
-        "symfony/class-loader": "~2.3",
-        "symfony/yaml": "~2.3",
-        "symfony/form": "~2.3",
-        "symfony/dom-crawler": "~2.3",
-        "symfony/css-selector": "~2.3",
-        "symfony/browser-kit": "~2.3",
-        "symfony/process": "~2.3"
+        "symfony/console": "~2.4",
+        "symfony/finder": "~2.4",
+        "symfony/twig-bundle": "~2.4",
+        "symfony/class-loader": "~2.4",
+        "symfony/yaml": "~2.4",
+        "symfony/form": "~2.4",
+        "symfony/dom-crawler": "~2.4",
+        "symfony/css-selector": "~2.4",
+        "symfony/browser-kit": "~2.4",
+        "symfony/process": "~2.4"
     },
     "suggest": {
         "doctrine/orm": "For doctrine block type",

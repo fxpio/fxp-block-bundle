@@ -3,7 +3,7 @@ Getting Started With Sonatra BlockBundle
 
 ## Prerequisites
 
-This version of the bundle requires Symfony 2.3+.
+This version of the bundle requires Symfony 2.4+.
 
 ## Installation
 
