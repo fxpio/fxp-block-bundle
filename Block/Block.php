@@ -667,7 +667,6 @@ class Block implements \IteratorAggregate, BlockInterface
         }
 
         if (!$this->lockSetData && $this->defaultDataSet && !$this->config->getInheritData()) {
-            var_dump('add child');
             $childrenIterator = new InheritDataAwareIterator(new \ArrayIterator(array($child)));
             $childrenIterator = new \RecursiveIteratorIterator($childrenIterator);
             $this->config->getDataMapper()->mapDataToViews($viewData, $childrenIterator);
