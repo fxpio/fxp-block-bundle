@@ -33,9 +33,8 @@
         "sonatra/bootstrap-bundle": "The twitter bootstrap DSL twig tag"
     },
     "autoload": {
-        "psr-0": { "Sonatra\\Bundle\\BlockBundle": "" }
+        "psr-4": { "Sonatra\\Bundle\\BlockBundle\\": "" }
     },
-    "target-dir": "Sonatra/Bundle/BlockBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
