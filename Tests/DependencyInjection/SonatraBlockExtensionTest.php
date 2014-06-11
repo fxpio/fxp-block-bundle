@@ -92,6 +92,40 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
 
         // parameter
         $this->assertTrue($container->hasParameter('sonatra_block.twig.resources'));
+
+        // compiler block form
+        $this->assertTrue($container->hasDefinition('form.extension'));
+
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_birthday'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_checkbox'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_choice'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_collection'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_country'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_date'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_datetime'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_email'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_file'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_hidden'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_integer'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_language'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_locale'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_money'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_number'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_password'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_percent'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_radio'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_repeated'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_search'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_textarea'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_text'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_time'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_timezone'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_url'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_button'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_submit'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_reset'));
+        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_currency'));
     }
 
     public function testExtensionLoaderWithDebugAndCollector()
@@ -128,6 +162,35 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $container->getParameter('sonatra_block.twig.resources'));
     }
 
+    public function testCompilerPassWithoutExtension()
+    {
+        $container = new ContainerBuilder(new ParameterBag(array(
+            'kernel.bundles'     => array(
+                'FrameworkBundle'    => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
+                'SonatraBlockBundle' => 'Sonatra\\Bundle\\BlockBundle\\SonatraBlockBundle',
+            ),
+            'kernel.cache_dir'   => __DIR__,
+            'kernel.debug'       => false,
+            'kernel.environment' => 'test',
+            'kernel.name'        => 'kernel',
+            'kernel.root_dir'    => __DIR__,
+            'kernel.charset'     => 'UTF-8',
+        )));
+
+        $sfExt = new FrameworkExtension();
+
+        $container->registerExtension($sfExt);
+
+        $sfExt->load(array(), $container);
+
+        $bundle = new SonatraBlockBundle();
+        $bundle->build($container);
+
+        $container->getCompilerPassConfig()->setOptimizationPasses(array());
+        $container->getCompilerPassConfig()->setRemovingPasses(array());
+        $container->compile();
+    }
+
     protected function createContainer(array $configs = array())
     {
         $container = new ContainerBuilder(new ParameterBag(array(
@@ -152,7 +215,7 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
         $container->registerExtension($twigExt);
         $container->registerExtension($extension);
 
-        $sfExt->load(array(), $container);
+        $sfExt->load(array(array('form' => true)), $container);
         $twigExt->load(array(), $container);
         $extension->load($configs, $container);
 
