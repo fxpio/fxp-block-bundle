@@ -73,6 +73,7 @@ abstract class Guess
         usort($guesses, function ($a, $b) {
             /* @var Guess $a */
             /* @var Guess $b */
+
             return $b->getConfidence() - $a->getConfidence();
         });
 
