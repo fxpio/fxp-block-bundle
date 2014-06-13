@@ -21,6 +21,14 @@ class FooType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function getParent()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'foo';
