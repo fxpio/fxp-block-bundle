@@ -116,4 +116,11 @@ class ResolvedBlockTypeTest extends \PHPUnit_Framework_TestCase
         $rType->buildView($view2, $block2, $block2->getOptions());
         $rType->finishView($view2, $block2, $block2->getOptions());
     }
+
+    public function testAbstractType()
+    {
+        /* @var \Sonatra\Bundle\BlockBundle\Block\AbstractType $type */
+        $type = $this->getMockForAbstractClass('Sonatra\Bundle\BlockBundle\Block\AbstractType');
+        $this->assertEquals('block', $type->getParent());
+    }
 }
