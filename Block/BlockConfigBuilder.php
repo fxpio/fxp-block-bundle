@@ -127,8 +127,6 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      */
     public function __construct($name, $dataClass, EventDispatcherInterface $dispatcher, array $options = array())
     {
-        $name = (string) $name;
-
         self::validateName($name);
 
         if (null !== $dataClass && !class_exists($dataClass)) {
