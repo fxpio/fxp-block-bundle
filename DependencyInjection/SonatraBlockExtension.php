@@ -32,7 +32,6 @@ class SonatraBlockExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('block.xml');
         $loader->load('twig.xml');
-        $loader->load('doctrine.xml');
 
         if (count($configs) > 1) {
             $initConfig = array_pop($configs);
@@ -44,7 +43,23 @@ class SonatraBlockExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('sonatra_block.twig.resources', $config['block']['resources']);
+        $this->registerDoctrineConfiguration($config['doctrine'], $loader);
         $this->registerProfilerConfiguration($config['profiler'], $loader);
+    }
+
+    /**
+     * Loads the doctrine configuration.
+     *
+     * @param array         $config A doctrine configuration array
+     * @param XmlFileLoader $loader An XmlFileLoader instance
+     *
+     * @throws \LogicException
+     */
+    private function registerDoctrineConfiguration(array $config, XmlFileLoader $loader)
+    {
+        if ($config['enabled']) {
+            $loader->load('doctrine.xml');
+        }
     }
 
     /**

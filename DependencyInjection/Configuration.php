@@ -31,6 +31,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('sonatra_block');
 
         $this->addBlockSection($rootNode);
+        $this->addDoctrineSection($rootNode);
         $this->addProfilerSection($rootNode);
 
         return $treeBuilder;
@@ -61,6 +62,26 @@ class Configuration implements ConfigurationInterface
                                 })
                             ->end()
                         ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Add doctrine section.
+     *
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addDoctrineSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('doctrine')
+                    ->info('doctrine configuration')
+                    ->canBeEnabled()
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
                     ->end()
                 ->end()
             ->end()

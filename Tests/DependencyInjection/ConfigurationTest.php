@@ -59,6 +59,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     'block_div_layout.html.twig',
                 ),
             ),
+            'doctrine' => array(
+                'enabled' => true,
+            ),
             'profiler' => array(
                 'enabled' => false,
                 'collect' => true,
@@ -74,6 +77,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     'block_div_layout.html.twig',
                     'foobar.html.twig',
                 ),
+            ),
+            'doctrine' => array(
+                'enabled' => true,
             ),
             'profiler' => array(
                 'enabled' => false,
