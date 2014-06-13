@@ -14,6 +14,7 @@ namespace Sonatra\Bundle\BlockBundle\Block;
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
+use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -95,9 +96,7 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
         }
 
         if (null === $child) {
-            $child = function_exists('openssl_random_pseudo_bytes')
-                ? bin2hex(openssl_random_pseudo_bytes(5))
-                : uniqid();
+            $child = BlockUtil::createUniqueName('');
         }
 
         // Add to "children" to maintain order
