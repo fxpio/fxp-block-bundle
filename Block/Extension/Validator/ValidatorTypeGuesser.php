@@ -14,7 +14,6 @@ namespace Sonatra\Bundle\BlockBundle\Block\Extension\Validator;
 use Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface;
 use Sonatra\Bundle\BlockBundle\Block\Guess\Guess;
 use Sonatra\Bundle\BlockBundle\Block\Guess\TypeGuess;
-use Sonatra\Bundle\BlockBundle\Block\Guess\ValueGuess;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
@@ -117,18 +116,8 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
             case 'Symfony\Component\Validator\Constraints\Ip':
                 return new TypeGuess('text', array(), Guess::MEDIUM_CONFIDENCE);
 
-            case 'Symfony\Component\Validator\Constraints\MaxLength':
-            case 'Symfony\Component\Validator\Constraints\MinLength':
             case 'Symfony\Component\Validator\Constraints\Regex':
                 return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
-
-            case 'Symfony\Component\Validator\Constraints\Min':
-            case 'Symfony\Component\Validator\Constraints\Max':
-                return new TypeGuess('number', array(), Guess::LOW_CONFIDENCE);
-
-            case 'Symfony\Component\Validator\Constraints\MinCount':
-            case 'Symfony\Component\Validator\Constraints\MaxCount':
-                return new TypeGuess('collection', array(), Guess::LOW_CONFIDENCE);
 
             case 'Symfony\Component\Validator\Constraints\True':
             case 'Symfony\Component\Validator\Constraints\False':
@@ -142,14 +131,13 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
      * Iterates over the constraints of a property, executes a constraints on
      * them and returns the best guess
      *
-     * @param string   $class        The class to read the constraints block
-     * @param string   $property     The property for which to find constraints
-     * @param \Closure $closure      The closure that returns a guess for a given constraint
-     * @param mixed    $defaultValue The default value assumed if no other value can be guessed.
+     * @param string   $class    The class to read the constraints block
+     * @param string   $property The property for which to find constraints
+     * @param \Closure $closure  The closure that returns a guess for a given constraint
      *
      * @return Guess The guessed value with the highest confidence
      */
-    protected function guess($class, $property, \Closure $closure, $defaultValue = null)
+    protected function guess($class, $property, \Closure $closure)
     {
         $guesses = array();
         /* @var ClassMetadata $classMetadata */
@@ -166,10 +154,6 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
                         $guesses[] = $guess;
                     }
                 }
-            }
-
-            if (null !== $defaultValue) {
-                $guesses[] = new ValueGuess($defaultValue, Guess::LOW_CONFIDENCE);
             }
         }
 
