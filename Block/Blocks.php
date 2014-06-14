@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
+use Sonatra\Bundle\BlockBundle\Block\Exception\ClassNotInstantiableException;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\CoreExtension;
 
 /**
@@ -93,5 +94,10 @@ final class Blocks
         $builder->addExtension(new CoreExtension());
 
         return $builder;
+    }
+
+    public function __construct()
+    {
+        throw new ClassNotInstantiableException(__CLASS__);
     }
 }

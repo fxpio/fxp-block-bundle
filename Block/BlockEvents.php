@@ -11,6 +11,8 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
+use Sonatra\Bundle\BlockBundle\Block\Exception\ClassNotInstantiableException;
+
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
@@ -20,7 +22,8 @@ final class BlockEvents
 
     const POST_SET_DATA = 'block.post_set_data';
 
-    private function __construct()
+    public function __construct()
     {
+        throw new ClassNotInstantiableException(__CLASS__);
     }
 }
