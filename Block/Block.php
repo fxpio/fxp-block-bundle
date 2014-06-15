@@ -454,13 +454,6 @@ class Block implements \IteratorAggregate, BlockInterface
                         $dataClass . '.'
                 );
             }
-
-        } else {
-            $viewData = $this->getConfig()->getEmptyData();
-
-            if ($viewData instanceof \Closure) {
-                $viewData = call_user_func($viewData, $this, $this->getOptions());
-            }
         }
 
         $this->modelData = $modelData;
@@ -826,18 +819,26 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     protected function normToView($value)
     {
+        /* @var DataTransformerInterface $transformer */
+        foreach ($this->config->getViewTransformers() as $transformer) {
+            $value = $transformer->transform($value);
+        }
+
+        if (BlockUtil::isEmpty($value)) {
+            $value = $this->getConfig()->getEmptyData();
+
+            if ($value instanceof \Closure) {
+                $value = call_user_func($value, $this, $this->getOptions());
+            }
+        }
+
         // Scalar values should  be converted to strings to
         // facilitate differentiation between empty ("") and zero (0).
         // Only do this for simple blocks, as the resulting value in
         // compound blocks is passed to the data mapper and thus should
         // not be converted to a string before.
-        if (!$this->config->getViewTransformers() && !$this->config->getCompound()) {
+        if (!$this->config->getCompound()) {
             return null === $value || is_scalar($value) ? (string) $value : $value;
-        }
-
-        /* @var DataTransformerInterface $transformer */
-        foreach ($this->config->getViewTransformers() as $transformer) {
-            $value = $transformer->transform($value);
         }
 
         return $value;
