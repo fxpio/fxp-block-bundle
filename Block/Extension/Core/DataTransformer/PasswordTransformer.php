@@ -55,9 +55,6 @@ class PasswordTransformer implements DataTransformerInterface
             return $value;
         }
 
-        $width = $this->maskLength;
-        $symbol = $this->maskSymbol;
-
-        return sprintf("%-'${symbol}${width}s", '');
+        return str_repeat($this->maskSymbol, $this->maskLength);
     }
 }
