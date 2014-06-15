@@ -415,6 +415,7 @@ class Block implements \IteratorAggregate, BlockInterface
         if ($dispatcher->hasListeners(BlockEvents::PRE_SET_DATA)) {
             $event = new BlockEvent($this, $modelData);
             $dispatcher->dispatch(BlockEvents::PRE_SET_DATA, $event);
+            $modelData = $event->getData();
         }
 
         // Treat data as strings unless a value transformer exists
