@@ -659,8 +659,11 @@ class Block implements \IteratorAggregate, BlockInterface
         }
 
         $child->setParent($this);
-        $child->getConfig()->getType()->addParent($this, $child, $child->getOptions());
-        $this->getConfig()->getType()->addChild($child, $this, $this->getOptions());
+
+        if (null !== $child->getConfig()->getType()) {
+            $child->getConfig()->getType()->addParent($this, $child, $child->getOptions());
+            $this->getConfig()->getType()->addChild($child, $this, $this->getOptions());
+        }
 
         if ($child->getParent() === $this) {
             $this->children[$child->getName()] = $child;
@@ -685,8 +688,11 @@ class Block implements \IteratorAggregate, BlockInterface
 
             unset($this->children[$name]);
 
-            $this->getConfig()->getType()->removeChild($child, $this, $this->getOptions());
-            $child->getConfig()->getType()->removeParent($this, $child, $child->getOptions());
+            if (null !== $child->getConfig()->getType()) {
+                $this->getConfig()->getType()->removeChild($child, $this, $this->getOptions());
+                $child->getConfig()->getType()->removeParent($this, $child, $child->getOptions());
+            }
+
             $child->setParent(null);
         }
 
