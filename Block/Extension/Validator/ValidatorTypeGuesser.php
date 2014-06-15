@@ -116,8 +116,15 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
             case 'Symfony\Component\Validator\Constraints\Ip':
                 return new TypeGuess('text', array(), Guess::MEDIUM_CONFIDENCE);
 
+            case 'Symfony\Component\Validator\Constraints\Length':
             case 'Symfony\Component\Validator\Constraints\Regex':
                 return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
+
+            case 'Symfony\Component\Validator\Constraints\Range':
+                return new TypeGuess('number', array(), Guess::LOW_CONFIDENCE);
+
+            case 'Symfony\Component\Validator\Constraints\Count':
+                return new TypeGuess('collection', array(), Guess::LOW_CONFIDENCE);
 
             case 'Symfony\Component\Validator\Constraints\True':
             case 'Symfony\Component\Validator\Constraints\False':
