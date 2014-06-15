@@ -262,10 +262,17 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function setOptions(array $options)
     {
-        $rOptions = $this->getConfig()->getType()->getOptionsResolver()->resolve($options);
+        $type = $this->getConfig()->getType();
+        $rOptions = $options;
+
+        if (null !== $type) {
+            $rOptions = $type->getOptionsResolver()->resolve($options);
+        }
 
         foreach ($options as $name => $value) {
-            $this->options[$name] = $rOptions[$name];
+            if (array_key_exists($name, $rOptions)) {
+                $this->options[$name] = $options[$name];
+            }
         }
 
         return $this;
