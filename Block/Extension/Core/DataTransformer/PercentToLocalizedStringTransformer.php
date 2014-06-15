@@ -12,7 +12,6 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer;
 
 use Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException;
-use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 
 /**
  * Transforms between a number type and a localized number with grouping
@@ -29,8 +28,7 @@ class PercentToLocalizedStringTransformer extends NumberToLocalizedStringTransfo
      *
      * @return string Localized value.
      *
-     * @throws UnexpectedTypeException       if the given value is not numeric
-     * @throws TransformationFailedException if the value can not be transformed
+     * @throws TransformationFailedException if the given value is not numeric
      */
     public function transform($value)
     {
@@ -39,15 +37,11 @@ class PercentToLocalizedStringTransformer extends NumberToLocalizedStringTransfo
         }
 
         if (!is_numeric($value)) {
-            throw new UnexpectedTypeException($value, 'numeric');
+            throw new TransformationFailedException('Expected a numeric.');
         }
 
         $formatter = $this->getNumberFormatter(\NumberFormatter::PERCENT);
         $value = $formatter->format($value);
-
-        if (0 !== $formatter->getErrorCode()) {
-            throw new TransformationFailedException($formatter->getErrorMessage());
-        }
 
         return $value;
     }

@@ -13,7 +13,6 @@ namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer;
 
 use Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface;
 use Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException;
-use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 
 /**
  * Transforms between a number type and a localized number with grouping
@@ -115,8 +114,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
      *
      * @return string Localized value.
      *
-     * @throws UnexpectedTypeException       if the given value is not numeric
-     * @throws TransformationFailedException if the value can not be transformed
+     * @throws TransformationFailedException if the given value is not numeric
      */
     public function transform($value)
     {
@@ -125,15 +123,11 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
         }
 
         if (!is_numeric($value)) {
-            throw new UnexpectedTypeException($value, 'numeric');
+            throw new TransformationFailedException('Expected a numeric.');
         }
 
         $formatter = $this->getNumberFormatter();
         $value = $formatter->format($value);
-
-        if (0 !== $formatter->getErrorCode()) {
-            throw new TransformationFailedException($formatter->getErrorMessage());
-        }
 
         return $value;
     }
