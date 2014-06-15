@@ -119,7 +119,6 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGettersAndSetters()
     {
-        //TODO
         /* @var ResolvedBlockTypeInterface $type */
         $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
         /* @var DataMapperInterface $dataMapper */
