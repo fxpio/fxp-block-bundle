@@ -819,17 +819,17 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     protected function normToView($value)
     {
-        /* @var DataTransformerInterface $transformer */
-        foreach ($this->config->getViewTransformers() as $transformer) {
-            $value = $transformer->transform($value);
-        }
-
         if (BlockUtil::isEmpty($value)) {
             $value = $this->getConfig()->getEmptyData();
 
             if ($value instanceof \Closure) {
                 $value = call_user_func($value, $this, $this->getOptions());
             }
+        }
+
+        /* @var DataTransformerInterface $transformer */
+        foreach ($this->config->getViewTransformers() as $transformer) {
+            $value = $transformer->transform($value);
         }
 
         // Scalar values should  be converted to strings to
