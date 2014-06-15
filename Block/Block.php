@@ -598,7 +598,11 @@ class Block implements \IteratorAggregate, BlockInterface
             }
         }
 
-        return BlockUtil::isEmpty($this->modelData) || array() === $this->modelData;
+        return BlockUtil::isEmpty($this->modelData) ||
+            // arrays, countables
+            0 === count($this->modelData) ||
+            // traversables that are not countable
+            ($this->modelData instanceof \Traversable && 0 === iterator_count($this->modelData));
     }
 
     /**
