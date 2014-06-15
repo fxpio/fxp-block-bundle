@@ -49,6 +49,13 @@ class PropertyPathMapperTest extends \PHPUnit_Framework_TestCase
         $this->mapper = new PropertyPathMapper($propertyAccessor);
     }
 
+    protected function tearDown()
+    {
+        $this->mapper = null;
+        $this->dispatcher = null;
+        $this->propertyAccessor = null;
+    }
+
     /**
      * @param $path
      *
@@ -188,5 +195,27 @@ class PropertyPathMapperTest extends \PHPUnit_Framework_TestCase
             ->with($default);
 
         $this->mapper->mapDataToViews(array(), array($block));
+    }
+
+    public function testMapDataToViewsSetsDefaultDataIfPassedDataIsString()
+    {
+        /* @var EventDispatcherInterface $dispatcher */
+        $dispatcher = $this->dispatcher;
+        $default = new \stdClass();
+        $propertyPath = $this->getPropertyPath('engine');
+
+        $this->propertyAccessor->expects($this->never())
+            ->method('getValue');
+
+        $config = new BlockConfigBuilder('name', '\stdClass', $dispatcher);
+        $config->setPropertyPath($propertyPath);
+        $config->setData($default);
+
+        $block = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\Block')
+            ->setConstructorArgs(array($config))
+            ->setMethods(null)
+            ->getMock();
+
+        $this->mapper->mapDataToViews('DATA', array($block));
     }
 }
