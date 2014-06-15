@@ -595,8 +595,8 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      */
     public static function validateName($name)
     {
-        if (null !== $name && !is_string($name)) {
-            throw new UnexpectedTypeException($name, 'string or null');
+        if (null !== $name && !is_string($name) && !is_int($name)) {
+            throw new UnexpectedTypeException($name, 'string, integer or null');
         }
 
         if (!self::isValidName($name)) {
