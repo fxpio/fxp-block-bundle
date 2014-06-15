@@ -12,8 +12,8 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer;
 
 use Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface;
-use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException;
+use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 
 /**
  * Transforms between a normalized time and a localized time string
@@ -27,6 +27,13 @@ class DateTimeToLocalizedStringTransformer implements DataTransformerInterface
     protected $timeFormat;
     protected $timezone;
     protected $locale;
+    protected static $formats = array(
+        \IntlDateFormatter::NONE,
+        \IntlDateFormatter::FULL,
+        \IntlDateFormatter::LONG,
+        \IntlDateFormatter::MEDIUM,
+        \IntlDateFormatter::SHORT,
+    );
 
     /**
      * Constructor.
@@ -36,6 +43,9 @@ class DateTimeToLocalizedStringTransformer implements DataTransformerInterface
      * @param int    $timeFormat
      * @param int    $timezone
      * @param string $locale
+     *
+     * @throws UnexpectedTypeException When the date format is not valid
+     * @throws UnexpectedTypeException When the time format is not valid
      */
     public function __construct($calendar = null, $dateFormat = null, $timeFormat = null, $timezone = null, $locale = null)
     {
@@ -55,6 +65,14 @@ class DateTimeToLocalizedStringTransformer implements DataTransformerInterface
             $locale = \Locale::getDefault();
         }
 
+        if (!in_array($dateFormat, self::$formats, true)) {
+            throw new UnexpectedTypeException($dateFormat, implode('", "', self::$formats));
+        }
+
+        if (!in_array($timeFormat, self::$formats, true)) {
+            throw new UnexpectedTypeException($timeFormat, implode('", "', self::$formats));
+        }
+
         $this->calendar = $calendar;
         $this->dateFormat = $dateFormat;
         $this->timeFormat = $timeFormat;
@@ -69,8 +87,7 @@ class DateTimeToLocalizedStringTransformer implements DataTransformerInterface
      *
      * @return string|null Localized date string.
      *
-     * @throws UnexpectedTypeException       if the given value is not an instance of \DateTime
-     * @throws TransformationFailedException if the date could not be transformed
+     * @throws TransformationFailedException if the given value is not an instance of \DateTime
      */
     public function transform($dateTime)
     {
@@ -79,16 +96,12 @@ class DateTimeToLocalizedStringTransformer implements DataTransformerInterface
         }
 
         if (!$dateTime instanceof \DateTime) {
-            throw new UnexpectedTypeException($dateTime, '\DateTime');
+            throw new TransformationFailedException('Expected a \DateTime.');
         }
 
         // convert time to UTC before passing it to the formatter
         $dateTime = clone $dateTime;
         $value = $this->getIntlDateFormatter()->format((int) $dateTime->format('U'));
-
-        if (intl_get_error_code() != 0) {
-            throw new TransformationFailedException(intl_get_error_message());
-        }
 
         return $value;
     }
