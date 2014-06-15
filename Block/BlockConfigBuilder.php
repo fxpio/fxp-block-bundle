@@ -595,8 +595,8 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      */
     public static function validateName($name)
     {
-        if (!is_string($name)) {
-            throw new UnexpectedTypeException($name, 'string');
+        if (null !== $name && !is_string($name)) {
+            throw new UnexpectedTypeException($name, 'string or null');
         }
 
         if (!self::isValidName($name)) {
@@ -623,6 +623,6 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      */
     public static function isValidName($name)
     {
-        return '' === $name || preg_match('/^[a-zA-Z0-9_][a-zA-Z0-9_\-:]*$/D', $name);
+        return '' === $name || null === $name || preg_match('/^[a-zA-Z0-9_][a-zA-Z0-9_\-:]*$/D', $name);
     }
 }
