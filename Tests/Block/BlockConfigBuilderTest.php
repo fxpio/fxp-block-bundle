@@ -57,7 +57,7 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
 
-        new BlockConfigBuilder(42, null, $this->dispatcher);
+        new BlockConfigBuilder(array(), null, $this->dispatcher);
     }
 
     public function testInvalidName()
