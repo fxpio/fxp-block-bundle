@@ -131,7 +131,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
         $formatter = $this->getNumberFormatter();
         $value = $formatter->format($value);
 
-        if (intl_is_failure($formatter->getErrorCode())) {
+        if (0 !== $formatter->getErrorCode()) {
             throw new TransformationFailedException($formatter->getErrorMessage());
         }
 

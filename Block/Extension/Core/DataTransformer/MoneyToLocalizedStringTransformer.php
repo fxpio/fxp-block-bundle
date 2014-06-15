@@ -76,7 +76,7 @@ class MoneyToLocalizedStringTransformer extends NumberToLocalizedStringTransform
             $value = $formatter->format($value);
         }
 
-        if (intl_is_failure($formatter->getErrorCode())) {
+        if (0 !== $formatter->getErrorCode()) {
             throw new TransformationFailedException($formatter->getErrorMessage());
         }
 

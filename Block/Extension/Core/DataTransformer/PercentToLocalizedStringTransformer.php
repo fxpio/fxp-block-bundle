@@ -45,7 +45,7 @@ class PercentToLocalizedStringTransformer extends NumberToLocalizedStringTransfo
         $formatter = $this->getNumberFormatter(\NumberFormatter::PERCENT);
         $value = $formatter->format($value);
 
-        if (intl_is_failure($formatter->getErrorCode())) {
+        if (0 !== $formatter->getErrorCode()) {
             throw new TransformationFailedException($formatter->getErrorMessage());
         }
 
