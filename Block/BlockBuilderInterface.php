@@ -27,7 +27,7 @@ interface BlockBuilderInterface extends \Traversable, \Countable, BlockConfigBui
      * @param string|BlockTypeInterface    $type
      * @param array                        $options
      *
-     * @return BlockBuilderInterface The builder object.
+     * @return self The configuration object.
      */
     public function add($child, $type = null, array $options = array());
 
@@ -58,7 +58,7 @@ interface BlockBuilderInterface extends \Traversable, \Countable, BlockConfigBui
      *
      * @param string $name
      *
-     * @return BlockBuilderInterface The builder object.
+     * @return self The configuration object.
      */
     public function remove($name);
 
@@ -88,7 +88,7 @@ interface BlockBuilderInterface extends \Traversable, \Countable, BlockConfigBui
     /**
      * Creates the block.
      *
-     * @return Block The block
+     * @return BlockInterface The block
      */
     public function getBlock();
 }
