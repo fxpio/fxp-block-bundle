@@ -25,9 +25,16 @@ class InvalidChildException extends InvalidArgumentException
      *
      * @param BlockBuilderInterface $builder
      * @param BlockBuilderInterface $builderChild
+     * @param string|array<string>  $allowed
      */
-    public function __construct(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild)
+    public function __construct(BlockBuilderInterface $builder, BlockBuilderInterface $builderChild, $allowed = null)
     {
-        parent::__construct(sprintf('The child "%s" (%s) is not allowed for "%s" block (%s)', $builderChild->getName(), $builderChild->getType()->getName(), $builder->getName(), $builder->getType()->getName()));
+        $msg = sprintf('The child "%s" ("%s" type) is not allowed for "%s" block ("%s" type)', $builderChild->getName(), $builderChild->getType()->getName(), $builder->getName(), $builder->getType()->getName());
+
+        if (null !== $allowed && !empty($allowed)) {
+            $msg .= sprintf(', only "%s" allowed', implode('", "', (array) $allowed));
+        }
+
+        parent::__construct($msg);
     }
 }
