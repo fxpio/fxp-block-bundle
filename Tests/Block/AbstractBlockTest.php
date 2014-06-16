@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Tests\Block;
 
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilder;
+use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -26,12 +27,12 @@ abstract class AbstractBlockTest extends \PHPUnit_Framework_TestCase
     protected $dispatcher;
 
     /**
-     * @var \Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $factory;
 
     /**
-     * @var \Sonatra\Bundle\BlockBundle\Block\BlockInterface
+     * @var BlockInterface
      */
     protected $block;
 
@@ -50,7 +51,7 @@ abstract class AbstractBlockTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Sonatra\Bundle\BlockBundle\Block\BlockInterface
+     * @return BlockInterface
      */
     abstract protected function createBlock();
 
