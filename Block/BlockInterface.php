@@ -255,6 +255,15 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     public function isEmpty();
 
     /**
+     * Initializes the block tree.
+     *
+     * Should be called on the root block after constructing the tree.
+     *
+     * @return BlockInterface The block instance.
+     */
+    public function initialize();
+
+    /**
      * Returns the root of the block tree.
      *
      * @return BlockInterface The root of the tree

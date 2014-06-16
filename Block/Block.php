@@ -559,6 +559,25 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        if (null !== $this->parent) {
+            throw new RuntimeException('Only root blocks should be initialized.');
+        }
+
+        // Guarantee that the *_SET_DATA events have been triggered once the
+        // block is initialized. This makes sure that dynamically added or
+        // removed fields are already visible after initialization.
+        if (!$this->defaultDataSet) {
+            $this->setData($this->config->getData());
+        }
+
+        return $this;
+    }
+
+    /**
      * Sets the data class of the block.
      *
      * @param string $dataClass The data class of the block in application format.
@@ -650,6 +669,9 @@ class Block implements \IteratorAggregate, BlockInterface
             if (null !== $type && !is_string($type) && !$type instanceof BlockTypeInterface) {
                 throw new UnexpectedTypeException($type, 'string or Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
             }
+
+            // Never initialize child blocks automatically
+            $options['auto_initialize'] = false;
 
             /* @var BlockBuilder $config */
             $config = $this->config;

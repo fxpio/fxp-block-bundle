@@ -195,6 +195,20 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
     public function setForm(FormInterface $form);
 
     /**
+     * Sets whether the block should be initialized automatically.
+     *
+     * Should be set to true only for root blocks.
+     *
+     * @param bool $initialize True to initialize the block automatically,
+     *                         false to suppress automatic initialization.
+     *                         In the second case, you need to call
+     *                         {@link BlockInterface::initialize()} manually.
+     *
+     * @return self The configuration object.
+     */
+    public function setAutoInitialize($initialize);
+
+    /**
      * Builds and returns the block configuration.
      *
      * @return BlockConfigInterface

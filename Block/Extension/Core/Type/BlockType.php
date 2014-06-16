@@ -49,6 +49,7 @@ class BlockType extends AbstractType
         $isDataOptionSet = array_key_exists('data', $options);
 
         $builder
+            ->setAutoInitialize($options['auto_initialize'])
             ->setEmptyData($options['empty_data'])
             ->setMapped($options['mapped'])
             ->setPropertyPath(is_string($options['property_path']) ? $options['property_path'] : null)
@@ -174,11 +175,13 @@ class BlockType extends AbstractType
                 'compound'           => true,
                 'wrapped'            => true,
                 'translation_domain' => null,
+                'auto_initialize'    => true,
         ));
 
         $resolver->setAllowedTypes(array(
-                'attr'       => 'array',
-                'label_attr' => 'array',
+                'attr'            => 'array',
+                'label_attr'      => 'array',
+                'auto_initialize' => 'bool',
         ));
 
         $resolver->setNormalizers(array(

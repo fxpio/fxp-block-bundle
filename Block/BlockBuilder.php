@@ -242,7 +242,12 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
 
         /* @var BlockBuilderInterface $child */
         foreach ($this->children as $child) {
-            $block->add($child->getBlock());
+            $block->add($child->setAutoInitialize(false)->getBlock());
+        }
+
+        if ($this->getAutoInitialize()) {
+            // Automatically initialize the block if it is configured so
+            $block->initialize();
         }
 
         return $block;

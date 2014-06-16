@@ -109,11 +109,11 @@ class ResizeBlockListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->factory->expects($this->at(0))
             ->method('createNamed')
-            ->with(1, 'text', null, array('property_path' => '[1]'))
+            ->with(1, 'text', null, array('property_path' => '[1]', 'auto_initialize' => false))
             ->will($this->returnValue($this->getBlock('1')));
         $this->factory->expects($this->at(1))
             ->method('createNamed')
-            ->with(2, 'text', null, array('property_path' => '[2]'))
+            ->with(2, 'text', null, array('property_path' => '[2]', 'auto_initialize' => false))
             ->will($this->returnValue($this->getBlock('2')));
 
         $data = array(1 => 'string', 2 => 'string');

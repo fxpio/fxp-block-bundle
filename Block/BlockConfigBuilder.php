@@ -109,6 +109,11 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     private $form;
 
     /**
+     * @var bool
+     */
+    private $autoInitialize = false;
+
+    /**
      * @var array
      */
     private $options;
@@ -372,6 +377,14 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function getAutoInitialize()
+    {
+        return $this->autoInitialize;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getOptions()
     {
         return $this->options;
@@ -565,6 +578,16 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
         }
 
         $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAutoInitialize($initialize)
+    {
+        $this->autoInitialize = (bool) $initialize;
 
         return $this;
     }

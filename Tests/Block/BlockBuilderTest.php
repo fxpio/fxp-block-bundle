@@ -280,6 +280,16 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $block->count());
     }
 
+    public function testGetBlockWithAutoInitialize()
+    {
+        /* @var BlockBuilder $builder */
+        $builder = $this->builder;
+        $builder->setAutoInitialize(true);
+        $block = $builder->getBlock();
+
+        $this->assertTrue($block->getConfig()->getAutoInitialize());
+    }
+
     public function testAddTypeAfterGetBlock()
     {
         $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');

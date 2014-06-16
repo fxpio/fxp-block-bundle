@@ -152,6 +152,14 @@ interface BlockConfigInterface
     public function getForm();
 
     /**
+     * Returns whether the block should be initialized upon creation.
+     *
+     * @return bool Returns true if the block should be initialized
+     *              when created, false otherwise.
+     */
+    public function getAutoInitialize();
+
+    /**
      * Returns all options passed during the construction of the block.
      *
      * @return array The passed options.
