@@ -611,7 +611,7 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function all()
     {
-        return $this->children;
+        return iterator_to_array($this->children);
     }
 
     /**
