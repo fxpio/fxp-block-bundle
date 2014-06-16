@@ -24,6 +24,7 @@ use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\DataTransformer\FixedFilterL
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\SimpleBlockTestCountable;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\SimpleBlockTestTraversable;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
@@ -59,13 +60,16 @@ class SimpleBlockTest extends AbstractBlockTest
     public function testDataIsInitializedFromGetData()
     {
         $mock = $this->getMockBuilder('\stdClass')
-            ->setMethods(array('preSetData'))
+            ->setMethods(array('preSetData', 'postSetData'))
             ->getMock();
         $mock->expects($this->at(0))
             ->method('preSetData');
+        $mock->expects($this->at(0))
+            ->method('postSetData');
 
         $config = new BlockConfigBuilder('name', null, $this->dispatcher);
         $config->addEventListener(BlockEvents::PRE_SET_DATA, array($mock, 'preSetData'));
+        $config->addEventListener(BlockEvents::POST_SET_DATA, array($mock, 'postSetData'));
         $block = new Block($config);
 
         // no call to setData() or similar where the object would be
@@ -285,6 +289,20 @@ class SimpleBlockTest extends AbstractBlockTest
             ->getBlock();
 
         $this->assertEquals('bar', $block->getViewData());
+    }
+
+    public function testGetNormDataForInitializeBlock()
+    {
+        $block = $this->getBuilder()->getBlock();
+
+        $this->assertNull($block->getNormData());
+    }
+
+    public function testGetViewDataForInitializeBlock()
+    {
+        $block = $this->getBuilder()->getBlock();
+
+        $this->assertEquals('', $block->getViewData());
     }
 
     public function testCreateView()
@@ -609,6 +627,14 @@ class SimpleBlockTest extends AbstractBlockTest
         $this->assertEquals('bar', $block->getAttribute('foo', 'bar'));
     }
 
+    public function testGetInvalidChild()
+    {
+        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException');
+
+        $block = $this->getBuilder()->getBlock();
+        $block->get('foo');
+    }
+
     public function testSetOptionsWithoutType()
     {
         $block = $this->getBuilder()->getBlock();
@@ -656,5 +682,20 @@ class SimpleBlockTest extends AbstractBlockTest
         $this->assertNull($block->getOption('bar'));
         $this->assertEquals('foo', $block->getOption('bar', 'foo'));
         $this->assertEquals('baz', $block->getOption('foobar', 'baz'));
+        $this->assertSame($block, $block->setDataClass('\stdClass'));
+        $this->assertEquals('\stdClass', $block->getDataClass());
+    }
+
+    public function testSetDataWithForm()
+    {
+        /* @var FormInterface $form */
+        $form = $this->getMock('Symfony\Component\Form\FormInterface');
+
+        $builder = $this->getBuilder();
+        $builder->setForm($form);
+        $block = $builder->getBlock();
+
+        $this->assertSame($form, $block->getForm());
+        $this->assertSame($block, $block->setData('data'));
     }
 }
