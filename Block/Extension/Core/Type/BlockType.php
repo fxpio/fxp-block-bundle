@@ -187,7 +187,7 @@ class BlockType extends AbstractType
         $resolver->setNormalizers(array(
             'block_name' => function (Options $options, $value = null) {
                 if (isset($options['id'])) {
-                    return $options['id'];
+                    $value = $options['id'];
                 }
 
                 return $value;
