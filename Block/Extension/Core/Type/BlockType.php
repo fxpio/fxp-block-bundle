@@ -15,6 +15,7 @@ use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
+use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidConfigurationException;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -138,17 +139,21 @@ class BlockType extends AbstractType
 
         // Derive "empty_data" closure from "data_class" option
         $emptyData = function (Options $options) {
-            $class = $options['data_class'];
+            return function (BlockInterface $block) use ($options) {
+                $class = $options['data_class'];
 
-            return function (BlockInterface $block) use ($class) {
-                if ($block->getConfig()->getMapped() || (null !== $class && $block->isEmpty())) {
-                    return null;
+                if (null !== $class && null === $block->getConfig()->getData()) {
+                    $ref = new \ReflectionClass($class);
+                    $constructor = $ref->getConstructor();
 
-                } elseif (null !== $class) {
-                    return new $class();
+                    if (null !== $constructor && !empty($constructor->getParameters())) {
+                        throw new InvalidConfigurationException('The option can not create an object with a constructor. Override this option with the creation of a custom object');
+                    }
+
+                    return $ref->newInstance();
                 }
 
-                return '';
+                return null;
             };
         };
 
