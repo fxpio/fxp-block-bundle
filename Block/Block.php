@@ -425,6 +425,14 @@ class Block implements \IteratorAggregate, BlockInterface
             $modelData = $event->getData();
         }
 
+        if (BlockUtil::isEmpty($modelData)) {
+            $modelData = $this->getConfig()->getEmptyData();
+
+            if ($modelData instanceof \Closure) {
+                $modelData = call_user_func($modelData, $this, $this->getOptions());
+            }
+        }
+
         // Treat data as strings unless a value transformer exists
         if (!$this->config->getViewTransformers() && !$this->config->getModelTransformers() && is_scalar($modelData)) {
             $modelData = (string) $modelData;
@@ -846,14 +854,6 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     protected function normToView($value)
     {
-        if (BlockUtil::isEmpty($value)) {
-            $value = $this->getConfig()->getEmptyData();
-
-            if ($value instanceof \Closure) {
-                $value = call_user_func($value, $this, $this->getOptions());
-            }
-        }
-
         /* @var DataTransformerInterface $transformer */
         foreach ($this->config->getViewTransformers() as $transformer) {
             $value = $transformer->transform($value);
