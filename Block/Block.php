@@ -426,15 +426,18 @@ class Block implements \IteratorAggregate, BlockInterface
         }
 
         if (BlockUtil::isEmpty($modelData)) {
-            $modelData = $this->getConfig()->getEmptyData();
+            $emptyData = $this->config->getEmptyData();
 
-            if ($modelData instanceof \Closure) {
-                $modelData = call_user_func($modelData, $this, $this->getOptions());
+            if ($emptyData instanceof \Closure) {
+                /* @var \Closure $emptyData */
+                $emptyData = $emptyData($this, $modelData, $this->getOptions());
             }
+
+            $modelData = $emptyData;
         }
 
         // Treat data as strings unless a value transformer exists
-        if (!$this->config->getViewTransformers() && !$this->config->getModelTransformers() && is_scalar($modelData)) {
+        if (!$this->config->getViewTransformers() && !$this->config->getModelTransformers() && is_scalar($modelData) && !is_bool($modelData)) {
             $modelData = (string) $modelData;
         }
 
