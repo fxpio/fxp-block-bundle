@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Tests\Block\Extension\Core\Type;
 
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\DataTransformer\FixedDataTransformer;
+use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\Foo;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
@@ -45,9 +46,28 @@ class BlockTypeTest extends BaseTypeTest
 
     public function testDataClassMayBeInterface()
     {
-        //TODO
         $this->factory->createBuilder('block', null, array(
             'data_class' => 'Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\FooInterface',
+        ));
+    }
+
+    public function testEmptyDataCreateNewInstanceWithoutConstructorArguments()
+    {
+        $block = $this->factory->create('block', null, array(
+            'data_class' => 'Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\Foo',
+        ));
+
+        $this->assertEquals(new Foo(), $block->getData());
+        $this->assertEquals(new Foo(), $block->getNormData());
+        $this->assertEquals(new Foo(), $block->getViewData());
+    }
+
+    public function testEmptyDataCreateNewInstanceWithConstructorArguments()
+    {
+        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidConfigurationException');
+
+        $this->factory->create('block', null, array(
+            'data_class' => 'Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\SimpleBlockTestCountable',
         ));
     }
 
