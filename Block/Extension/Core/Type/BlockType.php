@@ -75,10 +75,10 @@ class BlockType extends AbstractType
 
             if ($options['chained_block']) {
                 $id = sprintf('%s_%s', $view->parent->vars['id'], $name);
+            }
 
-                if (!$translationDomain) {
-                    $translationDomain = $view->parent->vars['translation_domain'];
-                }
+            if (!$translationDomain) {
+                $translationDomain = $view->parent->vars['translation_domain'];
             }
 
         } else {
