@@ -12,30 +12,8 @@
 namespace Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object;
 
 /**
- * Foo class test.
- *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class Foo extends AbstractFoo
+abstract class AbstractFoo implements FooInterface
 {
-    /**
-     * @var string
-     */
-    private $bar;
-
-    /**
-     * @param string $value
-     */
-    public function setBar($value)
-    {
-        $this->bar = $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBar()
-    {
-        return $this->bar;
-    }
 }
