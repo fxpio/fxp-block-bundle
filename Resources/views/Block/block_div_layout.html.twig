@@ -105,12 +105,7 @@
 
 {% block checkbox_widget %}
 {% spaceless %}
-    {% if value %}
-        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_checkbox checked')|trim}) %}
-    {% else %}
-        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_checkbox')|trim}) %}
-    {% endif %}
-
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_checkbox ' ~ value)|trim}) %}
     <div{{ block('widget_attributes') }}></div>
 {% endspaceless %}
 {% endblock checkbox_widget %}
