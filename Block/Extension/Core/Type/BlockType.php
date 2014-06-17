@@ -167,7 +167,7 @@ class BlockType extends AbstractType
                 'data_class'         => $dataClass,
                 'empty_data'         => $emptyData,
                 'property_path'      => null,
-                'mapped'             => false,
+                'mapped'             => true,
                 'label'              => null,
                 'attr'               => array(),
                 'label_attr'         => array(),

@@ -80,6 +80,7 @@ class FormType extends AbstractType
             $formOptions['data_class'] = $builder->getDataClass();
         }
 
+        $builder->setMapped(false);
         $builder->setForm($this->formFactory->createNamed($name, $this->type, null, $formOptions));
     }
 
