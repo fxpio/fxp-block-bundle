@@ -140,14 +140,15 @@ class BlockType extends AbstractType
         $emptyData = function (Options $options) {
             $class = $options['data_class'];
 
-            if (null !== $class) {
-                return function (BlockInterface $block) use ($class) {
-                    return $block->isEmpty() ? null : new $class();
-                };
-            }
+            return function (BlockInterface $block) use ($class) {
+                if ($block->getConfig()->getMapped() || (null !== $class && $block->isEmpty())) {
+                    return null;
 
-            return function (BlockInterface $block) {
-                return $block->getConfig()->getMapped() ? null : '';
+                } elseif (null !== $class) {
+                    return new $class();
+                }
+
+                return '';
             };
         };
 
