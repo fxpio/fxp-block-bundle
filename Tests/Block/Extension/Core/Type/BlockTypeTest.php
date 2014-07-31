@@ -126,6 +126,7 @@ class BlockTypeTest extends BaseTypeTest
     {
         $block = $this->factory->create('block', null, array(
             'property_path' => 'foo',
+            'mapped' => true,
         ));
 
         $this->assertEquals(new PropertyPath('foo'), $block->getPropertyPath());
@@ -136,6 +137,7 @@ class BlockTypeTest extends BaseTypeTest
     {
         $block = $this->factory->createNamed('name', 'block', null, array(
             'property_path' => null,
+            'mapped' => true,
         ));
 
         $this->assertEquals(new PropertyPath('name'), $block->getPropertyPath());
@@ -150,7 +152,7 @@ class BlockTypeTest extends BaseTypeTest
         ));
 
         $this->assertEquals(new PropertyPath('foo'), $block->getPropertyPath());
-        $this->assertFalse($block->getConfig()->getMapped());
+        $this->assertTrue($block->getConfig()->getMapped());
     }
 
     public function testDataOptionSupersedesSetDataCalls()
