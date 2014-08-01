@@ -472,6 +472,8 @@ class Block implements \IteratorAggregate, BlockInterface
                         $dataClass . '.'
                 );
             }
+        } else {
+            $viewData = (string) $this->config->getEmptyMessage();
         }
 
         $this->modelData = $modelData;

@@ -89,6 +89,11 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     private $emptyData;
 
     /**
+     * @var string
+     */
+    private $emptyMessage;
+
+    /**
      * @var array
      */
     private $attributes = array();
@@ -329,6 +334,14 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function getEmptyMessage()
+    {
+        return $this->emptyMessage;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAttributes()
     {
         return $this->attributes;
@@ -458,6 +471,20 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
         }
 
         $this->emptyData = $emptyData;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEmptyMessage($emptyMessage)
+    {
+        if ($this->locked) {
+            throw new BadMethodCallException('BlockConfigBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
+        }
+
+        $this->emptyMessage = $emptyMessage;
 
         return $this;
     }

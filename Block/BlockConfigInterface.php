@@ -105,6 +105,13 @@ interface BlockConfigInterface
     public function getEmptyData();
 
     /**
+     * Returns the message that should be returned when the view value of block is empty.
+     *
+     * @return mixed The message returned if the view value of block is empty.
+     */
+    public function getEmptyMessage();
+
+    /**
      * Returns additional attributes of the block.
      *
      * @return array An array of key-value combinations.

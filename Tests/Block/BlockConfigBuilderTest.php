@@ -148,6 +148,8 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($dataMapper, $this->config->getDataMapper());
         $this->assertSame($this->config, $this->config->setEmptyData('empty'));
         $this->assertEquals('empty', $this->config->getEmptyData());
+        $this->assertSame($this->config, $this->config->setEmptyMessage('empty message'));
+        $this->assertEquals('empty message', $this->config->getEmptyMessage());
         $this->assertFalse($this->config->hasAttribute('foo'));
         $this->assertSame($this->config, $this->config->setAttribute('foo', 'bar'));
         $this->assertTrue($this->config->hasAttribute('foo'));
@@ -292,6 +294,14 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
 
         $config = $this->getBlockConfig();
         $config->setEmptyData('empty');
+    }
+
+    public function testSetEmptyMessageAfterGetBlockConfig()
+    {
+        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
+
+        $config = $this->getBlockConfig();
+        $config->setEmptyMessage('empty message');
     }
 
     public function testSetAttributeAfterGetBlockConfig()

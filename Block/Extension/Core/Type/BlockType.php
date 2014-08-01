@@ -52,6 +52,7 @@ class BlockType extends AbstractType
         $builder
             ->setAutoInitialize($options['auto_initialize'])
             ->setEmptyData($options['empty_data'])
+            ->setEmptyMessage($options['empty_message'])
             ->setMapped(is_string($options['property_path']) ? true : $options['mapped'])
             ->setPropertyPath(is_string($options['property_path']) ? $options['property_path'] : null)
             ->setInheritData($options['inherit_data'])
@@ -172,6 +173,7 @@ class BlockType extends AbstractType
                 'chained_block'      => false,
                 'data_class'         => $dataClass,
                 'empty_data'         => $emptyData,
+                'empty_message'      => null,
                 'property_path'      => null,
                 'mapped'             => false,
                 'label'              => null,
@@ -185,6 +187,7 @@ class BlockType extends AbstractType
         ));
 
         $resolver->setAllowedTypes(array(
+                'empty_message'   => array('null', 'string'),
                 'attr'            => 'array',
                 'label_attr'      => 'array',
                 'auto_initialize' => 'bool',

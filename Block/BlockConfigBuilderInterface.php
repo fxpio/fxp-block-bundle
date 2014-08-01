@@ -119,6 +119,15 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
     public function setEmptyData($emptyData);
 
     /**
+     * Sets the message used for the client view when no value is bound.
+     *
+     * @param mixed $emptyMessage The empty message.
+     *
+     * @return self The configuration object.
+     */
+    public function setEmptyMessage($emptyMessage);
+
+    /**
      * Sets the property path that the block should be mapped to.
      *
      * @param null|string|\Symfony\Component\PropertyAccess\PropertyPathInterface $propertyPath The property path or null if the path should be set

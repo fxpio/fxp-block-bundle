@@ -291,6 +291,15 @@ class SimpleBlockTest extends AbstractBlockTest
         $this->assertEquals('bar', $block->getViewData());
     }
 
+    public function testEmptyMessage()
+    {
+        $block = $this->getBuilder()
+            ->setEmptyMessage('empty message')
+            ->getBlock();
+
+        $this->assertEquals('empty message', $block->getViewData());
+    }
+
     public function testGetNormDataForInitializeBlock()
     {
         $block = $this->getBuilder()->getBlock();
