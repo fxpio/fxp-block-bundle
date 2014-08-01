@@ -705,7 +705,9 @@ class Block implements \IteratorAggregate, BlockInterface
             $this->getConfig()->getType()->addChild($child, $this, $this->getOptions());
         }
 
-        $this->children[$child->getName()] = $child;
+        if ($child->getParent() === $this) {
+            $this->children[$child->getName()] = $child;
+        }
 
         if (!$this->lockSetData && $this->defaultDataSet && !$this->config->getInheritData()) {
             $childrenIterator = new InheritDataAwareIterator(new \ArrayIterator(array($child)));
