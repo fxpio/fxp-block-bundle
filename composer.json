@@ -1,9 +1,9 @@
 {
     "name": "sonatra/block-bundle",
     "type": "symfony-bundle",
-    "description": "Sonatra Block Bundle",
+    "description": "Provides tools for defining UI blocks, rendering and mapping response data to related models",
     "keywords": ["block", "user interface", "ui"],
-    "homepage": "http://sonatra.com",
+    "homepage": "https://github.com/sonatra/SonatraBlockBundle",
     "license": "MIT",
     "authors": [
         {
@@ -11,13 +11,12 @@
             "email": "francois.pluchino@sonatra.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "symfony/framework-bundle": "~2.5",
-        "symfony/twig-bundle": "~2.5",
-        "symfony/form": "~2.5",
-        "symfony/validator": "~2.5"
+        "symfony/framework-bundle": "~2.4",
+        "symfony/twig-bundle": "~2.4",
+        "symfony/form": "~2.4",
+        "symfony/validator": "~2.4"
     },
     "require-dev": {
         "doctrine/orm": "~2.4"
