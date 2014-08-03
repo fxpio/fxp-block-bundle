@@ -179,11 +179,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Sets the parent block.
-     *
-     * @param BlockInterface $parent The parent block
-     *
-     * @return Block The current block
+     * {@inheritdoc}
      *
      * @throws LogicException When block with an empty name has a parent block
      */
@@ -199,9 +195,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns the parent block.
-     *
-     * @return BlockInterface The parent block
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -209,9 +203,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns whether the block has a parent.
-     *
-     * @return Boolean
+     * {@inheritdoc}
      */
     public function hasParent()
     {
@@ -219,9 +211,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns the root of the block tree.
-     *
-     * @return BlockInterface The root of the tree
+     * {@inheritdoc}
      */
     public function getRoot()
     {
@@ -229,9 +219,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns whether the block is the root of the block tree.
-     *
-     * @return Boolean
+     * {@inheritdoc}
      */
     public function isRoot()
     {
@@ -239,12 +227,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Sets the value for an option.
-     *
-     * @param string $name  The name of the option
-     * @param string $value The value of the option
-     *
-     * @return BlockInterface The block instance
+     * {@inheritdoc}
      */
     public function setOption($name, $value)
     {
@@ -254,11 +237,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Sets the options.
-     *
-     * @param array $options The options.
-     *
-     * @return BlockInterface The block instance
+     * {@inheritdoc}
      */
     public function setOptions(array $options)
     {
@@ -279,9 +258,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns all options of this Block instance.
-     *
-     * @return array The passed options.
+     * {@inheritdoc}
      */
     public function getOptions()
     {
@@ -289,11 +266,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns whether a specific option exists.
-     *
-     * @param string $name The option name,
-     *
-     * @return Boolean Whether the option exists.
+     * {@inheritdoc}
      */
     public function hasOption($name)
     {
@@ -301,12 +274,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns the value of a specific option.
-     *
-     * @param string $name    The option name.
-     * @param mixed  $default The value returned if the option does not exist.
-     *
-     * @return mixed The option value.
+     * {@inheritdoc}
      */
     public function getOption($name, $default = null)
     {
@@ -314,12 +282,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Sets the value for an attribute.
-     *
-     * @param string $name  The name of the attribute
-     * @param string $value The value of the attribute
-     *
-     * @return BlockInterface The block instance
+     * {@inheritdoc}
      */
     public function setAttribute($name, $value)
     {
@@ -329,11 +292,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Sets the attributes.
-     *
-     * @param array $attributes The attributes.
-     *
-     * @return BlockInterface The block instance
+     * {@inheritdoc}
      */
     public function setAttributes(array $attributes)
     {
@@ -345,9 +304,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns all attributes of this Block instance.
-     *
-     * @return array The passed attributes.
+     * {@inheritdoc}
      */
     public function getAttributes()
     {
@@ -355,11 +312,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns whether a specific attribute exists.
-     *
-     * @param string $name The attribute name,
-     *
-     * @return Boolean Whether the attribute exists.
+     * {@inheritdoc}
      */
     public function hasAttribute($name)
     {
@@ -367,12 +320,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns the value of a specific attribute.
-     *
-     * @param string $name    The attribute name.
-     * @param mixed  $default The value returned if the attribute does not exist.
-     *
-     * @return mixed The attribute value.
+     * {@inheritdoc}
      */
     public function getAttribute($name, $default = null)
     {
@@ -380,9 +328,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns the form.
-     *
-     * @return Form|null
+     * {@inheritdoc}
      */
     public function getForm()
     {
@@ -390,11 +336,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Updates the block with default data.
-     *
-     * @param mixed $modelData The data formatted as expected for the underlying object
-     *
-     * @return Block The current block
+     * {@inheritdoc}
      *
      * @throws RuntimeException
      * @throws LogicException
@@ -500,9 +442,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns the data in the format needed for the underlying object.
-     *
-     * @return mixed
+     * {@inheritdoc}
      *
      * @throws RuntimeException
      */
@@ -524,9 +464,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns the normalized data of the block.
-     *
-     * @return mixed
+     * {@inheritdoc}
      *
      * @throws RuntimeException
      */
@@ -548,9 +486,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns the data transformed by the value transformer.
-     *
-     * @return string
+     * {@inheritdoc}
      *
      * @throws RuntimeException
      */
@@ -591,11 +527,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Sets the data class of the block.
-     *
-     * @param string $dataClass The data class of the block in application format.
-     *
-     * @return BlockInterface The child block
+     * {@inheritdoc}
      */
     public function setDataClass($dataClass)
     {
@@ -605,9 +537,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns the class of the block data or null if the data is scalar or an array.
-     *
-     * @return string The data class or null.
+     * {@inheritdoc}
      */
     public function getDataClass()
     {
@@ -619,9 +549,7 @@ class Block implements \IteratorAggregate, BlockInterface
     }
 
     /**
-     * Returns whether the block is empty.
-     *
-     * @return Boolean
+     * {@inheritdoc}
      */
     public function isEmpty()
     {
