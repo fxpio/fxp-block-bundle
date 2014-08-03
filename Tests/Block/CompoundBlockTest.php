@@ -50,6 +50,9 @@ class CompoundBlockTest extends AbstractBlockTest
         $child->expects($this->once())
             ->method('isEmpty')
             ->will($this->returnValue(false));
+        $child->expects($this->once())
+            ->method('getParent')
+            ->will($this->returnValue($this->block));
 
         $this->block->setData(null);
         $this->block->add($child);
@@ -347,15 +350,25 @@ class CompoundBlockTest extends AbstractBlockTest
         $childToBeRemoved = $this->getMockBlock('removed');
         $childToBeAdded = $this->getMockBlock('added');
 
+        $child->expects($this->once())
+            ->method('getParent')
+            ->will($this->returnValue($block));
+        $childToBeRemoved->expects($this->once())
+            ->method('getParent')
+            ->will($this->returnValue($block));
+        $childToBeAdded->expects($this->once())
+            ->method('getParent')
+            ->will($this->returnValue($block));
+
         $block->add($child);
         $block->add($childToBeRemoved);
 
         $child->expects($this->once())
             ->method('setData')
             ->will($this->returnCallback(function () use ($block, $childToBeAdded) {
-                        $block->remove('removed');
-                        $block->add($childToBeAdded);
-                    }));
+                $block->remove('removed');
+                $block->add($childToBeAdded);
+            }));
 
         $childToBeRemoved->expects($this->never())
             ->method('setData');
@@ -413,6 +426,12 @@ class CompoundBlockTest extends AbstractBlockTest
             ->setDataMapper($this->getDataMapper())
             ->setType($type)
             ->getBlock();
+        $field1->expects($this->once())
+            ->method('getParent')
+            ->will($this->returnValue($this->block));
+        $field2->expects($this->once())
+            ->method('getParent')
+            ->will($this->returnValue($this->block));
         $this->block->add($field1);
         $this->block->add($field2);
 
