@@ -1,6 +1,9 @@
 Sonatra Block Bundle
 ====================
 
+[![Latest Stable Version](https://poser.pugx.org/sonatra/block-bundle/v/stable.svg)](https://packagist.org/packages/sonatra/block-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/sonatra/block-bundle/v/unstable.svg)](https://packagist.org/packages/sonatra/block-bundle)
+
 The Sonatra BlockBundle provides tools for defining UI blocks, rendering and mapping
 response data to related models. This bundle can easily create user interface elements,
 and render the fields of an object in the locale/currency desired. It was intended as a
