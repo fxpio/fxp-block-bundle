@@ -238,7 +238,8 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->builder->add(null, 'text');
         $this->assertEquals(1, $this->builder->count());
-        $this->assertNotNull(array_keys($this->builder->all())[0]);
+        $keyBlocks = array_keys($this->builder->all());
+        $this->assertNotNull($keyBlocks[0]);
     }
 
     public function testGetBlockFactory()

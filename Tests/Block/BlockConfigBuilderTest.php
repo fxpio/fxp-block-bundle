@@ -93,8 +93,9 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
         $this->config->addViewTransformer($dataTransformer);
         $this->config->addViewTransformer($dataTransformer2, true);
         $this->assertCount(2, $this->config->getViewTransformers());
-        $this->assertSame($dataTransformer, $this->config->getViewTransformers()[1]);
-        $this->assertSame($dataTransformer2, $this->config->getViewTransformers()[0]);
+        $viewTransformers = $this->config->getViewTransformers();
+        $this->assertSame($dataTransformer, $viewTransformers[1]);
+        $this->assertSame($dataTransformer2, $viewTransformers[0]);
 
         $this->config->resetViewTransformers();
         $this->assertCount(0, $this->config->getViewTransformers());
@@ -110,8 +111,9 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
         $this->config->addModelTransformer($dataTransformer);
         $this->config->addModelTransformer($dataTransformer2, true);
         $this->assertCount(2, $this->config->getModelTransformers());
-        $this->assertSame($dataTransformer, $this->config->getModelTransformers()[0]);
-        $this->assertSame($dataTransformer2, $this->config->getModelTransformers()[1]);
+        $modelTransformers = $this->config->getModelTransformers();
+        $this->assertSame($dataTransformer, $modelTransformers[0]);
+        $this->assertSame($dataTransformer2, $modelTransformers[1]);
 
         $this->config->resetModelTransformers();
         $this->assertCount(0, $this->config->getModelTransformers());
