@@ -147,7 +147,7 @@ class BlockType extends AbstractType
                     $ref = new \ReflectionClass($class);
                     $constructor = $ref->getConstructor();
 
-                    if (null !== $constructor && !empty($constructor->getParameters())) {
+                    if (null !== $constructor && $constructor->getNumberOfParameters() > 0) {
                         throw new InvalidConfigurationException('The option can not create an object with a constructor. Override this option with the creation of a custom object');
                     }
 
