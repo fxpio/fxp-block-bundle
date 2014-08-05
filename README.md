@@ -3,6 +3,7 @@ Sonatra Block Bundle
 
 [![Latest Stable Version](https://poser.pugx.org/sonatra/block-bundle/v/stable.svg)](https://packagist.org/packages/sonatra/block-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/sonatra/block-bundle/v/unstable.svg)](https://packagist.org/packages/sonatra/block-bundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/0d1dda71-3f47-4dad-be53-017da27d21a8/mini.png)](https://insight.sensiolabs.com/projects/0d1dda71-3f47-4dad-be53-017da27d21a8)
 
 The Sonatra BlockBundle provides tools for defining UI blocks, rendering and mapping
 response data to related models. This bundle can easily create user interface elements,
