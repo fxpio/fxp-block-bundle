@@ -19,6 +19,7 @@ use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 use Sonatra\Bundle\BlockBundle\Block\Util\InheritDataAwareIterator;
 use Sonatra\Bundle\BlockBundle\Block\Util\OrderedHashMap;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
@@ -80,6 +81,11 @@ class Block implements \IteratorAggregate, BlockInterface
     protected $dataClass;
 
     /**
+     * @var FormInterface
+     */
+    protected $form;
+
+    /**
      * Whether the block's data has been initialized.
      *
      * When the data is initialized with its default value, that default value
@@ -125,6 +131,7 @@ class Block implements \IteratorAggregate, BlockInterface
         $this->children = new OrderedHashMap();
         $this->options = $config->getOptions();
         $this->attributes = $config->getAttributes();
+        $this->form = $config->getForm();
     }
 
     public function __clone()
@@ -330,9 +337,19 @@ class Block implements \IteratorAggregate, BlockInterface
     /**
      * {@inheritdoc}
      */
+    public function setForm(FormInterface $form)
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getForm()
     {
-        return $this->config->getForm();
+        return $this->form;
     }
 
     /**

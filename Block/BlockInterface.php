@@ -11,6 +11,8 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
+use Symfony\Component\Form\FormInterface;
+
 /**
  * A block group bundling multiple block views.
  *
@@ -280,7 +282,16 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Returns the form.
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @param FormInterface $form
+     *
+     * @return BlockInterface The block instance
+     */
+    public function setForm(FormInterface $form);
+
+    /**
+     * Returns the form.
+     *
+     * @return FormInterface
      */
     public function getForm();
 
