@@ -1,0 +1,116 @@
+{# Widgets #}
+
+{% block collection_widget %}
+    {% spaceless %}
+        {{ block('block_widget') }}
+    {% endspaceless %}
+{% endblock collection_widget %}
+
+{% block textarea_widget %}
+    {% spaceless %}
+        {% set value = value|raw|nl2br %}
+        {{ block('block_widget_simple') }}
+    {% endspaceless %}
+{% endblock textarea_widget %}
+
+{% block choice_widget %}
+    {% spaceless %}
+        {% if expanded %}
+            {{ block('choice_widget_expanded') }}
+        {% else %}
+            {{ block('choice_widget_collapsed') }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock choice_widget %}
+
+{% block choice_widget_expanded %}
+    {% spaceless %}
+        {{ block('choice_widget_collapsed') }}
+    {% endspaceless %}
+{% endblock choice_widget_expanded %}
+
+{% block choice_widget_collapsed %}
+    {% spaceless %}
+        {% if multiple %}
+            {% set attr = attr|merge({'class': attr.class|default('') ~ ' choice_multiple' }) %}
+        {% else %}
+            {% set attr = attr|merge({'class': attr.class|default('') ~ ' choice' }) %}
+        {% endif %}
+
+        <div{{ block('widget_attributes') }}>
+            {% set options = choices %}
+            {{ block('choice_widget_options') }}
+        </div>
+    {% endspaceless %}
+{% endblock choice_widget_collapsed %}
+
+{% block choice_widget_options %}
+    {% spaceless %}
+        {% for indice in choice_selections %}
+            <span class="choice-item{% if inline %} inline{% endif %}">
+        {% if route_name is defined and route_name is not null %}
+            {% set data_indice = data[indice]|default(data) %}
+            {% set route_parameters = route_parameters|merge({(route_id_name): data_indice.id}) %}
+            <a href="{{ path(route_name, route_parameters) }}">{{ options[indice].label|trans({}, translation_domain) }}</a>
+        {% else %}
+            <span>{{ options[indice].label|trans({}, translation_domain) }}</span>
+        {% endif %}
+        </span>
+        {% endfor %}
+
+        {% if choice_selections|length == 0 %}
+            <span class="choice-empty">{{ empty_value|trans({}, translation_domain) }}</span>
+        {% endif %}
+    {% endspaceless %}
+{% endblock choice_widget_options %}
+
+{% block checkbox_widget %}
+    {% spaceless %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_checkbox ' ~ value)|trim}) %}
+        <div{{ block('widget_attributes') }}></div>
+    {% endspaceless %}
+{% endblock checkbox_widget %}
+
+{% block radio_widget %}
+    {% spaceless %}
+        {% if value %}
+            {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_radio checked')|trim}) %}
+        {% else %}
+            {% set attr = attr|merge({'class': (attr.class|default('') ~ ' block_radio')|trim}) %}
+        {% endif %}
+
+        <div{{ block('widget_attributes') }}></div>
+    {% endspaceless %}
+{% endblock radio_widget %}
+
+{% block url_widget %}
+    {% spaceless %}
+        {% set title = title|default(value) %}
+        {% set url_attr = url_attr|merge({'href': value, 'tabindex': 0 }) %}
+        {% set value %}
+        <a {% for attrname, attrvalue in url_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ title|trans({}, translation_domain) }}</a>
+        {% endset %}
+        {{ block('block_widget_simple') }}
+    {% endspaceless %}
+{% endblock url_widget %}
+
+{% block hidden_widget %}
+{% endblock hidden_widget %}
+
+{% block email_widget %}
+    {% spaceless %}
+        {% if mailto %}
+            {% set label = label|default(value) %}
+            {% set value %}
+            <a href="mailto:{{ value }}" tabindex="0">{{ label|trans({}, translation_domain) }}</a>
+            {% endset %}
+        {% endif %}
+        {{ block('block_widget_simple') }}
+    {% endspaceless %}
+{% endblock email_widget %}
+
+{% block entity_widget %}
+    {% spaceless %}
+        {{ block('choice_widget') }}
+    {% endspaceless %}
+{% endblock entity_widget %}

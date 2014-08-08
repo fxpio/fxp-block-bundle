@@ -1,0 +1,117 @@
+{# Widgets #}
+
+{% block block_widget %}
+    {% spaceless %}
+        {% if compound %}
+            {{ block('block_widget_compound') }}
+        {% else %}
+            {{ block('block_widget_simple') }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock block_widget %}
+
+{% block block_component %}
+{% endblock block_component %}
+
+
+{% block block_widget_simple %}
+    {% spaceless %}
+        {% if wrapped %}<div{{ block('widget_attributes') }}>{% endif %}{{ value|raw }}{% if wrapped %}</div>{% endif %}
+    {% endspaceless %}
+{% endblock block_widget_simple %}
+
+{% block block_widget_compound %}
+    {% spaceless %}
+        {% if wrapped %}<div{{ block('widget_container_attributes') }}>{% endif %}
+        {{ block('block_rows') }}
+        {% if wrapped %}</div>{% endif %}
+    {% endspaceless %}
+{% endblock block_widget_compound %}
+
+
+{% block output_widget %}
+    {% spaceless %}
+        {% if escape %}
+            {{ value }}
+        {% else %}
+            {{ value|raw }}
+        {% endif %}
+        {{ block('block_rows') }}
+    {% endspaceless %}
+{% endblock output_widget %}
+
+
+{% block closure_widget %}
+    {% spaceless %}
+        {{ value|raw_closure(block) }}
+        {{ block('block_rows') }}
+    {% endspaceless %}
+{% endblock closure_widget %}
+
+{# Labels #}
+
+{% block block_label %}
+    {% spaceless %}
+        {% if not compound %}
+            {% set label_attr = label_attr %}
+        {% endif %}
+
+        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' block_label')|trim}) %}
+
+        {% if label is null %}
+            {% set label = name|block_humanize %}
+        {% endif %}
+
+        {% if label != '' %}
+            <div{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock block_label %}
+
+{# Rows #}
+
+{% block repeated_row %}
+    {% spaceless %}
+        {{ block('block_rows') }}
+    {% endspaceless %}
+{% endblock repeated_row %}
+
+{% block block_row %}
+    {% spaceless %}
+        {% if block.parent.vars.row|default(false) %}
+            <div>
+        {% endif %}
+        {% if block.parent.vars.row|default(false) and block.parent.vars.row_label|default(false) %}
+            {{ block_label(block) }}
+        {% endif %}
+        {{ block_widget(block) }}
+        {% if block.parent.vars.row|default(false) %}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock block_row %}
+
+{% block hidden_row %}
+    {{ block_widget(block) }}
+{% endblock hidden_row %}
+
+{# Misc #}
+
+
+{# Support #}
+
+{% block block_rows %}
+    {% spaceless %}
+        {% for child in block %}
+            {{ block_row(child) }}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock block_rows %}
+
+{% block widget_attributes %}
+    {% if render_id %} id="{{ id }}"{% endif %}{% for attrname, attrvalue in attr %} {% if attrname in ['title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}"{% endif %}{% endfor %}
+{% endblock widget_attributes %}
+
+{% block widget_container_attributes %}
+    {% if render_id %} id="{{ id }}"{% endif %}{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}
+{% endblock widget_container_attributes %}

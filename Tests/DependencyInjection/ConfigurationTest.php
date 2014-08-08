@@ -55,9 +55,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'block' => array(
-                'resources' => array(
-                    'block_div_layout.html.twig',
-                ),
+                'resources' => array(),
             ),
             'doctrine' => array(
                 'enabled' => true,
@@ -74,7 +72,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         return array(
             'block' => array(
                 'resources' => array(
-                    'block_div_layout.html.twig',
                     'foobar.html.twig',
                 ),
             ),

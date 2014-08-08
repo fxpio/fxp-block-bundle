@@ -148,6 +148,11 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $container = $this->createContainer(array(
                 array(
+                    'block' => array(
+                        'resources' => array(
+                            'foobar.html.twig',
+                        ),
+                    ),
                     'profiler' => array(
                         'enabled' => true,
                     ),
@@ -159,7 +164,15 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
                 ),
             ));
 
-        $this->assertCount(1, $container->getParameter('sonatra_block.twig.resources'));
+        $validResources = array(
+            'SonatraBlockBundle:Block:block_div_layout_container.html.twig',
+            'SonatraBlockBundle:Block:block_div_layout_fields.html.twig',
+            'SonatraBlockBundle:Block:block_div_layout_form.html.twig',
+            'SonatraBlockBundle:Block:block_div_layout_twig.html.twig',
+            'foobar.html.twig',
+        );
+
+        $this->assertSame($validResources, $container->getParameter('sonatra_block.twig.resources'));
     }
 
     public function testCompilerPassWithoutExtension()

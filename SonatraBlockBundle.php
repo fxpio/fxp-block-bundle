@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle;
 
+use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\BlockTemplatePass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\BlockPass;
@@ -28,6 +29,7 @@ class SonatraBlockBundle extends Bundle
 
         $container->addCompilerPass(new BlockFormPass());
         $container->addCompilerPass(new BlockPass());
+        $container->addCompilerPass(new BlockTemplatePass());
         $container->addCompilerPass(new AddTemplatePathPass());
     }
 }
