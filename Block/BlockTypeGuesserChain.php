@@ -48,9 +48,7 @@ class BlockTypeGuesserChain implements BlockTypeGuesserInterface
      */
     public function guessType($class, $property)
     {
-        return $this->guess(function ($guesser) use ($class, $property) {
-            /* @var BlockTypeGuesserInterface $guesser */
-
+        return $this->guess(function (BlockTypeGuesserInterface $guesser) use ($class, $property) {
             return $guesser->guessType($class, $property);
         });
     }
