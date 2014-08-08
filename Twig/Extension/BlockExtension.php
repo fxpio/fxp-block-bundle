@@ -112,11 +112,7 @@ class BlockExtension extends \Twig_Extension
         );
 
         foreach ($this->getTypes() as $type) {
-            $closure = function(array $options = array(), array $variables = array()) use ($type) {
-                return '';
-            };
-
-            $functions[] = new \Twig_SimpleFunction('sblock_'.$type, $closure, array('is_safe' => array('html')));
+            $functions[] = new \Twig_SimpleFunction('sblock_'.$type, null, array('is_safe' => array('html')));
         }
 
         return $functions;
