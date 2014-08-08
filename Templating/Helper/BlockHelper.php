@@ -67,9 +67,9 @@ class BlockHelper extends Helper
      *
      * You can pass options during the call:
      *
-     *     <?php echo view['block']->widget(array('attr' => array('class' => 'foo'))) ?>
+     *     <? echo view['block']->widget(array('attr' => array('class' => 'foo'))) ?>
      *
-     *     <?php echo view['block']->widget(array('separator' => '+++++')) ?>
+     *     <? echo view['block']->widget(array('separator' => '+++++')) ?>
      *
      * @param BlockView $view      The view for which to render the widget
      * @param array     $variables Additional variables passed to the template
