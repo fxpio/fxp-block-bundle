@@ -1,0 +1,142 @@
+<script type="text/javascript">
+    function Toggler() {
+        "use strict";
+
+        var expand = function (button) {
+                var targetId = button.dataset.toggleTargetId,
+                    target = document.getElementById(targetId);
+
+                if (!target) {
+                    throw "Toggle target " + targetId + " does not exist";
+                }
+
+                Sfjs.removeClass(button, 'closed');
+                Sfjs.removeClass(target, 'hidden');
+            },
+
+            collapse = function (button) {
+                var targetId = button.dataset.toggleTargetId,
+                    target = document.getElementById(targetId);
+
+                if (!target) {
+                    throw "Toggle target " + targetId + " does not exist";
+                }
+
+                Sfjs.addClass(button, 'closed');
+                Sfjs.addClass(target, 'hidden');
+            },
+
+            toggle = function (button) {
+                if (Sfjs.hasClass(button, 'closed')) {
+                    expand(button);
+                } else {
+                    collapse(button);
+                }
+            },
+
+            initButtons = function (buttons) {
+                for (var i = 0, l = buttons.length; i < l; ++i) {
+                    var toggleTargetId = buttons[i].dataset.toggleTargetId,
+                        toggleTarget = document.getElementById(toggleTargetId);
+
+                    if (!toggleTarget) {
+                        throw "Toggle target " + toggleTargetId + " does not exist";
+                    }
+
+                    // correct the initial state of the button
+                    if (Sfjs.hasClass(toggleTarget, 'hidden')) {
+                        Sfjs.addClass(buttons[i], 'closed');
+                    }
+
+                    // attach listener for expanding/collapsing the target
+                    buttons[i].addEventListener('click', function (e) {
+                        toggle(this);
+
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        return false;
+                    });
+                }
+            };
+
+        return {
+            initButtons: initButtons,
+
+            toggle: toggle,
+
+            expand: expand,
+
+            collapse: collapse
+        };
+    }
+
+    function TabView() {
+        "use strict";
+
+        var activeTab = null,
+
+            activeTarget = null,
+
+            select = function (tab) {
+                var targetId = tab.dataset.tabTargetId,
+                    target = document.getElementById(targetId);
+
+                if (!target) {
+                    throw "Tab target " + targetId + " does not exist";
+                }
+
+                if (activeTab) {
+                    Sfjs.removeClass(activeTab, 'active');
+                }
+
+                if (activeTarget) {
+                    Sfjs.addClass(activeTarget, 'hidden');
+                }
+
+                Sfjs.addClass(tab, 'active');
+                Sfjs.removeClass(target, 'hidden');
+
+                activeTab = tab;
+                activeTarget = target;
+            },
+
+            initTabs = function (tabs) {
+                for (var i = 0, l = tabs.length; i < l; ++i) {
+                    var targetId = tabs[i].dataset.tabTargetId,
+                        target = document.getElementById(targetId);
+
+                    if (!target) {
+                        throw "Tab target " + targetId + " does not exist";
+                    }
+
+                    tabs[i].addEventListener('click', function (e) {
+                        select(this);
+
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        return false;
+                    });
+
+                    Sfjs.addClass(target, 'hidden');
+                }
+
+                if (tabs.length > 0) {
+                    select(tabs[0]);
+                }
+            };
+
+        return {
+            initTabs: initTabs,
+
+            select: select
+        };
+    }
+
+    var tabTarget = new TabView(),
+        toggler = new Toggler();
+
+    tabTarget.initTabs(document.querySelectorAll('.tree .tree-inner'));
+    toggler.initButtons(document.querySelectorAll('a.toggle-button'));
+</script>

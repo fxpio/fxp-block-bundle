@@ -1,0 +1,169 @@
+{% macro block_tree_entry(hash, data, collector, expanded) %}
+    <li>
+        <div class="tree-inner" data-tab-target-id="{{ hash }}-details">
+             {% if data.children is not empty %}
+                 <a class="toggle-button" data-toggle-target-id="{{ hash }}-children" href="#"><span class="toggle-icon"></span></a>
+             {% else %}
+                 <div class="toggle-icon empty"></div>
+             {% endif %}
+             {{ data.id }}
+             {% if data.id in collector.data.duplicate_ids %}
+             <div class="badge-error">!</div>
+             {% endif %}
+         </div>
+
+        {% if data.children|length > 0 %}
+            <ul id="{{ hash }}-children"{% if not expanded %} class="hidden"{% endif %}>
+                {% for childHash, childData in data.children %}
+                    {{ _self.block_tree_entry(childHash, childData, collector, false) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endmacro %}
+
+{% macro block_tree_details(hash, data, collector) %}
+    {% set duplicate_id_text = 'The Id "'~ data.id ~ '" is already used in the same render' %}
+
+    <div class="tree-details" id="{{ hash }}-details">
+        <h2>
+            {{ data.view_vars.id }}
+            {% if data.type_class is defined %}
+            <span class="block-type">[<abbr title="{{ data.type_class }}">{{ data.type }}</abbr>]</span>
+            {% endif %}
+        </h2>
+
+        {% if data.id in collector.data.duplicate_ids %}
+            <div class="message-error">
+                <span>{{ duplicate_id_text }}.</span>
+                <p>Activate the "chain_block" option or change the block name.</p>
+            </div>
+        {% endif %}
+
+        {% if data.default_data is defined %}
+        <h3>
+             <a class="toggle-button" data-toggle-target-id="{{ hash }}-default_data" href="#">
+                 Default Data
+                 <span class="toggle-icon"></span>
+             </a>
+         </h3>
+
+         <div id="{{ hash }}-default_data">
+             <table>
+                 <tr>
+                     <th width="180">Model Format</th>
+                     <td>
+                         {% if data.default_data.model is defined %}
+                             <pre>{{ data.default_data.model }}</pre>
+                         {% else %}
+                             <em>same as normalized format</em>
+                         {% endif %}
+                     </td>
+                 </tr>
+                 <tr>
+                     <th>Normalized Format</th>
+                     <td><pre>{{ data.default_data.norm }}</pre></td>
+                 </tr>
+                 <tr>
+                     <th>View Format</th>
+                     <td>
+                         {% if data.default_data.view is defined %}
+                             <pre>{{ data.default_data.view }}</pre>
+                         {% else %}
+                             <em>same as normalized format</em>
+                         {% endif %}
+                     </td>
+                 </tr>
+             </table>
+         </div>
+        {% endif %}
+
+        {% if data.passed_options is defined %}
+        <h3>
+             <a class="toggle-button" data-toggle-target-id="{{ hash }}-passed_options" href="#">
+                 Passed Options
+                 <span class="toggle-icon"></span>
+             </a>
+         </h3>
+
+         <div id="{{ hash }}-passed_options">
+             {% if data.passed_options|length %}
+             <table>
+                 <tr>
+                     <th width="180">Option</th>
+                     <th>Passed Value</th>
+                     <th>Resolved Value</th>
+                 </tr>
+                 {% for option, value in data.passed_options %}
+                 <tr>
+                     <th>{{ option }}</th>
+                     <td><pre>{{ value }}</pre></td>
+                     <td>
+                         {% if data.resolved_options[option] is sameas(value) %}
+                             <em>same as passed value</em>
+                         {% else %}
+                             <pre>{{ data.resolved_options[option] }}</pre>
+                         {% endif %}
+                     </td>
+                 </tr>
+                 {% endfor %}
+             </table>
+             {% else %}
+             <p><em>No options where passed when constructing this block.</em></p>
+             {% endif %}
+         </div>
+        {% endif %}
+
+        {% if data.resolved_options is defined %}
+        <h3>
+             <a class="toggle-button" data-toggle-target-id="{{ hash }}-resolved_options" href="#">
+                 Resolved Options
+                 <span class="toggle-icon"></span>
+             </a>
+         </h3>
+
+         <div id="{{ hash }}-resolved_options" class="hidden">
+             <table>
+                 <tr>
+                     <th width="180">Option</th>
+                     <th>Value</th>
+                 </tr>
+                 {% for option, value in data.resolved_options %}
+                 <tr>
+                     <th>{{ option }}</th>
+                     <td><pre>{{ value }}</pre></td>
+                 </tr>
+                 {% endfor %}
+             </table>
+         </div>
+        {% endif %}
+
+        {% if data.view_vars is defined %}
+        <h3>
+            <a class="toggle-button" data-toggle-target-id="{{ hash }}-view_vars" href="#">
+                View Variables
+                <span class="toggle-icon"></span>
+            </a>
+        </h3>
+
+        <div id="{{ hash }}-view_vars" class="hidden">
+            <table>
+                <tr>
+                    <th width="180">Variable</th>
+                    <th>Value</th>
+                </tr>
+                {% for variable, value in data.view_vars %}
+                <tr>
+                    <th>{{ variable }}</th>
+                    <td><pre>{{ value }}</pre></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+    </div>
+
+    {% for childHash, childData in data.children %}
+        {{ _self.block_tree_details(childHash, childData, collector) }}
+    {% endfor %}
+{% endmacro %}
