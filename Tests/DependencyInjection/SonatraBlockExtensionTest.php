@@ -165,10 +165,7 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
             ));
 
         $validResources = array(
-            'SonatraBlockBundle:Block:block_div_layout_container.html.twig',
-            'SonatraBlockBundle:Block:block_div_layout_fields.html.twig',
-            'SonatraBlockBundle:Block:block_div_layout_form.html.twig',
-            'SonatraBlockBundle:Block:block_div_layout_twig.html.twig',
+            'SonatraBlockBundle:Block:block_div_layout.html.twig',
             'foobar.html.twig',
         );
 
