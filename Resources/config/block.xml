@@ -15,7 +15,7 @@
     <services>
         <!-- DependencyInjectionExtension -->
         <service id="sonatra_block.extension" class="%sonatra_block.extension.base.class%" public="false">
-            <argument type="service" id="service_container" />
+            <property name="container" type="service" id="service_container" />
             <argument type="collection" />
             <argument type="collection" />
             <argument type="collection" />

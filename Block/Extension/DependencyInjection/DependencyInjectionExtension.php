@@ -21,7 +21,11 @@ use Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserChain;
  */
 class DependencyInjectionExtension implements BlockExtensionInterface
 {
-    protected $container;
+    /**
+     * @var ContainerInterface
+     */
+    public $container;
+
     protected $typeServiceIds;
     protected $typeExtensionServiceIds;
     protected $guesserServiceIds;
@@ -31,16 +35,14 @@ class DependencyInjectionExtension implements BlockExtensionInterface
     /**
      * Constructor.
      *
-     * @param ContainerInterface $container
-     * @param array              $typeServiceIds
-     * @param array              $typeExtensionServiceIds
-     * @param array              $guesserServiceIds
+     * @param array $typeServiceIds
+     * @param array $typeExtensionServiceIds
+     * @param array $guesserServiceIds
      */
-    public function __construct(ContainerInterface $container,
+    public function __construct(
             array $typeServiceIds, array $typeExtensionServiceIds,
             array $guesserServiceIds)
     {
-        $this->container = $container;
         $this->typeServiceIds = $typeServiceIds;
         $this->typeExtensionServiceIds = $typeExtensionServiceIds;
         $this->guesserServiceIds = $guesserServiceIds;

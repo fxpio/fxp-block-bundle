@@ -43,7 +43,7 @@ class BlockPass implements CompilerPassInterface
             $types[$alias] = $serviceId;
         }
 
-        $container->getDefinition('sonatra_block.extension')->replaceArgument(1, $types);
+        $container->getDefinition('sonatra_block.extension')->replaceArgument(0, $types);
 
         $typeExtensions = array();
 
@@ -55,11 +55,11 @@ class BlockPass implements CompilerPassInterface
             $typeExtensions[$alias][] = $serviceId;
         }
 
-        $container->getDefinition('sonatra_block.extension')->replaceArgument(2, $typeExtensions);
+        $container->getDefinition('sonatra_block.extension')->replaceArgument(1, $typeExtensions);
 
         // Find all services annotated with "block.type_guesser"
         $guessers = array_keys($container->findTaggedServiceIds('sonatra_block.type_guesser'));
 
-        $container->getDefinition('sonatra_block.extension')->replaceArgument(3, $guessers);
+        $container->getDefinition('sonatra_block.extension')->replaceArgument(2, $guessers);
     }
 }
