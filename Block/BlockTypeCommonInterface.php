@@ -11,8 +11,6 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
@@ -25,7 +23,7 @@ interface BlockTypeCommonInterface
      * top most type. Type extensions can further modify the block.
      *
      * @param BlockBuilderInterface $builder The block builder
-     * @param array                 $options The options
+     * @param array                 $options The options used for the configuration
      */
     public function buildBlock(BlockBuilderInterface $builder, array $options);
 
@@ -36,7 +34,7 @@ interface BlockTypeCommonInterface
      * top most type. Type extensions can further modify the block.
      *
      * @param BlockBuilderInterface $builder The block builder
-     * @param array                 $options The options
+     * @param array                 $options The options used for the configuration
      */
     public function finishBlock(BlockBuilderInterface $builder, array $options);
 
@@ -45,7 +43,7 @@ interface BlockTypeCommonInterface
      *
      * @param BlockInterface $parent  The child block
      * @param BlockInterface $block   The block
-     * @param array          $options The options
+     * @param array          $options The options used for the configuration
      */
     public function addParent(BlockInterface $parent, BlockInterface $block, array $options);
 
@@ -54,7 +52,7 @@ interface BlockTypeCommonInterface
      *
      * @param BlockInterface $parent  The child block
      * @param BlockInterface $block   The block
-     * @param array          $options The options
+     * @param array          $options TThe options used for the configuration
      */
     public function removeParent(BlockInterface $parent, BlockInterface $block, array $options);
 
@@ -63,7 +61,7 @@ interface BlockTypeCommonInterface
      *
      * @param BlockInterface $child   The child block
      * @param BlockInterface $block   The block
-     * @param array          $options The options
+     * @param array          $options The options used for the configuration
      */
     public function addChild(BlockInterface $child, BlockInterface $block, array $options);
 
@@ -72,7 +70,7 @@ interface BlockTypeCommonInterface
      *
      * @param BlockInterface $child   The child block
      * @param BlockInterface $block   The block
-     * @param array          $options The options
+     * @param array          $options The options used for the configuration
      */
     public function removeChild(BlockInterface $child, BlockInterface $block, array $options);
 
@@ -87,8 +85,8 @@ interface BlockTypeCommonInterface
      * to do so, move your logic to {@link finishView()} instead.
      *
      * @param BlockView      $view    The block view
-     * @param BlockInterface $block   The block
-     * @param array          $options The options
+     * @param BlockInterface $block   The block corresponding to the block view
+     * @param array          $options The options used for the configuration
      */
     public function buildView(BlockView $view, BlockInterface $block, array $options);
 
@@ -104,15 +102,8 @@ interface BlockTypeCommonInterface
      * else you are recommended to implement {@link buildBlock()} instead.
      *
      * @param BlockView      $view    The block view
-     * @param BlockInterface $block   The block
-     * @param array          $options The options
+     * @param BlockInterface $block   The block corresponding to the block view
+     * @param array          $options The options used for the configuration
      */
     public function finishView(BlockView $view, BlockInterface $block, array $options);
-
-    /**
-     * Sets the default options for this type.
-     *
-     * @param OptionsResolverInterface $resolver The resolver for the options.
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver);
 }

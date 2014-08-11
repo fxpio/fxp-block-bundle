@@ -16,7 +16,7 @@ namespace Sonatra\Bundle\BlockBundle\Block;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-interface ResolvedBlockTypeInterface
+interface ResolvedBlockTypeInterface extends BlockTypeCommonInterface
 {
     /**
      * Returns the name of the type.
@@ -66,80 +66,6 @@ interface ResolvedBlockTypeInterface
      * @return BlockView The created block view.
      */
     public function createView(BlockInterface $block, BlockView $parent = null);
-
-    /**
-     * Configures a block builder for the type hierarchy.
-     *
-     * @param BlockBuilderInterface $builder The builder to configure.
-     * @param array                 $options The options used for the configuration.
-     */
-    public function buildBlock(BlockBuilderInterface $builder, array $options);
-
-    /**
-     * Finishes a block builder for the type hierarchy.
-     *
-     * @param BlockBuilderInterface $builder The builder to configure.
-     * @param array                 $options The options used for the configuration.
-     */
-    public function finishBlock(BlockBuilderInterface $builder, array $options);
-
-    /**
-     * Action when the block is added to parent block.
-     *
-     * @param BlockInterface $parent  The child block
-     * @param BlockInterface $block   The block
-     * @param array          $options The options
-     */
-    public function addParent(BlockInterface $parent, BlockInterface $block, array $options);
-
-    /**
-     * Action when the block is removed to parent block.
-     *
-     * @param BlockInterface $parent  The child block
-     * @param BlockInterface $block   The block
-     * @param array          $options The options
-     */
-    public function removeParent(BlockInterface $parent, BlockInterface $block, array $options);
-
-    /**
-     * Action when the block adds a child.
-     *
-     * @param BlockInterface $child   The child block
-     * @param BlockInterface $block   The block
-     * @param array          $options The options
-     */
-    public function addChild(BlockInterface $child, BlockInterface $block, array $options);
-
-    /**
-     * Action when the block removes a child.
-     *
-     * @param BlockInterface $child   The child block
-     * @param BlockInterface $block   The block
-     * @param array          $options The options
-     */
-    public function removeChild(BlockInterface $child, BlockInterface $block, array $options);
-
-    /**
-     * Configures a block view for the type hierarchy.
-     *
-     * It is called before the children of the block are built.
-     *
-     * @param BlockView      $view    The block view to configure.
-     * @param BlockInterface $block   The block corresponding to the block view.
-     * @param array          $options The options used for the configuration.
-     */
-    public function buildView(BlockView $view, BlockInterface $block, array $options);
-
-    /**
-     * Finishes a block view for the type hierarchy.
-     *
-     * It is called after the children of the block view have been built.
-     *
-     * @param BlockView      $view    The block view to configure.
-     * @param BlockInterface $block   The block corresponding to the block view.
-     * @param array          $options The options used for the configuration.
-     */
-    public function finishView(BlockView $view, BlockInterface $block, array $options);
 
     /**
      * Returns the configured options resolver used for this type.

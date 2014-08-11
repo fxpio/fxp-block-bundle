@@ -11,11 +11,20 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
 interface BlockTypeExtensionInterface extends BlockTypeCommonInterface
 {
+    /**
+     * Sets the default options for this type.
+     *
+     * @param OptionsResolverInterface $resolver The resolver for the options.
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver);
+
     /**
      * Returns the name of the type being extended.
      *
