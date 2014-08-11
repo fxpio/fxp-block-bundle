@@ -11,73 +11,9 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-abstract class AbstractTypeExtension implements BlockTypeExtensionInterface
+abstract class AbstractTypeExtension extends AbstractCommonType implements BlockTypeExtensionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildBlock(BlockBuilderInterface $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function finishBlock(BlockBuilderInterface $builder, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addParent(BlockInterface $parent, BlockInterface $block, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeParent(BlockInterface $parent, BlockInterface $block, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addChild(BlockInterface $child, BlockInterface $block, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeChild(BlockInterface $child, BlockInterface $block, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(BlockView $view, BlockInterface $block, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function finishView(BlockView $view, BlockInterface $block, array $options)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-    }
 }
