@@ -10,7 +10,6 @@
         <parameter key="sonatra_block.registry.class">Sonatra\Bundle\BlockBundle\Block\BlockRegistry</parameter>
         <parameter key="sonatra_block.resolved_type_factory.class">Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactory</parameter>
         <parameter key="sonatra_block.type_guesser.validator.base.class">Sonatra\Bundle\BlockBundle\Block\Extension\Validator\ValidatorTypeGuesser</parameter>
-        <parameter key="sonatra_block.type.money.default_currency"></parameter>
     </parameters>
 
     <services>
