@@ -4,7 +4,7 @@ Sonatra Block Bundle
 [![Latest Stable Version](https://poser.pugx.org/sonatra/block-bundle/v/stable.svg)](https://packagist.org/packages/sonatra/block-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/sonatra/block-bundle/v/unstable.svg)](https://packagist.org/packages/sonatra/block-bundle)
 [![Build Status](https://travis-ci.org/sonatra/SonatraBlockBundle.svg)](https://travis-ci.org/sonatra/SonatraBlockBundle)
-[![Coverage Status](https://coveralls.io/repos/sonatra/SonatraBlockBundle/badge.png)](https://coveralls.io/r/sonatra/SonatraBlockBundle)
+[![Coverage Status](https://img.shields.io/coveralls/sonatra/SonatraBlockBundle.svg)](https://coveralls.io/r/sonatra/SonatraBlockBundle)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sonatra/SonatraBlockBundle/badges/quality-score.png)](https://scrutinizer-ci.com/g/sonatra/SonatraBlockBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/0d1dda71-3f47-4dad-be53-017da27d21a8/mini.png)](https://insight.sensiolabs.com/projects/0d1dda71-3f47-4dad-be53-017da27d21a8)
 
