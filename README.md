@@ -1,8 +1,7 @@
 Sonatra Block Bundle
 ====================
 
-[![Latest Stable Version](https://poser.pugx.org/sonatra/block-bundle/v/stable.svg)](https://packagist.org/packages/sonatra/block-bundle)
-[![Latest Unstable Version](https://poser.pugx.org/sonatra/block-bundle/v/unstable.svg)](https://packagist.org/packages/sonatra/block-bundle)
+[![Latest Version](https://img.shields.io/packagist/v/sonatra/block-bundle.svg)](https://packagist.org/packages/sonatra/block-bundle)
 [![Build Status](https://travis-ci.org/sonatra/SonatraBlockBundle.svg)](https://travis-ci.org/sonatra/SonatraBlockBundle)
 [![Coverage Status](https://img.shields.io/coveralls/sonatra/SonatraBlockBundle.svg)](https://coveralls.io/r/sonatra/SonatraBlockBundle)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sonatra/SonatraBlockBundle/badges/quality-score.png)](https://scrutinizer-ci.com/g/sonatra/SonatraBlockBundle)
