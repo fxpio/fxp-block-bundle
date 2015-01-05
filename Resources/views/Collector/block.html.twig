@@ -1,6 +1,6 @@
-{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
 
-{% from '@SonatraBlock/Collector/macro.html.twig' import block_tree_entry, block_tree_details %}
+{% from 'SonatraBlockBundle:Collector:macro.html.twig' import block_tree_entry, block_tree_details %}
 
 {% block toolbar %}
     {% if collector.data|length %}
@@ -13,7 +13,7 @@
             <span class="sf-toolbar-status sf-toolbar-status-{{ statut_bar }}">{{ collector.data.duplicate_ids|length }}</span>
         {% endset %}
 
-        {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { 'link': profiler_url } %}
+        {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
     {% endif %}
 {% endblock %}
 
@@ -34,7 +34,7 @@
 
 
 {% block panel %}
-    {% include '@SonatraBlock/Collector/block.css.twig' %}
+    {% include 'SonatraBlockBundle:Collector:block.css.twig' %}
 
     {% if collector.data.blocks|length %}
         <div class="window">
@@ -56,5 +56,5 @@
         <p><em>No blocks were constructed for this request.</em></p>
     {% endif %}
 
-    {% include '@SonatraBlock/Collector/block.js.twig' %}
+    {% include 'SonatraBlockBundle:Collector:block.js.twig' %}
 {% endblock %}
