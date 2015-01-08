@@ -124,7 +124,7 @@ class BlockExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('block_humanize', array($this->renderer, 'humanize')),
+            new \Twig_SimpleFilter('block_humanize', array($this, 'humanize')),
             new \Twig_SimpleFilter('raw_closure', array($this, 'rawClosure')),
             new \Twig_SimpleFilter('block_formatter', array($this, 'formatter'), array('is_safe' => array('html'))),
         );
@@ -245,6 +245,18 @@ class BlockExtension extends \Twig_Extension
         $block = $this->createNamed($type, $options);
 
         return $this->renderer->searchAndRenderBlock($block->createView(), 'widget', $variables);
+    }
+
+    /**
+     * Makes a technical name human readable.
+     *
+     * @param string $text The text to humanize.
+     *
+     * @return string The humanized text.
+     */
+    public function humanize($text)
+    {
+        return $this->renderer->humanize($text);
     }
 
     /**
