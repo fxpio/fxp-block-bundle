@@ -159,10 +159,7 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
         }
 
         unset($this->unresolvedChildren[$name]);
-
-        if (array_key_exists($name, $this->children)) {
-            unset($this->children[$name]);
-        }
+        unset($this->children[$name]);
 
         return $this;
     }
