@@ -101,6 +101,13 @@
     {% spaceless %}
         {% if mailto %}
             {% set label = label|default(value) %}
+            {%- if label_format is not empty -%}
+                {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+                }) %}
+            {%- endif -%}
+
             {% set value %}
             <a href="mailto:{{ value }}" tabindex="0">{{ label|trans({}, translation_domain) }}</a>
             {% endset %}

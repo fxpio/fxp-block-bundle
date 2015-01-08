@@ -70,6 +70,7 @@ class BlockType extends AbstractType
         $name = $block->getName();
         $blockName = $options['block_name'] ?: $block->getName();
         $translationDomain = $options['translation_domain'];
+        $labelFormat = $options['label_format'];
         $id = $name;
 
         if ($view->parent) {
@@ -83,6 +84,9 @@ class BlockType extends AbstractType
                 $translationDomain = $view->parent->vars['translation_domain'];
             }
 
+            if (!$labelFormat) {
+                $labelFormat = $view->parent->vars['label_format'];
+            }
         } else {
             $uniqueBlockPrefix = '_' . $blockName;
 
@@ -112,6 +116,7 @@ class BlockType extends AbstractType
                 'value'               => $block->getViewData(),
                 'data'                => $block->getNormData(),
                 'label'               => $options['label'],
+                'label_format'        => $labelFormat,
                 'attr'                => $options['attr'],
                 'label_attr'          => $options['label_attr'],
                 'compound'            => $block->getConfig()->getCompound(),
@@ -177,6 +182,7 @@ class BlockType extends AbstractType
                 'property_path'      => null,
                 'mapped'             => false,
                 'label'              => null,
+                'label_format'       => null,
                 'attr'               => array(),
                 'label_attr'         => array(),
                 'inherit_data'       => false,
