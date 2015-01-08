@@ -14,6 +14,7 @@ namespace Sonatra\Bundle\BlockBundle\Block;
 use Sonatra\Bundle\BlockBundle\Block\Exception\LogicException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException;
+use Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 use Sonatra\Bundle\BlockBundle\Block\Util\InheritDataAwareIterator;
@@ -786,12 +787,22 @@ class Block implements \IteratorAggregate, BlockInterface
      * @param mixed $value The value to transform
      *
      * @return string
+     *
+     * @throws TransformationFailedException If the value cannot be transformed to "normalized" format
      */
     protected function modelToNorm($value)
     {
-        /* @var DataTransformerInterface $transformer */
-        foreach ($this->config->getModelTransformers() as $transformer) {
-            $value = $transformer->transform($value);
+        try {
+            /* @var DataTransformerInterface $transformer */
+            foreach ($this->config->getModelTransformers() as $transformer) {
+                $value = $transformer->transform($value);
+            }
+        } catch (TransformationFailedException $exception) {
+            throw new TransformationFailedException(
+                'Unable to transform value for property path "' . $this->getPropertyPath() . '": ' . $exception->getMessage(),
+                $exception->getCode(),
+                $exception
+            );
         }
 
         return $value;
@@ -803,12 +814,22 @@ class Block implements \IteratorAggregate, BlockInterface
      * @param mixed $value The value to transform
      *
      * @return string
+     *
+     * @throws TransformationFailedException If the value cannot be transformed to "view" format
      */
     protected function normToView($value)
     {
-        /* @var DataTransformerInterface $transformer */
-        foreach ($this->config->getViewTransformers() as $transformer) {
-            $value = $transformer->transform($value);
+        try {
+            /* @var DataTransformerInterface $transformer */
+            foreach ($this->config->getViewTransformers() as $transformer) {
+                $value = $transformer->transform($value);
+            }
+        } catch (TransformationFailedException $exception) {
+            throw new TransformationFailedException(
+                'Unable to transform value for property path "' . $this->getPropertyPath() . '": ' . $exception->getMessage(),
+                $exception->getCode(),
+                $exception
+            );
         }
 
         // Scalar values should  be converted to strings to
