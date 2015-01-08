@@ -18,8 +18,14 @@ use Sonatra\Bundle\BlockBundle\Block\Exception\ClassNotInstantiableException;
  */
 final class BlockEvents
 {
+    /**
+     * @Event
+     */
     const PRE_SET_DATA = 'block.pre_set_data';
 
+    /**
+     * @Event
+     */
     const POST_SET_DATA = 'block.post_set_data';
 
     public function __construct()
