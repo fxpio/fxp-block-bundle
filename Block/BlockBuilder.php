@@ -262,7 +262,7 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
             throw new BadMethodCallException('BlockBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
         }
 
-        return new \ArrayIterator($this->children);
+        return new \ArrayIterator($this->all());
     }
 
     /**
