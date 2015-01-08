@@ -105,6 +105,7 @@ class ChoiceType extends AbstractType
                 'empty_value'       => null,
                 'compound'          => $compound,
                 'data_class'        => null,
+                'block_name'        => 'entry',
         ));
 
         $resolver->setAllowedTypes(array(
