@@ -2,10 +2,10 @@ Sonatra Block Bundle
 ====================
 
 [![Latest Version](https://img.shields.io/packagist/v/sonatra/block-bundle.svg)](https://packagist.org/packages/sonatra/block-bundle)
-[![Build Status](https://travis-ci.org/sonatra/SonatraBlockBundle.svg)](https://travis-ci.org/sonatra/SonatraBlockBundle)
-[![Coverage Status](https://img.shields.io/coveralls/sonatra/SonatraBlockBundle.svg)](https://coveralls.io/r/sonatra/SonatraBlockBundle)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sonatra/SonatraBlockBundle/badges/quality-score.png)](https://scrutinizer-ci.com/g/sonatra/SonatraBlockBundle)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/0d1dda71-3f47-4dad-be53-017da27d21a8/mini.png)](https://insight.sensiolabs.com/projects/0d1dda71-3f47-4dad-be53-017da27d21a8)
+[![Build Status](https://img.shields.io/travis/sonatra/SonatraBlockBundle/master.svg)](https://travis-ci.org/sonatra/SonatraBlockBundle)
+[![Coverage Status](https://img.shields.io/coveralls/sonatra/SonatraBlockBundle/master.svg)](https://coveralls.io/r/sonatra/SonatraBlockBundle?branch=master)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/sonatra/SonatraBlockBundle/master.svg)](https://scrutinizer-ci.com/g/sonatra/SonatraBlockBundle?branch=master)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/0d1dda71-3f47-4dad-be53-017da27d21a8.svg)](https://insight.sensiolabs.com/projects/0d1dda71-3f47-4dad-be53-017da27d21a8)
 
 The Sonatra BlockBundle provides tools for defining UI blocks, rendering and mapping
 response data to related models. This bundle can easily create user interface elements,
