@@ -811,6 +811,14 @@ class Block implements \IteratorAggregate, BlockInterface
     /**
      * Transforms the value if a value transformer is set.
      *
+     * Note:
+     *
+     * Scalar values should  be converted to strings to
+     * facilitate differentiation between empty ("") and zero (0).
+     * Only do this for simple blocks, as the resulting value in
+     * compound blocks is passed to the data mapper and thus should
+     * not be converted to a string before.
+     *
      * @param mixed $value The value to transform
      *
      * @return string
@@ -832,11 +840,6 @@ class Block implements \IteratorAggregate, BlockInterface
             );
         }
 
-        // Scalar values should  be converted to strings to
-        // facilitate differentiation between empty ("") and zero (0).
-        // Only do this for simple blocks, as the resulting value in
-        // compound blocks is passed to the data mapper and thus should
-        // not be converted to a string before.
         if (!$this->config->getCompound()) {
             return null === $value || is_scalar($value) ? (string) $value : $value;
         }
