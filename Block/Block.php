@@ -115,15 +115,10 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function __construct(BlockConfigInterface $config)
     {
-        // Compound blocks always need a data mapper, otherwise calls to
-        // `setData` and `add` will not lead to the correct population of
-        // the child blocks.
         if ($config->getCompound() && !$config->getDataMapper()) {
             throw new LogicException('Compound blocks need a data mapper');
         }
 
-        // If the block inherits the data from its parent, it is not necessary
-        // to call setData() with the default data.
         if ($config->getInheritData()) {
             $this->defaultDataSet = true;
         }
@@ -361,8 +356,6 @@ class Block implements \IteratorAggregate, BlockInterface
      */
     public function setData($modelData)
     {
-        // If the block inherits its parent's data, disallow data setting to
-        // prevent merge conflicts
         if ($this->config->getInheritData()) {
             throw new RuntimeException('You cannot change the data of a block inheriting its parent data.');
         }
@@ -442,10 +435,7 @@ class Block implements \IteratorAggregate, BlockInterface
         $this->defaultDataSet = true;
         $this->lockSetData = false;
 
-        // It is not necessary to invoke this method if the block doesn't have children,
-        // even if the block is compound.
         if (count($this->children) > 0) {
-            // Update child blocks view the data
             $childrenIterator = new InheritDataAwareIterator($this->children);
             $childrenIterator = new \RecursiveIteratorIterator($childrenIterator);
             $this->config->getDataMapper()->mapDataToViews($viewData, $childrenIterator);
@@ -527,6 +517,10 @@ class Block implements \IteratorAggregate, BlockInterface
 
     /**
      * {@inheritdoc}
+     *
+     * Guarantee that the *_SET_DATA events have been triggered once the
+     * block is initialized. This makes sure that dynamically added or
+     * removed fields are already visible after initialization.
      */
     public function initialize()
     {
@@ -534,9 +528,6 @@ class Block implements \IteratorAggregate, BlockInterface
             throw new RuntimeException('Only root blocks should be initialized.');
         }
 
-        // Guarantee that the *_SET_DATA events have been triggered once the
-        // block is initialized. This makes sure that dynamically added or
-        // removed fields are already visible after initialization.
         if (!$this->defaultDataSet) {
             $this->setData($this->config->getData());
         }
@@ -578,9 +569,7 @@ class Block implements \IteratorAggregate, BlockInterface
         }
 
         return BlockUtil::isEmpty($this->modelData) ||
-            // arrays, countables
             0 === count($this->modelData) ||
-            // traversables that are not countable
             ($this->modelData instanceof \Traversable && 0 === iterator_count($this->modelData));
     }
 
@@ -594,6 +583,19 @@ class Block implements \IteratorAggregate, BlockInterface
 
     /**
      * {@inheritdoc}
+     *
+     * If setData() is currently being called, there is no need to call
+     * mapDataToViews() here, as mapDataToViews() is called at the end
+     * of setData() anyway. Not doing this check leads to an endless
+     * recursion when initializing the block lazily and an event listener
+     * (such as ResizeBlockListener) adds fields depending on the data:
+     *
+     * setData() is called, the block is not initialized yet
+     * add() is called by the listener (setData() is not complete, so
+     * the block is still not initialized)
+     * getViewData() is called
+     * setData() is called since the block is not initialized yet
+     * ... endless recursion ...
      */
     public function add($child, $type = null, array $options = array())
     {
@@ -601,21 +603,8 @@ class Block implements \IteratorAggregate, BlockInterface
             throw new LogicException('You cannot add children to a simple block. Maybe you should set the option "compound" to true?');
         }
 
-        // Obtain the view data
         $viewData = null;
 
-        // If setData() is currently being called, there is no need to call
-        // mapDataToViews() here, as mapDataToViews() is called at the end
-        // of setData() anyway. Not doing this check leads to an endless
-        // recursion when initializing the block lazily and an event listener
-        // (such as ResizeBlockListener) adds fields depending on the data:
-        //
-        //  * setData() is called, the block is not initialized yet
-        //  * add() is called by the listener (setData() is not complete, so
-        //    the block is still not initialized)
-        //  * getViewData() is called
-        //  * setData() is called since the block is not initialized yet
-        //  * ... endless recursion ...
         if (!$this->lockSetData && $this->defaultDataSet && !$this->config->getInheritData()) {
             $viewData = $this->getViewData();
         }
