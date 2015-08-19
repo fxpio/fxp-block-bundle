@@ -32,7 +32,7 @@ class TemplatingExtension extends AbstractExtension
     public function __construct(PhpEngine $engine, array $defaultThemes = array())
     {
         $engine->addHelpers(array(
-            new BlockHelper(new BlockRenderer(new TemplatingRendererEngine($engine, $defaultThemes)))
+            new BlockHelper(new BlockRenderer(new TemplatingRendererEngine($engine, $defaultThemes))),
         ));
     }
 }

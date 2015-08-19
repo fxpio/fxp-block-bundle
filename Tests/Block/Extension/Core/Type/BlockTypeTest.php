@@ -196,7 +196,7 @@ class BlockTypeTest extends BaseTypeTest
     public function testPassZeroLabelToView()
     {
         $view = $this->factory->create('block', null, array(
-            'label' => '0'
+            'label' => '0',
         ))
         ->createView();
 

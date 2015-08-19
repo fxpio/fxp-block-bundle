@@ -30,7 +30,7 @@ class TestExpectedExtension extends AbstractExtension
     protected function loadTypeExtensions()
     {
         return array(
-            'bar'
+            'bar',
         );
     }
 
