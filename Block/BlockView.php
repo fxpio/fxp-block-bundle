@@ -149,7 +149,7 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
     }
 
     /**
-     * Returns an iterator to iterate over children (implements \IteratorAggregate)
+     * Returns an iterator to iterate over children (implements \IteratorAggregate).
      *
      * @return \ArrayIterator The iterator
      */

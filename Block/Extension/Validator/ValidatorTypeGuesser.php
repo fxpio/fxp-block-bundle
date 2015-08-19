@@ -48,7 +48,7 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
     }
 
     /**
-     * Guesses a field class name for a given constraint
+     * Guesses a field class name for a given constraint.
      *
      * @param Constraint $constraint The constraint to guess for
      *
@@ -138,7 +138,7 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
 
     /**
      * Iterates over the constraints of a property, executes a constraints on
-     * them and returns the best guess
+     * them and returns the best guess.
      *
      * @param string   $class    The class to read the constraints block
      * @param string   $property The property for which to find constraints

@@ -54,7 +54,7 @@ class BlockEvent extends Event
     }
 
     /**
-     * Allows updating with some filtered data
+     * Allows updating with some filtered data.
      *
      * @param mixed $data
      */

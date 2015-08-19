@@ -16,7 +16,7 @@ use Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
 
 /**
- * Transforms between a normalized time and a localized time string
+ * Transforms between a normalized time and a localized time string.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
@@ -107,7 +107,7 @@ class DateTimeToLocalizedStringTransformer implements DataTransformerInterface
     }
 
     /**
-     * Returns a preconfigured IntlDateFormatter instance
+     * Returns a preconfigured IntlDateFormatter instance.
      *
      * @return \IntlDateFormatter
      */

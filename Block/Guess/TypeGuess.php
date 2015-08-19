@@ -13,7 +13,7 @@ namespace Sonatra\Bundle\BlockBundle\Block\Guess;
 
 /**
  * Contains a guessed class name and a list of options for creating an instance
- * of that class
+ * of that class.
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
@@ -21,12 +21,14 @@ class TypeGuess extends Guess
 {
     /**
      * The guessed field type.
+     *
      * @var string
      */
     private $type;
 
     /**
      * The guessed options for creating an instance of the guessed class.
+     *
      * @var array
      */
     private $options;
