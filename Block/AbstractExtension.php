@@ -140,7 +140,7 @@ abstract class AbstractExtension implements BlockExtensionInterface
      */
     protected function loadTypeGuesser()
     {
-        return null;
+        // return null
     }
 
     /**

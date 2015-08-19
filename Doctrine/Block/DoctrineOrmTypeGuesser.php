@@ -119,6 +119,6 @@ class DoctrineOrmTypeGuesser implements BlockTypeGuesserInterface
             }
         }
 
-        return null;
+        return $this->cache[$class];
     }
 }

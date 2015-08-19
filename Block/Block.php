@@ -173,7 +173,9 @@ class Block implements \IteratorAggregate, BlockInterface
         }
 
         if (null === $this->getName() || '' === $this->getName()) {
-            return null;
+            $empty = null;
+
+            return $empty;
         }
 
         $parent = $this->parent;

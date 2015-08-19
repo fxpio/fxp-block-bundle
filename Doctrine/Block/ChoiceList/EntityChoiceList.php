@@ -223,11 +223,7 @@ class EntityChoiceList implements ChoiceListInterface
         $ref = new \ReflectionClass($class);
         $method = 'get'.ucfirst($property);
 
-        if ($ref->hasMethod($method)) {
-            return $method;
-        }
-
-        return null;
+        return $ref->hasMethod($method) ? $method : null;
     }
 
     /**
@@ -240,23 +236,20 @@ class EntityChoiceList implements ChoiceListInterface
      */
     protected function getPropertyLabel($class, $property)
     {
+        $value = null;
         $ref = new \ReflectionClass($class);
         $methodLabelGet = 'get'.ucfirst($property);
         $methodLabelHas = 'has'.ucfirst($property);
         $methodLabelIs = 'is'.ucfirst($property);
 
         if ($ref->hasMethod($methodLabelGet)) {
-            return $methodLabelGet;
+            $value = $methodLabelGet;
+        } elseif ($ref->hasMethod($methodLabelHas)) {
+            $value = $methodLabelHas;
+        } elseif ($ref->hasMethod($methodLabelIs)) {
+            $value = $methodLabelIs;
         }
 
-        if ($ref->hasMethod($methodLabelHas)) {
-            return $methodLabelHas;
-        }
-
-        if ($ref->hasMethod($methodLabelIs)) {
-            return $methodLabelIs;
-        }
-
-        return null;
+        return $value;
     }
 }

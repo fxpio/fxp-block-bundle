@@ -56,6 +56,8 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
      */
     public function guessTypeForConstraint(Constraint $constraint)
     {
+        $empty = null;
+
         switch (get_class($constraint)) {
             case 'Symfony\Component\Validator\Constraints\Type':
                 /* @var \Symfony\Component\Validator\Constraints\Type $constraint */
@@ -131,7 +133,7 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
                 return new TypeGuess('checkbox', array(), Guess::MEDIUM_CONFIDENCE);
         }
 
-        return null;
+        return $empty;
     }
 
     /**
