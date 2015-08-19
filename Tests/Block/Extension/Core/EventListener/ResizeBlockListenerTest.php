@@ -99,7 +99,7 @@ class ResizeBlockListenerTest extends \PHPUnit_Framework_TestCase
     {
         $listener = new ResizeBlockListener('text', array());
 
-        $this->assertEquals(array(BlockEvents::PRE_SET_DATA => 'preSetData'),$listener->getSubscribedEvents());
+        $this->assertEquals(array(BlockEvents::PRE_SET_DATA => 'preSetData'), $listener->getSubscribedEvents());
     }
 
     public function testPreSetDataResizesBlock()
