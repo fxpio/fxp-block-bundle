@@ -26,7 +26,7 @@ abstract class AbstractBaseExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        throw new \LogicException("The setUp() method must be overridden");
+        throw new \LogicException('The setUp() method must be overridden');
     }
 
     protected function tearDown()

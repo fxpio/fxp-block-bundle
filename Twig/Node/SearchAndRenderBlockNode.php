@@ -106,6 +106,6 @@ class SearchAndRenderBlockNode extends \Twig_Node_Expression_Function
             }
         }
 
-        $compiler->raw(")");
+        $compiler->raw(')');
     }
 }
