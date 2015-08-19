@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Twig\Node;
 
 use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
+
 /**
  * Represents a sblock node.
  *
