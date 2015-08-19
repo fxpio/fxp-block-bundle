@@ -71,7 +71,6 @@ class TwigTemplateTransformer implements DataTransformerInterface
 
         if (null !== $this->blockname) {
             $value = $template->renderBlock($this->blockname, $variables);
-
         } else {
             $value = $template->render($variables);
         }

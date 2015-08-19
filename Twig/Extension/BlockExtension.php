@@ -162,7 +162,6 @@ class BlockExtension extends \Twig_Extension
     {
         if ($type instanceof BlockView) {
             $view = $type;
-
         } else {
             /* @var BlockInterface $type */
             $type = $this->createNamed($type, $options);

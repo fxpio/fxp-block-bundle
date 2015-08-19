@@ -37,7 +37,6 @@ class BlockThemeTokenParser extends \Twig_TokenParser
         if ($this->parser->getStream()->test(\Twig_Token::NAME_TYPE, 'with')) {
             $this->parser->getStream()->next();
             $resources = $this->parser->getExpressionParser()->parseExpression();
-
         } else {
             $resources = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
 

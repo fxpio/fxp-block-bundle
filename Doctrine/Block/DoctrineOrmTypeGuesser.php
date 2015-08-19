@@ -111,7 +111,6 @@ class DoctrineOrmTypeGuesser implements BlockTypeGuesserInterface
         foreach ($this->registry->getManagers() as $name => $em) {
             try {
                 return $this->cache[$class] = array($em->getClassMetadata($class), $name);
-
             } catch (MappingException $e) {
                 // not an entity or mapped super class
             } catch (LegacyMappingException $e) {

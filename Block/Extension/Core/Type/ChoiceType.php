@@ -59,7 +59,6 @@ class ChoiceType extends AbstractType
 
         if ($options['multiple']) {
             $builder->addViewTransformer(new ChoicesToValuesTransformer($options['choice_list']));
-
         } else {
             $builder->addViewTransformer(new ChoiceToValueTransformer($options['choice_list']));
         }

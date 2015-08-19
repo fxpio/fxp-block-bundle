@@ -80,5 +80,4 @@ interface BlockDataCollectorInterface extends DataCollectorInterface
      * @return array
      */
     public function getData();
-
 }

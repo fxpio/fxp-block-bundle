@@ -188,7 +188,6 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
 
         if ($forcePrepend) {
             array_unshift($this->viewTransformers, $viewTransformer);
-
         } else {
             $this->viewTransformers[] = $viewTransformer;
         }
@@ -221,7 +220,6 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
 
         if ($forceAppend) {
             $this->modelTransformers[] = $modelTransformer;
-
         } else {
             array_unshift($this->modelTransformers, $modelTransformer);
         }

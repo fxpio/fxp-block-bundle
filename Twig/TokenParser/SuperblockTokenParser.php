@@ -98,7 +98,6 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
                 $stream->next();
                 $options->addElement($this->parser->getExpressionParser()->parseExpression(), $attr);
-
             } while (!$stream->test(\Twig_Token::NAME_TYPE, 'with')
                     && !$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
                     && !$stream->test(\Twig_Token::BLOCK_END_TYPE));
@@ -121,12 +120,10 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
                 if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
                     $stream->next();
-
                 } elseif (!$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
                         && !$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
                     throw new \Twig_Error_Syntax("The parameters after 'with' must be separated by commas", $stream->getCurrent()->getLine(), $stream->getFilename());
                 }
-
             } while (!$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
                     && !$stream->test(\Twig_Token::BLOCK_END_TYPE));
         }
@@ -172,12 +169,10 @@ class SuperblockTokenParser extends \Twig_TokenParser
                 $node->setAttribute('is_root', false);
                 $node->setAttribute('parent_name', $name);
                 $sBlocks->setNode(count($sBlocks), $node);
-
             } elseif ($node instanceof \Twig_Node_Set) {
                 $previousTwigNode = $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
 
                 $sBlocks->setNode(count($sBlocks), $node);
-
             } elseif ($node->hasNode('expr')
                     && $node->getNode('expr') instanceof \Twig_Node_Expression_Function
                     && $node->getNode('expr')->hasAttribute('name')
@@ -190,7 +185,6 @@ class SuperblockTokenParser extends \Twig_TokenParser
                 $subReference->setAttribute('parent_name', $name);
 
                 $sBlocks->setNode(count($sBlocks), $subReference);
-
             } elseif (!$node instanceof \Twig_Node_Text || ($node instanceof \Twig_Node_Text && '' !== trim($node->getAttribute('data')))) {
                 if (null === $previousTwigNode) {
                     $previousTwigNode = new SuperblockClosure(new \Twig_Node(array(), array(), $lineno), $node->getLine());
@@ -255,7 +249,6 @@ class SuperblockTokenParser extends \Twig_TokenParser
         if ('sblock' === $node->getAttribute('name')) {
             $cType = $args->getNode($pos);
             $pos++;
-
         } else {
             $cType = $node->getAttribute('name');
             $cType = new \Twig_Node_Expression_Constant(substr($cType, 7), $node->getLine());
