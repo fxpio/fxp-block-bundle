@@ -147,6 +147,7 @@ class BlockType extends AbstractType
         $emptyData = function (Options $options) {
             return function (BlockInterface $block) use ($options) {
                 $class = $options['data_class'];
+                $empty = null;
 
                 if (null !== $class && null === $block->getConfig()->getData()) {
                     $ref = new \ReflectionClass($class);
@@ -159,7 +160,7 @@ class BlockType extends AbstractType
                     return $ref->newInstance();
                 }
 
-                return null;
+                return $empty;
             };
         };
 
@@ -209,7 +210,7 @@ class BlockType extends AbstractType
      */
     public function getParent()
     {
-        return null;
+        // return null
     }
 
     /**

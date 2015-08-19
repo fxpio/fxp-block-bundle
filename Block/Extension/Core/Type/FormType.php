@@ -184,11 +184,9 @@ class FormType extends AbstractType
             return $form;
         }
 
-        if (null !== $block->getParent()) {
-            return $this->getParentForm($block->getParent());
-        }
-
-        return null;
+        return null !== $block->getParent()
+            ? $this->getParentForm($block->getParent())
+            : null;
     }
 
     /**
@@ -224,10 +222,8 @@ class FormType extends AbstractType
             return $view->vars['block_form'];
         }
 
-        if (null !== $view->parent) {
-            return $this->getParentFormView($view->parent);
-        }
-
-        return null;
+        return null !== $view->parent
+            ? $this->getParentFormView($view->parent)
+            : null;
     }
 }
