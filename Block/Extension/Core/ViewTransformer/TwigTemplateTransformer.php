@@ -43,10 +43,10 @@ class TwigTemplateTransformer implements DataTransformerInterface
     /**
      * Constructor.
      *
-     * @param \Twig_Environment $twig      The twig environment
-     * @param string            $resource  The twig file
+     * @param \Twig_Environment $twig     The twig environment
+     * @param string            $resource The twig file
      * @param string|null       blockname  The block name of twig file
-     * @param array             $variables The variables of twig file
+     * @param array $variables The variables of twig file
      */
     public function __construct(\Twig_Environment $twig, $resource, $blockname = null, array $variables = array())
     {

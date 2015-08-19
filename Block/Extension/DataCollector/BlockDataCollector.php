@@ -174,7 +174,7 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -194,7 +194,7 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
      *
      * @param BlockInterface $block
      * @param BlockView      $view
-     * @param string $output
+     * @param string         $output
      */
     private function recursiveBuildFinalBlockTree(BlockInterface $block = null, BlockView $view, &$output = null)
     {
