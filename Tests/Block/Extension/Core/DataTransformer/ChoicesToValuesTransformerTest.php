@@ -12,7 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Tests\Block\Extension\Core\DataTransformer;
 
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer\ChoicesToValuesTransformer;
-use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
+use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -26,7 +26,7 @@ class ChoicesToValuesTransformerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $list = new SimpleChoiceList(array(0 => 'A', 1 => 'B', 2 => 'C'));
+        $list = new ArrayChoiceList(array('A' => 0, 'B' => 1, 'C' => 2));
         $this->transformer = new ChoicesToValuesTransformer($list);
     }
 

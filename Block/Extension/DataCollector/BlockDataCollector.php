@@ -84,6 +84,8 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
 
     /**
      * Does nothing. The data is collected during the block event listeners.
+     *
+     * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {

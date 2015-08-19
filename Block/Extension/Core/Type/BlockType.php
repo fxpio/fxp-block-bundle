@@ -16,7 +16,7 @@ use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidConfigurationException;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -136,7 +136,7 @@ class BlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         // Derive "data_class" option from passed "data" object
         $dataClass = function (Options $options) {
@@ -165,9 +165,7 @@ class BlockType extends AbstractType
 
         // If data is given, the block is locked to that data
         // (independent of its value)
-        $resolver->setOptional(array(
-                'data',
-        ));
+        $resolver->setDefined('data');
 
         $resolver->setDefaults(array(
                 'block_name'         => null,
@@ -192,22 +190,18 @@ class BlockType extends AbstractType
                 'auto_initialize'    => true,
         ));
 
-        $resolver->setAllowedTypes(array(
-                'empty_message'   => array('null', 'string'),
-                'attr'            => 'array',
-                'label_attr'      => 'array',
-                'auto_initialize' => 'bool',
-        ));
+        $resolver->setAllowedTypes('empty_message', array('null', 'string'));
+        $resolver->setAllowedTypes('attr', 'array');
+        $resolver->setAllowedTypes('label_attr', 'array');
+        $resolver->setAllowedTypes('auto_initialize', 'bool');
 
-        $resolver->setNormalizers(array(
-            'block_name' => function (Options $options, $value = null) {
-                if (isset($options['id'])) {
-                    $value = $options['id'];
-                }
+        $resolver->setNormalizer('block_name', function (Options $options, $value = null) {
+            if (isset($options['id'])) {
+                $value = $options['id'];
+            }
 
-                return $value;
-            },
-        ));
+            return $value;
+        });
     }
 
     /**

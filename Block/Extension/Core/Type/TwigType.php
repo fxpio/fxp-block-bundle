@@ -14,7 +14,7 @@ namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type;
 use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\ViewTransformer\TwigTemplateTransformer;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -49,7 +49,7 @@ class TwigType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'resource'       => null,
@@ -57,11 +57,9 @@ class TwigType extends AbstractType
             'variables'      => array(),
         ));
 
-        $resolver->setAllowedTypes(array(
-            'resource'       => 'string',
-            'resource_block' => array('null', 'string'),
-            'variables'      => 'array',
-        ));
+        $resolver->setAllowedTypes('resource', 'string');
+        $resolver->setAllowedTypes('resource_block', array('null', 'string'));
+        $resolver->setAllowedTypes('variables', 'array');
     }
 
     /**

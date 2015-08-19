@@ -29,25 +29,22 @@
     {%- endif -%}
 
     <div{{ block('widget_attributes') }}>
-        {%- set options = choices -%}
+        {%- set options = selected_choices -%}
         {{- block('choice_widget_options') -}}
     </div>
 {%- endblock choice_widget_collapsed %}
 
 {% block choice_widget_options -%}
-    {%- for indice in choice_selections -%}
-        <span class="choice-item{% if inline %} inline{% endif %}">
-    {%- if route_name is defined and route_name is not null -%}
-        {%- set data_indice = data[indice]|default(data) -%}
-        {%- set route_parameters = route_parameters|merge({(route_id_name): data_indice.id}) -%}
-        <a href="{{ path(route_name, route_parameters) }}">{{ options[indice].label|trans({}, translation_domain) }}</a>
-    {%- else -%}
-        <span>{{ options[indice].label|trans({}, translation_domain) }}</span>
-    {%- endif -%}
-    </span>
+    {%- for indice, option in options -%}
+        {%- if route_name is defined and route_name is not null -%}
+            {%- set data_indice = data[indice]|default(data) -%}
+            {%- set route_parameters = route_parameters|merge({(route_id_name): data_indice.id}) -%}
+            <a href="{{ path(route_name, route_parameters) }}">{{ option.label|trans({}, translation_domain) }}</a>
+        {%- else -%}
+            <span>{{ option.label|trans({}, translation_domain) }}</span>
+        {%- endif -%}
     {%- endfor -%}
-
-    {%- if choice_selections|length == 0 -%}
+    {%- if options|length == 0 -%}
         <span class="choice-empty">{{ empty_value|trans({}, translation_domain) }}</span>
     {%- endif -%}
 {%- endblock choice_widget_options %}

@@ -127,6 +127,8 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
      * Implements \ArrayAccess.
      *
      * @throws BadMethodCallException always as setting a child by name is not allowed
+     *
+     * {@inheritdoc}
      */
     public function offsetSet($name, $value)
     {

@@ -30,7 +30,7 @@ class BlockFactory implements BlockFactoryInterface
     protected $resolvedTypeFactory;
 
     /**
-     * Construcotr.
+     * Constructor.
      *
      * @param BlockRegistryInterface            $registry
      * @param ResolvedBlockTypeFactoryInterface $resolvedTypeFactory

@@ -18,17 +18,17 @@ use Symfony\Component\Validator\Constraints\Country;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\False;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Ip;
+use Symfony\Component\Validator\Constraints\IsFalse;
+use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Language;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Locale;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Time;
-use Symfony\Component\Validator\Constraints\True;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -52,7 +52,7 @@ class ValidatorTypeGuesserTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        if (!class_exists('Symfony\Component\Validator\Constraint')) {
+        if (!class_exists('Symfony\Component\Validator\Validator\RecursiveValidator')) {
             $this->markTestSkipped('The "Validator" component is not available');
         }
 
@@ -144,8 +144,8 @@ class ValidatorTypeGuesserTest extends \PHPUnit_Framework_TestCase
             array(new Regex(array('pattern' => '*')), Guess::LOW_CONFIDENCE),
             array(new Range(array('min' => 0, 'max' => 255)), Guess::LOW_CONFIDENCE),
             array(new Count(array('min' => 0, 'max' => 255)), Guess::LOW_CONFIDENCE),
-            array(new True(), Guess::MEDIUM_CONFIDENCE),
-            array(new False(), Guess::MEDIUM_CONFIDENCE),
+            array(new IsTrue(), Guess::MEDIUM_CONFIDENCE),
+            array(new IsFalse(), Guess::MEDIUM_CONFIDENCE),
         );
     }
 }

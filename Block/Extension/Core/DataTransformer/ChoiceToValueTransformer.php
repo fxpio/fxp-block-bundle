@@ -12,7 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer;
 
 use Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>

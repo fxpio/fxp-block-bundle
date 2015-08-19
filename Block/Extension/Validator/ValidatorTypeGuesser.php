@@ -126,8 +126,8 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
             case 'Symfony\Component\Validator\Constraints\Count':
                 return new TypeGuess('collection', array(), Guess::LOW_CONFIDENCE);
 
-            case 'Symfony\Component\Validator\Constraints\True':
-            case 'Symfony\Component\Validator\Constraints\False':
+            case 'Symfony\Component\Validator\Constraints\IsTrue':
+            case 'Symfony\Component\Validator\Constraints\IsFalse':
                 return new TypeGuess('checkbox', array(), Guess::MEDIUM_CONFIDENCE);
         }
 
@@ -150,8 +150,8 @@ class ValidatorTypeGuesser implements BlockTypeGuesserInterface
         /* @var ClassMetadata $classMetadata */
         $classMetadata = $this->metadataFactory->getMetadataFor($class);
 
-        if ($classMetadata->hasMemberMetadatas($property)) {
-            $memberMetadatas = $classMetadata->getMemberMetadatas($property);
+        if ($classMetadata->hasPropertyMetadata($property)) {
+            $memberMetadatas = $classMetadata->getPropertyMetadata($property);
 
             foreach ($memberMetadatas as $memberMetadata) {
                 $constraints = $memberMetadata->getConstraints();
