@@ -76,7 +76,7 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
     {
         $this->dataExtractor = $dataExtractor;
         $this->data = array(
-            'blocks'        => array(),
+            'blocks' => array(),
             'duplicate_ids' => array(),
         );
         $this->viewIds = array();

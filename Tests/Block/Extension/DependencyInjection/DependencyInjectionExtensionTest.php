@@ -40,16 +40,16 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
     protected function getContainer($service)
     {
         $container = new ContainerBuilder(new ParameterBag(array(
-            'kernel.bundles'     => array(
-                'FrameworkBundle'    => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
+            'kernel.bundles' => array(
+                'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
                 'SonatraBlockBundle' => 'Sonatra\\Bundle\\BlockBundle\\SonatraBlockBundle',
             ),
-            'kernel.cache_dir'   => __DIR__,
-            'kernel.debug'       => false,
+            'kernel.cache_dir' => __DIR__,
+            'kernel.debug' => false,
             'kernel.environment' => 'test',
-            'kernel.name'        => 'kernel',
-            'kernel.root_dir'    => __DIR__,
-            'kernel.charset'     => 'UTF-8',
+            'kernel.name' => 'kernel',
+            'kernel.root_dir' => __DIR__,
+            'kernel.charset' => 'UTF-8',
         )));
         $bundle = new SonatraBlockBundle();
         $bundle->build($container); // Attach all default factories

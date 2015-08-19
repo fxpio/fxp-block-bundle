@@ -47,8 +47,8 @@ class CollectionType extends AbstractType
         };
 
         $resolver->setDefaults(array(
-            'type'           => 'text',
-            'options'        => array(),
+            'type' => 'text',
+            'options' => array(),
         ));
 
         $resolver->setNormalizer('options', $optionsNormalizer);

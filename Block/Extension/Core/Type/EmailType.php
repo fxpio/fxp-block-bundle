@@ -37,7 +37,7 @@ class EmailType extends AbstractType
     {
         $resolver->setDefaults(array(
             'mailto' => true,
-            'label'  => null,
+            'label' => null,
         ));
     }
 

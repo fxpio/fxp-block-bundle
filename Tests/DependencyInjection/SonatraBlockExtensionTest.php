@@ -175,16 +175,16 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
     public function testCompilerPassWithoutExtension()
     {
         $container = new ContainerBuilder(new ParameterBag(array(
-            'kernel.bundles'     => array(
-                'FrameworkBundle'    => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
+            'kernel.bundles' => array(
+                'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
                 'SonatraBlockBundle' => 'Sonatra\\Bundle\\BlockBundle\\SonatraBlockBundle',
             ),
-            'kernel.cache_dir'   => __DIR__,
-            'kernel.debug'       => false,
+            'kernel.cache_dir' => __DIR__,
+            'kernel.debug' => false,
             'kernel.environment' => 'test',
-            'kernel.name'        => 'kernel',
-            'kernel.root_dir'    => __DIR__,
-            'kernel.charset'     => 'UTF-8',
+            'kernel.name' => 'kernel',
+            'kernel.root_dir' => __DIR__,
+            'kernel.charset' => 'UTF-8',
         )));
 
         $sfExt = new FrameworkExtension();
@@ -204,17 +204,17 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
     protected function createContainer(array $configs = array())
     {
         $container = new ContainerBuilder(new ParameterBag(array(
-            'kernel.bundles'     => array(
-                'FrameworkBundle'    => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
-                'TwigBundle'         => 'Symfony\\Bundle\\TwigBundle\\TwigBundle',
+            'kernel.bundles' => array(
+                'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
+                'TwigBundle' => 'Symfony\\Bundle\\TwigBundle\\TwigBundle',
                 'SonatraBlockBundle' => 'Sonatra\\Bundle\\BlockBundle\\SonatraBlockBundle',
             ),
-            'kernel.cache_dir'   => __DIR__,
-            'kernel.debug'       => false,
+            'kernel.cache_dir' => __DIR__,
+            'kernel.debug' => false,
             'kernel.environment' => 'test',
-            'kernel.name'        => 'kernel',
-            'kernel.root_dir'    => __DIR__,
-            'kernel.charset'     => 'UTF-8',
+            'kernel.name' => 'kernel',
+            'kernel.root_dir' => __DIR__,
+            'kernel.charset' => 'UTF-8',
         )));
 
         $sfExt = new FrameworkExtension();

@@ -67,10 +67,10 @@ class EntityType extends AbstractType
 
         $view->vars = array_replace($view->vars, array(
                 'choice_selections' => $choiceList->getIndicesForChoices((array) $view->vars['value']),
-                'choices'           => $choiceList->getRemainingViews(),
-                'route_name'        => $options['route_name'],
-                'route_parameters'  => array_merge($options['route_parameters'], array($options['route_id_name'] => null)),
-                'route_id_name'     => $options['route_id_name'],
+                'choices' => $choiceList->getRemainingViews(),
+                'route_name' => $options['route_name'],
+                'route_parameters' => array_merge($options['route_parameters'], array($options['route_id_name'] => null)),
+                'route_id_name' => $options['route_id_name'],
 
         ));
     }
@@ -85,11 +85,11 @@ class EntityType extends AbstractType
         };
 
         $resolver->setDefaults(array(
-                'property'         => null,
-                'choice_list'      => $choiceList,
-                'route_name'       => null,
+                'property' => null,
+                'choice_list' => $choiceList,
+                'route_name' => null,
                 'route_parameters' => array(),
-                'route_id_name'    => 'id',
+                'route_id_name' => 'id',
         ));
 
         $resolver->setRequired(array('class'));

@@ -42,12 +42,12 @@ class NumberType extends AbstractType
     {
         $resolver->setDefaults(array(
             // default precision is locale specific (usually around 3)
-            'precision'     => null,
-            'grouping'      => false,
-            'locale'        => \Locale::getDefault(),
+            'precision' => null,
+            'grouping' => false,
+            'locale' => \Locale::getDefault(),
             // Integer cast rounds towards 0, so do the same when displaying fractions
             'rounding_mode' => NumberToLocalizedStringTransformer::ROUND_HALF_EVEN,
-            'compound'      => false,
+            'compound' => false,
         ));
 
         $resolver->setAllowedValues(array(

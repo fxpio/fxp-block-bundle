@@ -107,29 +107,29 @@ class BlockType extends AbstractType
         }
 
         $view->vars = array_replace($view->vars, array(
-                'block'               => $view,
-                'id'                  => $id,
-                'name'                => $name,
-                'render_id'           => $options['render_id'],
-                'row'                 => $options['row'],
-                'row_label'           => $options['row_label'],
-                'value'               => $block->getViewData(),
-                'data'                => $block->getNormData(),
-                'label'               => $options['label'],
-                'label_format'        => $labelFormat,
-                'attr'                => $options['attr'],
-                'label_attr'          => $options['label_attr'],
-                'compound'            => $block->getConfig()->getCompound(),
-                'wrapped'             => $options['wrapped'],
-                'block_prefixes'      => $blockPrefixes,
+                'block' => $view,
+                'id' => $id,
+                'name' => $name,
+                'render_id' => $options['render_id'],
+                'row' => $options['row'],
+                'row_label' => $options['row_label'],
+                'value' => $block->getViewData(),
+                'data' => $block->getNormData(),
+                'label' => $options['label'],
+                'label_format' => $labelFormat,
+                'attr' => $options['attr'],
+                'label_attr' => $options['label_attr'],
+                'compound' => $block->getConfig()->getCompound(),
+                'wrapped' => $options['wrapped'],
+                'block_prefixes' => $blockPrefixes,
                 'unique_block_prefix' => $uniqueBlockPrefix,
-                'translation_domain'  => $translationDomain,
+                'translation_domain' => $translationDomain,
                 // Using the block name here speeds up performance in collection
                 // blocks, where each entry has the same full block name.
                 // Including the type is important too, because if rows of a
                 // collection block have different types (dynamically), they should
                 // be rendered differently.
-                'cache_key'           => $uniqueBlockPrefix . '_' . $block->getConfig()->getType()->getName(),
+                'cache_key' => $uniqueBlockPrefix.'_'.$block->getConfig()->getType()->getName(),
         ));
     }
 
@@ -169,26 +169,26 @@ class BlockType extends AbstractType
         $resolver->setDefined('data');
 
         $resolver->setDefaults(array(
-                'block_name'         => null,
-                'id'                 => null,
-                'render_id'          => false,
-                'row'                => false,
-                'row_label'          => false,
-                'chained_block'      => false,
-                'data_class'         => $dataClass,
-                'empty_data'         => $emptyData,
-                'empty_message'      => null,
-                'property_path'      => null,
-                'mapped'             => false,
-                'label'              => null,
-                'label_format'       => null,
-                'attr'               => array(),
-                'label_attr'         => array(),
-                'inherit_data'       => false,
-                'compound'           => true,
-                'wrapped'            => true,
+                'block_name' => null,
+                'id' => null,
+                'render_id' => false,
+                'row' => false,
+                'row_label' => false,
+                'chained_block' => false,
+                'data_class' => $dataClass,
+                'empty_data' => $emptyData,
+                'empty_message' => null,
+                'property_path' => null,
+                'mapped' => false,
+                'label' => null,
+                'label_format' => null,
+                'attr' => array(),
+                'label_attr' => array(),
+                'inherit_data' => false,
+                'compound' => true,
+                'wrapped' => true,
                 'translation_domain' => null,
-                'auto_initialize'    => true,
+                'auto_initialize' => true,
         ));
 
         $resolver->setAllowedTypes('empty_message', array('null', 'string'));

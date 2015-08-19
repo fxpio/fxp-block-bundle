@@ -76,11 +76,11 @@ class ChoiceType extends AbstractType
             : $this->createChoiceListView($options['choice_list'], $options);
 
         $view->vars = array_replace($view->vars, array(
-            'multiple'         => $options['multiple'],
-            'expanded'         => $options['expanded'],
+            'multiple' => $options['multiple'],
+            'expanded' => $options['expanded'],
             'selected_choices' => $this->getSelectedChoices($choiceListView->choices, (array) $view->vars['value']),
-            'empty_value'      => $options['empty_value'],
-            'inline'           => $options['inline'],
+            'empty_value' => $options['empty_value'],
+            'inline' => $options['inline'],
         ));
     }
 
@@ -123,11 +123,11 @@ class ChoiceType extends AbstractType
         };
 
         $resolver->setDefaults(array(
-                'inline'            => true,
-                'multiple'          => false,
-                'expanded'          => false,
-                'choice_list'       => null,// deprecated
-                'choices'           => array(),
+                'inline' => true,
+                'multiple' => false,
+                'expanded' => false,
+                'choice_list' => null, // deprecated
+                'choices' => array(),
                 'choices_as_values' => false,
                 'choice_loader' => null,
                 'choice_label' => null,
@@ -136,10 +136,10 @@ class ChoiceType extends AbstractType
                 'choice_attr' => null,
                 'preferred_choices' => array(),
                 'group_by' => null,
-                'empty_value'       => null,
-                'compound'          => $compound,
-                'data_class'        => null,
-                'block_name'        => 'entry',
+                'empty_value' => null,
+                'compound' => $compound,
+                'data_class' => null,
+                'block_name' => 'entry',
                 'choice_translation_domain' => true,
         ));
 

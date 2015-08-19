@@ -49,7 +49,7 @@ class UrlType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'title'    => null,
+            'title' => null,
             'url_attr' => array(),
         ));
     }

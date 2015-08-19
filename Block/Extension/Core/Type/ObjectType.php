@@ -25,7 +25,7 @@ class ObjectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'row'       => true,
+            'row' => true,
             'row_label' => true,
         ));
     }

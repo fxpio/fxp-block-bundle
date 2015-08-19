@@ -79,13 +79,13 @@ class DateTimeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-                'locale'      => null,
-                'timezone'    => null,
+                'locale' => null,
+                'timezone' => null,
                 'date_format' => null,
                 'time_format' => null,
-                'calendar'    => null,
-                'data_class'  => null,
-                'compound'    => false,
+                'calendar' => null,
+                'data_class' => null,
+                'compound' => false,
         ));
     }
 

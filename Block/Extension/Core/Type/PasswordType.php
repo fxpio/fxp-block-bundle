@@ -41,7 +41,7 @@ class PasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'mask'        => true,
+            'mask' => true,
             'mask_length' => 6,
             'mask_symbol' => '*',
         ));

@@ -52,9 +52,9 @@ class TwigType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'resource'       => null,
+            'resource' => null,
             'resource_block' => null,
-            'variables'      => array(),
+            'variables' => array(),
         ));
 
         $resolver->setAllowedTypes('resource', 'string');
