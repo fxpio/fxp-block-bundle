@@ -24,7 +24,7 @@ class PercentToLocalizedStringTransformer extends NumberToLocalizedStringTransfo
     /**
      * Transforms a number type into localized percent.
      *
-     * @param integer|float $value Number value.
+     * @param int|float $value Number value.
      *
      * @return string Localized value.
      *

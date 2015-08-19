@@ -82,10 +82,10 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * Constructor.
      *
-     * @param integer $precision
-     * @param boolean $grouping
-     * @param integer $roundingMode
-     * @param string  $locale
+     * @param int    $precision
+     * @param bool   $grouping
+     * @param int    $roundingMode
+     * @param string $locale
      */
     public function __construct($precision = null, $grouping = null, $roundingMode = null, $locale = null)
     {
@@ -110,7 +110,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * Transforms a number type into localized number.
      *
-     * @param integer|float $value Number value.
+     * @param int|float $value Number value.
      *
      * @return string Localized value.
      *
@@ -135,7 +135,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * Returns a preconfigured \NumberFormatter instance
      *
-     * @param integer $style
+     * @param int $style
      *
      * @return \NumberFormatter
      */

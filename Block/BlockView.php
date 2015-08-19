@@ -161,7 +161,7 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Implements \Countable.
      *
-     * @return integer The number of children views
+     * @return int The number of children views
      */
     public function count()
     {

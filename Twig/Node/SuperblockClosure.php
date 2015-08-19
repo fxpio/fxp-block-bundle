@@ -24,7 +24,7 @@ class SuperblockClosure extends \Twig_Node_Block
      * Constructor.
      *
      * @param \Twig_Node $body
-     * @param integer    $lineno
+     * @param int        $lineno
      * @param string     $tag
      */
     public function __construct(\Twig_Node $body, $lineno, $tag = null)

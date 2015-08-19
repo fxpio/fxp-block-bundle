@@ -24,7 +24,7 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
      *
      * @param string   $eventName The name of the event to listen to.
      * @param callable $listener  The listener to execute.
-     * @param integer  $priority  The priority of the listener. Listeners
+     * @param int      $priority  The priority of the listener. Listeners
      *                            with a higher priority are called before
      *                            listeners with a lower priority.
      *

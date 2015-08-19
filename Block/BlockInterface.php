@@ -136,9 +136,9 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Adds a child to the block.
      *
-     * @param BlockInterface|string|integer $child   The BlockInterface instance or the name of the child.
-     * @param string|null                   $type    The child's type, if a name was passed.
-     * @param array                         $options The child's options, if a name was passed.
+     * @param BlockInterface|string|int $child   The BlockInterface instance or the name of the child.
+     * @param string|null               $type    The child's type, if a name was passed.
+     * @param array                     $options The child's options, if a name was passed.
      *
      * @return BlockInterface The block instance
      *

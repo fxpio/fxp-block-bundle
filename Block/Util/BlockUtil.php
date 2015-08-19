@@ -82,7 +82,7 @@ class BlockUtil
      * @param string|array   $allowed
      * @param BlockInterface $block
      *
-     * @return boolean
+     * @return bool
      */
     public static function isValidBlock($allowed, BlockInterface $block)
     {
@@ -95,7 +95,7 @@ class BlockUtil
      * @param array                      $allowed
      * @param ResolvedBlockTypeInterface $rType
      *
-     * @return boolean
+     * @return bool
      */
     protected static function isValidType(array $allowed, ResolvedBlockTypeInterface $rType = null)
     {

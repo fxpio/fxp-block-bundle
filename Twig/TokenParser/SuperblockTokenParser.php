@@ -217,7 +217,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
      *
      * @param \Twig_Token $token
      *
-     * @return boolean
+     * @return bool
      */
     public function decideBlockEnd(\Twig_Token $token)
     {

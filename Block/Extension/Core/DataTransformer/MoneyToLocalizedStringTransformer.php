@@ -28,12 +28,12 @@ class MoneyToLocalizedStringTransformer extends NumberToLocalizedStringTransform
     /**
      * Constructor.
      *
-     * @param integer $precision
-     * @param boolean $grouping
-     * @param integer $roundingMode
-     * @param string  $locale
-     * @param string  $currency
-     * @param integer $divisor
+     * @param int    $precision
+     * @param bool   $grouping
+     * @param int    $roundingMode
+     * @param string $locale
+     * @param string $currency
+     * @param int    $divisor
      */
     public function __construct($precision = null, $grouping = null, $roundingMode = null, $locale = null, $currency = null, $divisor = null)
     {
@@ -50,7 +50,7 @@ class MoneyToLocalizedStringTransformer extends NumberToLocalizedStringTransform
     /**
      * Transforms a number type into localized money.
      *
-     * @param integer|float $value Number value.
+     * @param int|float $value Number value.
      *
      * @return string Localized value.
      *
