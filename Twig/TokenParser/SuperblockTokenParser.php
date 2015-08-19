@@ -248,7 +248,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
         if ('sblock' === $node->getAttribute('name')) {
             $cType = $args->getNode($pos);
-            $pos++;
+            ++$pos;
         } else {
             $cType = $node->getAttribute('name');
             $cType = new \Twig_Node_Expression_Constant(substr($cType, 7), $node->getLine());
@@ -261,7 +261,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
             $cOptions = $args->getNode($pos);
         }
 
-        $pos++;
+        ++$pos;
 
         if ($args->hasNode($pos)) {
             $cVariables = $args->getNode($pos);
