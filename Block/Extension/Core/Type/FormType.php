@@ -56,7 +56,7 @@ class FormType extends AbstractType
     {
         $this->formFactory = $formFactory;
         $this->type = $type;
-        $this->name = ('form' !== $type ? 'form_' : '') . $type;
+        $this->name = ('form' !== $type ? 'form_' : '').$type;
         $this->formOptions = array();
     }
 

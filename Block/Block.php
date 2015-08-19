@@ -412,27 +412,27 @@ class Block implements \IteratorAggregate, BlockInterface
         if (!BlockUtil::isEmpty($viewData)) {
             $dataClass = $this->getDataClass();
 
-            $actualType = is_object($viewData) ? 'an instance of class ' . get_class($viewData) : ' a(n) ' . gettype($viewData);
+            $actualType = is_object($viewData) ? 'an instance of class '.get_class($viewData) : ' a(n) '.gettype($viewData);
 
             if (null === $dataClass && is_object($viewData) && !$viewData instanceof \ArrayAccess) {
                 $expectedType = 'scalar, array or an instance of \ArrayAccess';
 
                 throw new LogicException(
-                        'The block\'s view data is expected to be of type ' . $expectedType . ', ' .
-                        'but is ' . $actualType . '. You ' .
-                        'can avoid this error by setting the "data_class" option to ' .
-                        '"' . get_class($viewData) . '" or by adding a view transformer ' .
-                        'that transforms ' . $actualType . ' to ' . $expectedType . '.'
+                        'The block\'s view data is expected to be of type '.$expectedType.', '.
+                        'but is '.$actualType.'. You '.
+                        'can avoid this error by setting the "data_class" option to '.
+                        '"'.get_class($viewData).'" or by adding a view transformer '.
+                        'that transforms '.$actualType.' to '.$expectedType.'.'
                 );
             }
 
             if (null !== $dataClass && !$viewData instanceof $dataClass) {
                 throw new LogicException(
-                        'The block\'s view data is expected to be an instance of class ' .
-                        $dataClass . ', but is '. $actualType . '. You can avoid this error ' .
-                        'by setting the "data_class" option to null or by adding a view ' .
-                        'transformer that transforms ' . $actualType . ' to an instance of ' .
-                        $dataClass . '.'
+                        'The block\'s view data is expected to be an instance of class '.
+                        $dataClass.', but is '.$actualType.'. You can avoid this error '.
+                        'by setting the "data_class" option to null or by adding a view '.
+                        'transformer that transforms '.$actualType.' to an instance of '.
+                        $dataClass.'.'
                 );
             }
         } else {
@@ -798,7 +798,7 @@ class Block implements \IteratorAggregate, BlockInterface
             }
         } catch (TransformationFailedException $exception) {
             throw new TransformationFailedException(
-                'Unable to transform value for property path "' . $this->getPropertyPath() . '": ' . $exception->getMessage(),
+                'Unable to transform value for property path "'.$this->getPropertyPath().'": '.$exception->getMessage(),
                 $exception->getCode(),
                 $exception
             );
@@ -833,7 +833,7 @@ class Block implements \IteratorAggregate, BlockInterface
             }
         } catch (TransformationFailedException $exception) {
             throw new TransformationFailedException(
-                'Unable to transform value for property path "' . $this->getPropertyPath() . '": ' . $exception->getMessage(),
+                'Unable to transform value for property path "'.$this->getPropertyPath().'": '.$exception->getMessage(),
                 $exception->getCode(),
                 $exception
             );

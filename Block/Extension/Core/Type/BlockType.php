@@ -88,7 +88,7 @@ class BlockType extends AbstractType
                 $labelFormat = $view->parent->vars['label_format'];
             }
         } else {
-            $uniqueBlockPrefix = '_' . $blockName;
+            $uniqueBlockPrefix = '_'.$blockName;
 
             // Strip leading underscores and digits. These are allowed in
             // block names, but not in HTML4 ID attributes.

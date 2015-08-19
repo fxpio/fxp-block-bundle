@@ -35,7 +35,7 @@ class UrlType extends AbstractType
         }
 
         if (!BlockUtil::isEmpty($view->vars['value']) && false === strpos($view->vars['value'], '://') && '/' !== substr($view->vars['value'], 0, 1)) {
-            $view->vars['value'] = 'http://' . $view->vars['value'];
+            $view->vars['value'] = 'http://'.$view->vars['value'];
         }
 
         if ('/' === substr($view->vars['value'], 0, 1)) {

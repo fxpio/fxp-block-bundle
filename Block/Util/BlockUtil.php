@@ -53,7 +53,7 @@ class BlockUtil
      */
     public static function createUniqueName($prefix = 'block')
     {
-        return $prefix . (function_exists('openssl_random_pseudo_bytes')
+        return $prefix.(function_exists('openssl_random_pseudo_bytes')
             ? bin2hex(openssl_random_pseudo_bytes(5))
             : uniqid());
     }
@@ -67,10 +67,10 @@ class BlockUtil
      */
     public static function createBlockId(BlockInterface $block)
     {
-        $id = '_' . $block->getName();
+        $id = '_'.$block->getName();
 
         if ($block->getParent() && $block->getOption('chained_block')) {
-            $id = static::createBlockId($block->getParent()) . $id;
+            $id = static::createBlockId($block->getParent()).$id;
         }
 
         return ltrim($id, '_0123456789');

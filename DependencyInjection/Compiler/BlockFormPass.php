@@ -39,7 +39,7 @@ class BlockFormPass implements CompilerPassInterface
                 ? $tag[0]['alias']
                 : $serviceId;
 
-            $name = ('form' !== $alias ? 'form_' : '') . $alias;
+            $name = ('form' !== $alias ? 'form_' : '').$alias;
             $definition = new Definition();
             $definition
                 ->setClass('Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\FormType')
@@ -49,8 +49,8 @@ class BlockFormPass implements CompilerPassInterface
                 ->addTag('sonatra_block.type', array('alias' => $name))
             ;
 
-            $container->setDefinition('sonatra_block.type.' . $name, $definition);
-            $container->createService($definition, 'sonatra_block.type.' . $name);
+            $container->setDefinition('sonatra_block.type.'.$name, $definition);
+            $container->createService($definition, 'sonatra_block.type.'.$name);
         }
     }
 }
