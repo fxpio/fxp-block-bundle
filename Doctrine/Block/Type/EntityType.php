@@ -11,96 +11,52 @@
 
 namespace Sonatra\Bundle\BlockBundle\Doctrine\Block\Type;
 
-use Sonatra\Bundle\BlockBundle\Block\AbstractType;
-use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
-use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
-use Sonatra\Bundle\BlockBundle\Block\BlockView;
-use Sonatra\Bundle\BlockBundle\Doctrine\Block\ChoiceList\EntityChoiceList;
-use Sonatra\Bundle\BlockBundle\Doctrine\Block\DataTransformer\CollectionToArrayTransformer;
-use Sonatra\Bundle\BlockBundle\Doctrine\Block\DataTransformer\EntityToArrayTransformer;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\QueryBuilder;
+use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
+use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class EntityType extends AbstractType
+class EntityType extends DoctrineType
 {
-    /**
-     * @var RegistryInterface
-     */
-    protected $registry;
-
-    /**
-     * Constructor.
-     *
-     * @param RegistryInterface $registry The doctrine instance
-     */
-    public function __construct(RegistryInterface $registry)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $this->registry = $registry;
-    }
+        parent::configureOptions($resolver);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildBlock(BlockBuilderInterface $builder, array $options)
-    {
-        $builder->resetViewTransformers();
+        // Invoke the query builder closure so that we can cache choice lists
+        // for equal query builders
+        $queryBuilderNormalizer = function (Options $options, $queryBuilder) {
+            if (is_callable($queryBuilder)) {
+                $queryBuilder = call_user_func($queryBuilder, $options['em']->getRepository($options['class']));
 
-        if ($options['multiple']) {
-            $builder->addViewTransformer(new CollectionToArrayTransformer(), true);
-        } else {
-            $builder->addViewTransformer(new EntityToArrayTransformer(), true);
-        }
-    }
+                if (!$queryBuilder instanceof QueryBuilder) {
+                    throw new UnexpectedTypeException($queryBuilder, 'Doctrine\ORM\QueryBuilder');
+                }
+            }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(BlockView $view, BlockInterface $block, array $options)
-    {
-        /* @var ChoiceListInterface $choiceList */
-        $choiceList = $options['choice_list'];
-
-        $view->vars = array_replace($view->vars, array(
-                'choice_selections' => $choiceList->getIndicesForChoices((array) $view->vars['value']),
-                'choices' => $choiceList->getRemainingViews(),
-                'route_name' => $options['route_name'],
-                'route_parameters' => array_merge($options['route_parameters'], array($options['route_id_name'] => null)),
-                'route_id_name' => $options['route_id_name'],
-
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $choiceList = function (Options $options) {
-            return new EntityChoiceList($this->registry, $options['property']);
+            return $queryBuilder;
         };
 
-        $resolver->setDefaults(array(
-                'property' => null,
-                'choice_list' => $choiceList,
-                'route_name' => null,
-                'route_parameters' => array(),
-                'route_id_name' => 'id',
-        ));
-
-        $resolver->setRequired(array('class'));
+        $resolver->setNormalizer('query_builder', $queryBuilderNormalizer);
+        $resolver->setAllowedTypes('query_builder', array('null', 'callable', 'Doctrine\ORM\QueryBuilder'));
     }
 
     /**
-     * {@inheritdoc}
+     * Return the default loader object.
+     *
+     * @param ObjectManager $manager
+     * @param QueryBuilder  $queryBuilder
+     * @param string        $class
+     *
+     * @return ORMQueryBuilderLoader
      */
-    public function getParent()
+    public function getLoader(ObjectManager $manager, $queryBuilder, $class)
     {
-        return 'choice';
+        return new ORMQueryBuilderLoader($queryBuilder, $manager, $class);
     }
 
     /**
@@ -109,5 +65,24 @@ class EntityType extends AbstractType
     public function getName()
     {
         return 'entity';
+    }
+
+    /**
+     * We consider two query builders with an equal SQL string and
+     * equal parameters to be equal.
+     *
+     * @param QueryBuilder $queryBuilder
+     *
+     * @return array
+     *
+     * @internal This method is public to be usable as callback. It should not
+     *           be used in user code.
+     */
+    public function getQueryBuilderPartsForCachingHash($queryBuilder)
+    {
+        return array(
+            $queryBuilder->getQuery()->getSQL(),
+            $queryBuilder->getParameters()->toArray(),
+        );
     }
 }
