@@ -31,7 +31,7 @@ class TwigTemplateTransformerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $twig = $this->getMock('Twig_Environment');
-        $this->template= $this->getMockForAbstractClass('\Twig_Template', array($twig), '', true, true, true, array('render', 'renderBlock'));
+        $this->template = $this->getMockForAbstractClass('\Twig_Template', array($twig), '', true, true, true, array('render', 'renderBlock'));
 
         $twig->expects($this->any())
             ->method('loadTemplate')
