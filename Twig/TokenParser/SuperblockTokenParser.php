@@ -282,8 +282,6 @@ class SuperblockTokenParser extends \Twig_TokenParser
      * @param \Twig_Node_Expression $variables
      * @param string                $parentName
      * @param \Twig_Node_Block      $previous
-     *
-     * @return null
      */
     protected function pushClosureNode(\Twig_Node $blocks, \Twig_Node_Expression $variables, $parentName, \Twig_Node_Block $previous = null)
     {
