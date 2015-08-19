@@ -112,7 +112,7 @@ class ValidatorTypeGuesserTest extends \PHPUnit_Framework_TestCase
 
     public static function dataProviderTestGetGuessTypeForConstraint()
     {
-        return array (
+        return array(
             array('array', Guess::MEDIUM_CONFIDENCE),
             array('bool', Guess::MEDIUM_CONFIDENCE),
             array('double', Guess::MEDIUM_CONFIDENCE),
@@ -128,7 +128,7 @@ class ValidatorTypeGuesserTest extends \PHPUnit_Framework_TestCase
 
     public static function dataProviderTestGetGuessTypeForSpecificConstraint()
     {
-        return array (
+        return array(
             array(new Country(), Guess::HIGH_CONFIDENCE),
             array(new Date(), Guess::HIGH_CONFIDENCE),
             array(new DateTime(), Guess::HIGH_CONFIDENCE),
