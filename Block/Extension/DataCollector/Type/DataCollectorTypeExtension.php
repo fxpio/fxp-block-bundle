@@ -39,7 +39,7 @@ class DataCollectorTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
@@ -47,7 +47,7 @@ class DataCollectorTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExtendedType()
     {
