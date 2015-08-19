@@ -29,48 +29,56 @@ class Block implements \IteratorAggregate, BlockInterface
 {
     /**
      * The block's configuration.
+     *
      * @var BlockConfigInterface
      */
     protected $config;
 
     /**
      * The parent of this block.
+     *
      * @var BlockInterface
      */
     protected $parent;
 
     /**
      * The options of this block.
+     *
      * @var array
      */
     protected $options = array();
 
     /**
      * The attributes of this block.
+     *
      * @var array
      */
     protected $attributes = array();
 
     /**
      * The children of this block.
+     *
      * @var BlockInterface[] A map of BlockInterface instances
      */
     protected $children;
 
     /**
      * The block data in model format.
+     *
      * @var mixed
      */
     protected $modelData;
 
     /**
      * The block data in normalized format.
+     *
      * @var mixed
      */
     protected $normData;
 
     /**
      * The block data in view format.
+     *
      * @var mixed
      */
     protected $viewData;
@@ -101,6 +109,7 @@ class Block implements \IteratorAggregate, BlockInterface
 
     /**
      * Whether setData() is currently being called.
+     *
      * @var Boolean
      */
     protected $lockSetData = false;

@@ -194,7 +194,6 @@ class BlockDataCollector extends DataCollector implements BlockDataCollectorInte
      *
      * @param BlockInterface $block
      * @param BlockView      $view
-     *
      * @param string $output
      */
     private function recursiveBuildFinalBlockTree(BlockInterface $block = null, BlockView $view, &$output = null)

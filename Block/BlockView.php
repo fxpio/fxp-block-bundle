@@ -18,8 +18,9 @@ use Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException;
  */
 class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
 {
-/**
+    /**
      * The variables assigned to this block.
+     *
      * @var array
      */
     public $vars = array(
@@ -29,12 +30,14 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
 
     /**
      * The parent block.
+     *
      * @var BlockView
      */
     public $parent;
 
     /**
      * The child views.
+     *
      * @var array
      */
     public $children = array();

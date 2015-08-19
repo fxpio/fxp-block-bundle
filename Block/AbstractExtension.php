@@ -21,24 +21,28 @@ abstract class AbstractExtension implements BlockExtensionInterface
 {
     /**
      * The types provided by this extension.
+     *
      * @var array An array of BlockTypeInterface
      */
     private $types;
 
     /**
      * The type extensions provided by this extension.
+     *
      * @var array An array of BlockTypeExtensionInterface
      */
     private $typeExtensions;
 
     /**
      * The type guesser provided by this extension.
+     *
      * @var BlockTypeGuesserInterface
      */
     private $typeGuesser;
 
     /**
      * Whether the type guesser has been loaded.
+     *
      * @var Boolean
      */
     private $typeGuesserLoaded = false;

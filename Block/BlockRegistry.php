@@ -24,6 +24,7 @@ class BlockRegistry implements BlockRegistryInterface
 {
     /**
      * Extensions.
+     *
      * @var array An array of BlockExtensionInterface
      */
     protected $extensions = array();
