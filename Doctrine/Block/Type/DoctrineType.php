@@ -14,6 +14,7 @@ namespace Sonatra\Bundle\BlockBundle\Doctrine\Block\Type;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
+use Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException;
 use Sonatra\Bundle\BlockBundle\Doctrine\Block\DataTransformer\CollectionToArrayTransformer;
 use Sonatra\Bundle\BlockBundle\Doctrine\Block\DataTransformer\EntityToArrayTransformer;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\DoctrineChoiceLoader;
@@ -74,12 +75,13 @@ abstract class DoctrineType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $registry = $this->registry;
         $choiceListFactory = $this->choiceListFactory;
         $choiceLoaders = &$this->choiceLoaders;
         $type = $this;
 
         $choiceLoader = function (Options $options, $value) use ($choiceListFactory, &$choiceLoaders, $type) {
-            if (null === $options['choices'] && $options['select2']['enabled']) {
+            if (null === $options['choices']) {
                 $hash = null;
                 $qbParts = null;
                 // If there is no QueryBuilder we can safely cache DoctrineChoiceLoader,
@@ -90,17 +92,13 @@ abstract class DoctrineType extends AbstractType
                         $options['em'],
                         $options['class'],
                         $qbParts,
-                        $options['loader'],
-                        $options['select2']['ajax'],
                     ));
                     if (isset($choiceLoaders[$hash])) {
                         return $choiceLoaders[$hash];
                     }
                 }
 
-                if ($options['loader']) {
-                    $entityLoader = $options['loader'];
-                } elseif (null !== $options['query_builder']) {
+                if (null !== $options['query_builder']) {
                     $entityLoader = $type->getLoader($options['em'], $options['query_builder'], $options['class']);
                 } else {
                     $queryBuilder = $options['em']->getRepository($options['class'])->createQueryBuilder('e');
@@ -158,7 +156,64 @@ abstract class DoctrineType extends AbstractType
                 : null;
         };
 
+        $emNormalizer = function (Options $options, $em) use ($registry) {
+            /* @var ManagerRegistry $registry */
+            if (null !== $em) {
+                if ($em instanceof ObjectManager) {
+                    return $em;
+                }
+
+                return $registry->getManager($em);
+            }
+
+            $em = $registry->getManagerForClass($options['class']);
+
+            if (null === $em) {
+                throw new RuntimeException(sprintf(
+                    'Class "%s" seems not to be a managed Doctrine entity. '.
+                    'Did you forget to map it?',
+                    $options['class']
+                ));
+            }
+
+            return $em;
+        };
+
+        // Invoke the query builder closure so that we can cache choice lists
+        // for equal query builders
+        $queryBuilderNormalizer = function (Options $options, $queryBuilder) {
+            if (is_callable($queryBuilder)) {
+                $queryBuilder = call_user_func($queryBuilder, $options['em']->getRepository($options['class']));
+            }
+
+            return $queryBuilder;
+        };
+
+        // Set the "id_reader" option via the normalizer. This option is not
+        // supposed to be set by the user.
+        $idReaderNormalizer = function (Options $options) use (&$idReaders) {
+            $hash = CachingFactoryDecorator::generateHash(array(
+                $options['em'],
+                $options['class'],
+            ));
+
+            // The ID reader is a utility that is needed to read the object IDs
+            // when generating the field values. The callback generating the
+            // field values has no access to the object manager or the class
+            // of the field, so we store that information in the reader.
+            // The reader is cached so that two choice lists for the same class
+            // (and hence with the same reader) can successfully be cached.
+            if (!isset($idReaders[$hash])) {
+                $classMetadata = $options['em']->getClassMetadata($options['class']);
+                $idReaders[$hash] = new IdReader($options['em'], $classMetadata);
+            }
+
+            return $idReaders[$hash];
+        };
+
         $resolver->setDefaults(array(
+                'em' => null,
+                'query_builder' => null,
                 'choices' => null,
                 'choices_as_values' => true,
                 'choice_loader' => $choiceLoader,
@@ -166,12 +221,19 @@ abstract class DoctrineType extends AbstractType
                 'choice_name' => $choiceName,
                 'choice_value' => $choiceValue,
                 'id_reader' => null, // internal
+                'choice_translation_domain' => false,
                 'route_name' => null,
                 'route_parameters' => array(),
                 'route_id_name' => 'id',
         ));
 
         $resolver->setRequired(array('class'));
+
+        $resolver->setNormalizer('em', $emNormalizer);
+        $resolver->setNormalizer('query_builder', $queryBuilderNormalizer);
+        $resolver->setNormalizer('id_reader', $idReaderNormalizer);
+
+        $resolver->setAllowedTypes('em', array('null', 'string', 'Doctrine\Common\Persistence\ObjectManager'));
     }
 
     /**
