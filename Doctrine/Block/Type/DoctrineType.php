@@ -222,9 +222,6 @@ abstract class DoctrineType extends AbstractType
                 'choice_value' => $choiceValue,
                 'id_reader' => null, // internal
                 'choice_translation_domain' => false,
-                'route_name' => null,
-                'route_parameters' => array(),
-                'route_id_name' => 'id',
         ));
 
         $resolver->setRequired(array('class'));
