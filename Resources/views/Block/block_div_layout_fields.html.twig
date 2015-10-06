@@ -39,13 +39,13 @@
         {%- if route_name is defined and route_name is not null -%}
             {%- set data_indice = data[indice]|default(data) -%}
             {%- set route_parameters = route_parameters|merge({(route_id_name): data_indice.id}) -%}
-            <a href="{{ path(route_name, route_parameters) }}">{{ option.label|trans({}, translation_domain) }}</a>
+            <a href="{{ path(route_name, route_parameters) }}">{{ option.label }}</a>
         {%- else -%}
-            <span>{{ option.label|trans({}, translation_domain) }}</span>
+            <span>{{ option.label }}</span>
         {%- endif -%}
     {%- endfor -%}
     {%- if options|length == 0 -%}
-        <span class="choice-empty">{{ empty_value|trans({}, translation_domain) }}</span>
+        <span class="choice-empty">{{ empty_value }}</span>
     {%- endif -%}
 {%- endblock choice_widget_options %}
 
@@ -68,7 +68,7 @@
     {%- set title = title|default(value) -%}
     {%- set url_attr = url_attr|merge({'href': value, 'tabindex': 0 }) -%}
     {%- set value -%}
-    <a {% for attrname, attrvalue in url_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ title|trans({}, translation_domain) }}</a>
+    <a {% for attrname, attrvalue in url_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ title }}</a>
     {%- endset -%}
     {{- block('block_widget_simple') -}}
 {%- endblock url_widget %}
@@ -87,7 +87,7 @@
         {%- endif -%}
 
         {%- set value -%}
-        <a href="mailto:{{ value }}" tabindex="0">{{ label|trans({}, translation_domain) }}</a>
+        <a href="mailto:{{ value }}" tabindex="0">{{ label }}</a>
         {%- endset -%}
     {%- endif -%}
     {{- block('block_widget_simple') -}}
