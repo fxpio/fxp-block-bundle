@@ -12,7 +12,9 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Util;
 
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
+use Sonatra\Bundle\BlockBundle\Block\BlockView;
 use Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface;
+use Symfony\Component\Form\FormView;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -89,6 +91,48 @@ class BlockUtil
     public static function isValidBlock($allowed, BlockInterface $block)
     {
         return static::isValidType((array) $allowed, $block->getConfig()->getType());
+    }
+
+    /**
+     * Add attribute of view.
+     *
+     * @param BlockView|FormView $view  The block or form view
+     * @param string             $name  The attribute name
+     * @param string|int         $value The attribute value
+     * @param string             $key   The array key of attribute in view vars
+     */
+    public static function addAttribute($view, $name, $value, $key = 'attr')
+    {
+        if ($view instanceof BlockView || $view instanceof FormView) {
+            $attr = isset($view->vars[$key]) ? $view->vars[$key] : array();
+
+            if (static::isEmpty($value)) {
+                unset($attr[$name]);
+            } else {
+                $attr[$name] = $value;
+            }
+
+            $view->vars[$key] = $attr;
+        }
+    }
+
+    /**
+     * Add class attribute of view.
+     *
+     * @param BlockView|FormView $view    The block or form view
+     * @param string             $class   The css classname of class attr
+     * @param bool               $prepend Check if the classname must be added at start or at end
+     * @param string             $key     The array key of attribute in view vars
+     */
+    public static function addAttributeClass($view, $class, $prepend = false, $key = 'attr')
+    {
+        if ($view instanceof BlockView || $view instanceof FormView) {
+            $attr = isset($view->vars[$key]) ? $view->vars[$key] : array();
+            $attrClass = isset($attr['class']) ? $attr['class'] : '';
+            $attrClass = $prepend ? trim($class.' '.$attrClass) : trim($attrClass.' '.$class);
+
+            static::addAttribute($view, 'class', $attrClass, $key);
+        }
     }
 
     /**
