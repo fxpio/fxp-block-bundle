@@ -112,10 +112,6 @@ class BlockExtension extends \Twig_Extension
             new \Twig_SimpleFunction('block_twig_render', array($this, 'renderTwigBlock'), array('is_safe' => array('html'))),
         );
 
-        foreach ($this->getTypes() as $type) {
-            $functions[] = new \Twig_SimpleFunction('sblock_'.$type, null, array('is_safe' => array('html')));
-        }
-
         return $functions;
     }
 
