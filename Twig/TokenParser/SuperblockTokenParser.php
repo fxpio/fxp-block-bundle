@@ -55,19 +55,20 @@ class SuperblockTokenParser extends \Twig_TokenParser
         $variables = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
         $skip = false;
         $tagNotSupported = 'The sblock form tag does not supported. Constructs your "block form" directly in code, otherwise it is impossible to recover the form in your code.';
+        $isNotSupported = null;
 
         // {% sblock_checkbox ... :%}
         if (0 === strpos($this->tag, 'sblock_')) {
             $type = new \Twig_Node_Expression_Constant(substr($this->tag, 7), $lineno);
 
             if ('sblock_form' === $this->tag) {
-                throw new \Twig_Error_Syntax(sprintf($tagNotSupported, $this->tag));
+                $isNotSupported = $this->tag;
             }
 
         // {% sblock 'checkbox' ... :%}
         } else {
             if ($stream->test(\Twig_Token::STRING_TYPE) && 'form' === $stream->getCurrent()->getValue()) {
-                throw new \Twig_Error_Syntax(sprintf($tagNotSupported, $stream->getCurrent()->getValue()));
+                $isNotSupported = $stream->getCurrent()->getValue();
             }
 
             $type = $this->parser->getExpressionParser()->parseExpression();
@@ -135,6 +136,19 @@ class SuperblockTokenParser extends \Twig_TokenParser
         }
 
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
+
+        if (null !== $isNotSupported) {
+            foreach ($options->getIterator() as $test) {
+                if ($test instanceof \Twig_Node_Expression_Constant
+                        && in_array($test->getAttribute('value'), array('block_name', 'id'))) {
+                    $isNotSupported = null;
+                }
+            }
+
+            if (null !== $isNotSupported || $options->count() !== 2) {
+                throw new \Twig_Error_Syntax(sprintf($tagNotSupported, $isNotSupported));
+            }
+        }
 
         $superblock = new Superblock($type, $options, $lineno, $this->getTag());
         $name = $superblock->getAttribute('name');
