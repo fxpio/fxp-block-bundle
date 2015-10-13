@@ -15,11 +15,10 @@ use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
+use Sonatra\Bundle\BlockBundle\Block\Util\BlockFormUtil;
 use Symfony\Component\Form\FormConfigBuilderInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -88,7 +87,11 @@ class FormType extends AbstractType
             $builder->setInheritData($formOptions['inherit_data']);
         }
 
-        $builder->setForm($this->formFactory->createNamed($name, $this->type, null, $formOptions));
+        $type = isset($options['form_type']) && null !== $options['form_type']
+            ? $options['form_type']
+            : $this->type;
+
+        $builder->setForm($this->formFactory->createNamed($name, $type, null, $formOptions));
     }
 
     /**
@@ -96,7 +99,7 @@ class FormType extends AbstractType
      */
     public function addChild(BlockInterface $child, BlockInterface $block, array $options)
     {
-        $parentForm = $this->getParentForm($block);
+        $parentForm = BlockFormUtil::getParentForm($block);
         $form = $child->getForm();
 
         if (null !== $parentForm && null !== $form) {
@@ -117,7 +120,7 @@ class FormType extends AbstractType
      */
     public function removeChild(BlockInterface $child, BlockInterface $block, array $options)
     {
-        $parentForm = $this->getParentForm($block);
+        $parentForm = BlockFormUtil::getParentForm($block);
         $form = $child->getForm();
 
         if (null !== $parentForm && null !== $form) {
@@ -141,7 +144,7 @@ class FormType extends AbstractType
         }
 
         $view->vars = array_replace($view->vars, array(
-            'block_form' => $this->createFormView($view, $block),
+            'block_form' => BlockFormUtil::createFormView($view, $block),
         ));
     }
 
@@ -151,13 +154,22 @@ class FormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $options = $this->formFactory->createBuilder($this->type)->getOptions();
+
         unset($options['data_class']);
         unset($options['empty_data']);
         unset($options['error_bubbling']);
 
         $this->formOptions = array_keys($options);
 
+        if ('form' === $this->type) {
+            $options['form_type'] = null;
+        }
+
         $resolver->setDefaults($options);
+
+        if ('form' === $this->type) {
+            $resolver->addAllowedTypes('form_type', array('null', 'string', 'Symfony\Component\Form\FormTypeInterface'));
+        }
     }
 
     /**
@@ -166,63 +178,5 @@ class FormType extends AbstractType
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Get the parent form.
-     *
-     * @param BlockInterface $block
-     *
-     * @return FormInterface
-     */
-    protected function getParentForm(BlockInterface $block)
-    {
-        $form = $block->getForm();
-
-        if (null !== $form) {
-            return $form;
-        }
-
-        return null !== $block->getParent()
-            ? $this->getParentForm($block->getParent())
-            : null;
-    }
-
-    /**
-     * Create form view.
-     *
-     * @param BlockView      $view
-     * @param BlockInterface $block
-     *
-     * @return FormView
-     */
-    protected function createFormView(BlockView $view, BlockInterface $block)
-    {
-        /* @var FormView $parentForm */
-        $parentForm = $this->getParentFormView($view);
-
-        if (null !== $parentForm) {
-            return $parentForm->vars['form']->children[$block->getName()];
-        }
-
-        return $block->getForm()->createView($parentForm);
-    }
-
-    /**
-     * Get the parent form view.
-     *
-     * @param BlockView $view
-     *
-     * @return BlockView
-     */
-    protected function getParentFormView(BlockView $view)
-    {
-        if (isset($view->vars['block_form']) && null !== $view->vars['block_form']) {
-            return $view->vars['block_form'];
-        }
-
-        return null !== $view->parent
-            ? $this->getParentFormView($view->parent)
-            : null;
     }
 }

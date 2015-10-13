@@ -15,6 +15,9 @@
 
 
 {% block form_content_widget -%}
+    {%- for child in block -%}
+        {{- block_widget(child) -}}
+    {%- endfor -%}
     {{- form_widget(block_form) }}
 {%- endblock form_content_widget %}
 
@@ -31,3 +34,15 @@
         {{- form_end(block_form) -}}
     {%- endif -%}
 {%- endblock form_end_widget %}
+
+{% block form_errors_widget -%}
+    {%- if block_form is defined -%}
+        {{- form_errors(block_form) -}}
+    {%- endif -%}
+{%- endblock form_errors_widget %}
+
+{% block form_rest_widget -%}
+    {%- if block_form is defined -%}
+        {{- form_rest(block_form) -}}
+    {%- endif -%}
+{%- endblock form_rest_widget %}

@@ -143,5 +143,13 @@
         <service id="sonatra_block.type.closure" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ClosureType">
             <tag name="sonatra_block.type" alias="closure" />
         </service>
+        <service id="sonatra_block.type.form_errors" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\FormFunctionType">
+            <tag name="sonatra_block.type" alias="form_errors" />
+            <argument>errors</argument>
+        </service>
+        <service id="sonatra_block.type.form_rest" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\FormFunctionType">
+            <tag name="sonatra_block.type" alias="form_rest" />
+            <argument>rest</argument>
+        </service>
     </services>
 </container>
