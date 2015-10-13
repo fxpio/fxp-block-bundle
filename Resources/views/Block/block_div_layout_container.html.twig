@@ -59,9 +59,16 @@
     {%- endif -%}
 
     {%- if label is not empty -%}
-        <div{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</div>
+        <div{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {%- set block_label_content = block_label_content|default('block_label_content') -%}
+            {{- block(block_label_content) -}}
+        </div>
     {%- endif -%}
 {%- endblock block_label %}
+
+{% block block_label_content -%}
+    {{- label|trans({}, translation_domain) -}}
+{%- endblock block_label_content %}
 
 {# Rows #}
 
