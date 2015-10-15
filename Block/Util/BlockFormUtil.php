@@ -58,7 +58,6 @@ class BlockFormUtil
      */
     public static function createFormView(BlockView $view, BlockInterface $block)
     {
-        /* @var FormView $parentForm */
         $parentForm = static::getParentFormView($view);
 
         if (null !== $parentForm && isset($parentForm->vars['form']->children[$block->getName()])) {
@@ -73,7 +72,7 @@ class BlockFormUtil
      *
      * @param BlockView $view
      *
-     * @return BlockView|null
+     * @return FormView|null
      */
     public static function getParentFormView(BlockView $view)
     {
