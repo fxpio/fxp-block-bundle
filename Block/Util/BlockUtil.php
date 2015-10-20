@@ -98,7 +98,7 @@ class BlockUtil
      *
      * @param BlockView|FormView $view  The block or form view
      * @param string             $name  The attribute name
-     * @param string|int         $value The attribute value
+     * @param string|int|array   $value The attribute value
      * @param string             $key   The array key of attribute in view vars
      */
     public static function addAttribute($view, $name, $value, $key = 'attr')
@@ -109,7 +109,7 @@ class BlockUtil
             if (static::isEmpty($value)) {
                 unset($attr[$name]);
             } else {
-                $attr[$name] = $value;
+                $attr[$name] = is_array($value) ? json_encode($value) : $value;
             }
 
             $view->vars[$key] = $attr;
