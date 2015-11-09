@@ -26,7 +26,7 @@ use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class BlockExtension extends \Twig_Extension
+class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
 {
     /**
      * This property is public so that it can be accessed directly from compiled
