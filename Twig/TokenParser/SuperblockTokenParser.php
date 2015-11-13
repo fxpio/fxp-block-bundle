@@ -171,43 +171,50 @@ class SuperblockTokenParser extends \Twig_TokenParser
         $body = $this->parser->subparse(array($this, 'decideBlockEnd'), true);
         $previousTwigNode = null;
 
-        if (0 === count($body)) {
+        if (0 === count($body) || null !== $body->getNodeTag()) {
             $body = new \Twig_Node(array($body), array(), $lineno);
         }
 
-        /* @var \Twig_Node $node */
-        foreach ($body->getIterator() as $node) {
-            if ($node instanceof SuperblockReference) {
-                $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
-                $previousTwigNode = null;
-
-                $node->setAttribute('is_root', false);
-                $node->setAttribute('parent_name', $name);
-                $sBlocks->setNode(count($sBlocks), $node);
-            } elseif ($node instanceof \Twig_Node_Set) {
-                $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
-                $previousTwigNode = null;
-
-                $sBlocks->setNode(count($sBlocks), $node);
-            } elseif ($node->hasNode('expr')
-                    && $node->getNode('expr') instanceof \Twig_Node_Expression_Function
-                    && $node->getNode('expr')->hasAttribute('name')
-                    && ($this->tag === $node->getNode('expr')->getAttribute('name')
-                            || 0 === strpos($node->getNode('expr')->getAttribute('name'), 'sblock'))) {
-                $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
-                $previousTwigNode = null;
-
-                $subReference = $this->convertTwigExpressionToNode($node->getNode('expr'));
-                $subReference->setAttribute('is_root', false);
-                $subReference->setAttribute('parent_name', $name);
-
-                $sBlocks->setNode(count($sBlocks), $subReference);
-            } elseif (!$node instanceof \Twig_Node_Text || ($node instanceof \Twig_Node_Text && '' !== trim($node->getAttribute('data')))) {
-                if (null === $previousTwigNode) {
-                    $previousTwigNode = new SuperblockClosure(new \Twig_Node(array(), array(), $lineno), $node->getLine());
+        if (null === $body->getNodeTag()) {
+            /* @var \Twig_Node $node */
+            foreach ($body->getIterator() as $node) {
+                if (!$node instanceof \Twig_Node) {
+                    continue;
                 }
 
-                $previousTwigNode->getNode('body')->setNode(count($previousTwigNode->getNode('body')), $node);
+                if ($node instanceof SuperblockReference) {
+                    $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
+                    $previousTwigNode = null;
+
+                    $node->setAttribute('is_root', false);
+                    $node->setAttribute('parent_name', $name);
+                    $sBlocks->setNode(count($sBlocks), $node);
+                } elseif ($node instanceof \Twig_Node_Set) {
+                    $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
+                    $previousTwigNode = null;
+
+                    $sBlocks->setNode(count($sBlocks), $node);
+                } elseif ($node instanceof \Twig_Node
+                        && $node->hasNode('expr')
+                        && $node->getNode('expr') instanceof \Twig_Node_Expression_Function
+                        && $node->getNode('expr')->hasAttribute('name')
+                        && ($this->tag === $node->getNode('expr')->getAttribute('name')
+                                || 0 === strpos($node->getNode('expr')->getAttribute('name'), 'sblock'))) {
+                    $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
+                    $previousTwigNode = null;
+
+                    $subReference = $this->convertTwigExpressionToNode($node->getNode('expr'));
+                    $subReference->setAttribute('is_root', false);
+                    $subReference->setAttribute('parent_name', $name);
+
+                    $sBlocks->setNode(count($sBlocks), $subReference);
+                } elseif (!$node instanceof \Twig_Node_Text || ($node instanceof \Twig_Node_Text && '' !== trim($node->getAttribute('data')))) {
+                    if (null === $previousTwigNode) {
+                        $previousTwigNode = new SuperblockClosure(new \Twig_Node(array(), array(), $lineno), $node->getLine());
+                    }
+
+                    $previousTwigNode->getNode('body')->setNode(count($previousTwigNode->getNode('body')), $node);
+                }
             }
         }
 
