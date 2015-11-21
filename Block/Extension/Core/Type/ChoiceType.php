@@ -79,6 +79,7 @@ class ChoiceType extends AbstractType
             'expanded' => $options['expanded'],
             'selected_choices' => $this->getSelectedChoices($choiceListView->choices, (array) $view->vars['value']),
             'empty_value' => $options['empty_value'],
+            'choice_translation_domain' => $options['choice_translation_domain'],
             'inline' => $options['inline'],
         ));
     }

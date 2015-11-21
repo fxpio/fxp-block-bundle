@@ -36,12 +36,16 @@
 
 {% block choice_widget_options -%}
     {%- for indice, option in options -%}
+        {% set optionLabel = option.label %}
+        {% if choice_translation_domain is not same as(true) and choice_translation_domain is not empty %}
+            {% set optionLabel = optionLabel|trans({}, choice_translation_domain) %}
+        {% endif %}
         {%- if route_name is defined and route_name is not null -%}
             {%- set data_indice = data[indice]|default(data) -%}
             {%- set route_parameters = route_parameters|merge({(route_id_name): data_indice.id}) -%}
-            <a href="{{ path(route_name, route_parameters) }}">{{ option.label }}</a>
+            <a href="{{ path(route_name, route_parameters) }}">{{ optionLabel }}</a>
         {%- else -%}
-            <span>{{ option.label }}</span>
+            <span>{{ optionLabel }}</span>
         {%- endif -%}
     {%- endfor -%}
     {%- if options|length == 0 -%}
