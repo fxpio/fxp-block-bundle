@@ -11,7 +11,6 @@
 
 namespace Sonatra\Bundle\BlockBundle\Twig\TokenParser;
 
-use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidConfigurationException;
 use Sonatra\Bundle\BlockBundle\Twig\Node\Superblock;
 use Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockReference;
 use Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockClosure;
@@ -24,21 +23,6 @@ use Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockClosure;
 class SuperblockTokenParser extends \Twig_TokenParser
 {
     /**
-     * @var string
-     */
-    protected $tag;
-
-    /**
-     * Constructor.
-     *
-     * @param string $tag The tag name
-     */
-    public function __construct($tag = 'sblock')
-    {
-        $this->tag = $tag;
-    }
-
-    /**
      * Parses a token and returns a node.
      *
      * @param \Twig_Token $token A Twig_Token instance
@@ -49,106 +33,10 @@ class SuperblockTokenParser extends \Twig_TokenParser
      */
     public function parse(\Twig_Token $token)
     {
-        $lineno = $token->getLine();
+        list($type, $options, $variables, $skip) = $this->parseArguments();
+
         $stream = $this->parser->getStream();
-        $options = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
-        $variables = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
-        $skip = false;
-        $tagNotSupported = 'The "%s" tag does not supported. Constructs your "%s" directly in code, otherwise it is impossible to recover the form in your code.';
-        $isNotSupported = null;
-
-        // {% sblock_checkbox ... :%}
-        if (0 === strpos($this->tag, 'sblock_')) {
-            $type = new \Twig_Node_Expression_Constant(substr($this->tag, 7), $lineno);
-
-            if ('sblock_form' === $this->tag) {
-                $isNotSupported = $this->tag;
-            }
-
-        // {% sblock 'checkbox' ... :%}
-        } else {
-            if ($stream->test(\Twig_Token::STRING_TYPE) && 'form' === $stream->getCurrent()->getValue()) {
-                $isNotSupported = $stream->getCurrent()->getValue();
-            }
-
-            $type = $this->parser->getExpressionParser()->parseExpression();
-
-            if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
-                $stream->next();
-            }
-        }
-
-        // {% sblock_checkbox data=true block_name='foo' label='Bar' :%}
-        if ($stream->look(1)->getType() === \Twig_Token::OPERATOR_TYPE
-                && $stream->look(1)->getValue() === '=') {
-            $options = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
-
-            do {
-                if (!$stream->test(\Twig_Token::NAME_TYPE)
-                        && !$stream->test(\Twig_Token::STRING_TYPE)) {
-                    throw new \Twig_Error_Syntax(sprintf('The attribute name "%s" must be an STRING or CONSTANT', $stream->getCurrent()->getValue()), $stream->getCurrent()->getLine(), $stream->getFilename());
-                }
-
-                $attr = $stream->getCurrent();
-                $attr = new \Twig_Node_Expression_Constant($attr->getValue(), $attr->getLine());
-                $stream->next();
-
-                if (!$stream->test(\Twig_Token::OPERATOR_TYPE, '=')) {
-                    throw new \Twig_Error_Syntax("The attribute must be followed by '=' operator", $stream->getCurrent()->getLine(), $stream->getFilename());
-                }
-
-                $stream->next();
-                $options->addElement($this->parser->getExpressionParser()->parseExpression(), $attr);
-            } while (!$stream->test(\Twig_Token::NAME_TYPE, 'with')
-                    && !$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
-                    && !$stream->test(\Twig_Token::BLOCK_END_TYPE));
-
-        // {% sblock_checkbox {data:true} ... :%} or {% sblock_checkbox ... :%}
-        } elseif (!$stream->test(\Twig_Token::NAME_TYPE, 'with')
-                && !$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
-                && !$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
-            $options = $this->parser->getExpressionParser()->parseExpression();
-        }
-
-        if ($stream->test(\Twig_Token::NAME_TYPE, 'with')) {
-            $stream->next();
-
-            // {% sblock_checkbox, {data:true} with {foo:'bar'} :%}
-            do {
-                if ($stream->test(\Twig_Token::NAME_TYPE) || $stream->test(\Twig_Token::PUNCTUATION_TYPE, '{')) {
-                    $variables = $this->parser->getExpressionParser()->parseExpression();
-                }
-
-                if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
-                    $stream->next();
-                } elseif (!$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
-                        && !$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
-                    throw new \Twig_Error_Syntax("The parameters after 'with' must be separated by commas", $stream->getCurrent()->getLine(), $stream->getFilename());
-                }
-            } while (!$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
-                    && !$stream->test(\Twig_Token::BLOCK_END_TYPE));
-        }
-
-        // end schortcut
-        if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')) {
-            $stream->next();
-            $skip = true;
-        }
-
-        $stream->expect(\Twig_Token::BLOCK_END_TYPE);
-
-        if (null !== $isNotSupported) {
-            foreach ($options->getIterator() as $test) {
-                if ($test instanceof \Twig_Node_Expression_Constant
-                        && in_array($test->getAttribute('value'), array('block_name', 'id'))) {
-                    $isNotSupported = null;
-                }
-            }
-
-            if (null !== $isNotSupported || $options->count() !== 2) {
-                throw new \Twig_Error_Syntax(sprintf($tagNotSupported, $isNotSupported, $isNotSupported));
-            }
-        }
+        $lineno = $stream->getCurrent()->getLine();
 
         $superblock = new Superblock($type, $options, $lineno, $this->getTag());
         $name = $superblock->getAttribute('name');
@@ -194,20 +82,6 @@ class SuperblockTokenParser extends \Twig_TokenParser
                     $previousTwigNode = null;
 
                     $sBlocks->setNode(count($sBlocks), $node);
-                } elseif ($node instanceof \Twig_Node
-                        && $node->hasNode('expr')
-                        && $node->getNode('expr') instanceof \Twig_Node_Expression_Function
-                        && $node->getNode('expr')->hasAttribute('name')
-                        && ($this->tag === $node->getNode('expr')->getAttribute('name')
-                                || 0 === strpos($node->getNode('expr')->getAttribute('name'), 'sblock'))) {
-                    $this->pushClosureNode($sBlocks, $variables, $name, $previousTwigNode);
-                    $previousTwigNode = null;
-
-                    $subReference = $this->convertTwigExpressionToNode($node->getNode('expr'));
-                    $subReference->setAttribute('is_root', false);
-                    $subReference->setAttribute('parent_name', $name);
-
-                    $sBlocks->setNode(count($sBlocks), $subReference);
                 } elseif (!$node instanceof \Twig_Node_Text || ($node instanceof \Twig_Node_Text && '' !== trim($node->getAttribute('data')))) {
                     if (null === $previousTwigNode) {
                         $previousTwigNode = new SuperblockClosure(new \Twig_Node(array(), array(), $lineno), $node->getLine());
@@ -239,7 +113,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
      */
     public function decideBlockEnd(\Twig_Token $token)
     {
-        return $token->test('end'.$this->tag) || $token->test('endsblock');
+        return $token->test('endsblock');
     }
 
     /**
@@ -249,54 +123,109 @@ class SuperblockTokenParser extends \Twig_TokenParser
      */
     public function getTag()
     {
-        return $this->tag;
+        return 'sblock';
     }
 
     /**
-     * Convert the twig expression function to Superblock.
+     * Parse the arguments.
      *
-     * @param \Twig_Node $node
+     * @return array
      *
-     * @return \Sonatra\Bundle\BlockBundle\Twig\Node\Superblock
-     *
-     * @throws InvalidConfigurationException When the block type name is not present
+     * @throws \Twig_Error_Syntax
      */
-    protected function convertTwigExpressionToNode(\Twig_Node $node)
+    protected function parseArguments()
     {
-        $args = $node->getNode('arguments');
-        $pos = 0;
+        $stream = $this->parser->getStream();
+        $options = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
+        $variables = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
+        $skip = false;
+        $tagNotSupported = 'The "%s" tag does not supported. Constructs your "%s" directly in code, otherwise it is impossible to recover the form in your code.';
+        $isNotSupported = null;
 
-        if (!$args->hasNode(0)) {
-            throw new InvalidConfigurationException('The block type must be present in the "sblock" twig function');
+        // {% sblock 'checkbox' ... :%}
+        if ($stream->test(\Twig_Token::STRING_TYPE) && 'form' === $stream->getCurrent()->getValue()) {
+            $isNotSupported = $stream->getCurrent()->getValue();
         }
 
-        if ('sblock' === $node->getAttribute('name')) {
-            $cType = $args->getNode($pos);
-            ++$pos;
-        } else {
-            $cType = $node->getAttribute('name');
-            $cType = new \Twig_Node_Expression_Constant(substr($cType, 7), $node->getLine());
+        $type = $this->parser->getExpressionParser()->parseExpression();
+
+        if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
+            $stream->next();
         }
 
-        $cOptions = new \Twig_Node_Expression_Array(array(), $node->getLine());
-        $cVariables = new \Twig_Node_Expression_Array(array(), $node->getLine());
+        // {% sblock 'checkbox' data=true block_name='foo' label='Bar' :%}
+        if ($stream->look(1)->getType() === \Twig_Token::OPERATOR_TYPE
+            && $stream->look(1)->getValue() === '=') {
+            $options = new \Twig_Node_Expression_Array(array(), $stream->getCurrent()->getLine());
 
-        if ($args->hasNode($pos)) {
-            $cOptions = $args->getNode($pos);
+            do {
+                if (!$stream->test(\Twig_Token::NAME_TYPE)
+                    && !$stream->test(\Twig_Token::STRING_TYPE)) {
+                    throw new \Twig_Error_Syntax(sprintf('The attribute name "%s" must be an STRING or CONSTANT', $stream->getCurrent()->getValue()), $stream->getCurrent()->getLine(), $stream->getFilename());
+                }
+
+                $attr = $stream->getCurrent();
+                $attr = new \Twig_Node_Expression_Constant($attr->getValue(), $attr->getLine());
+                $stream->next();
+
+                if (!$stream->test(\Twig_Token::OPERATOR_TYPE, '=')) {
+                    throw new \Twig_Error_Syntax("The attribute must be followed by '=' operator", $stream->getCurrent()->getLine(), $stream->getFilename());
+                }
+
+                $stream->next();
+                $options->addElement($this->parser->getExpressionParser()->parseExpression(), $attr);
+            } while (!$stream->test(\Twig_Token::NAME_TYPE, 'with')
+                && !$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
+                && !$stream->test(\Twig_Token::BLOCK_END_TYPE));
+
+            // {% sblock 'checkbox' {data:true} ... :%} or {% sblock 'checkbox' ... :%}
+        } elseif (!$stream->test(\Twig_Token::NAME_TYPE, 'with')
+            && !$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
+            && !$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
+            $options = $this->parser->getExpressionParser()->parseExpression();
         }
 
-        ++$pos;
+        if ($stream->test(\Twig_Token::NAME_TYPE, 'with')) {
+            $stream->next();
 
-        if ($args->hasNode($pos)) {
-            $cVariables = $args->getNode($pos);
+            // {% sblock 'checkbox', {data:true} with {foo:'bar'} :%}
+            do {
+                if ($stream->test(\Twig_Token::NAME_TYPE) || $stream->test(\Twig_Token::PUNCTUATION_TYPE, '{')) {
+                    $variables = $this->parser->getExpressionParser()->parseExpression();
+                }
+
+                if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
+                    $stream->next();
+                } elseif (!$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
+                    && !$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
+                    throw new \Twig_Error_Syntax("The parameters after 'with' must be separated by commas", $stream->getCurrent()->getLine(), $stream->getFilename());
+                }
+            } while (!$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
+                && !$stream->test(\Twig_Token::BLOCK_END_TYPE));
         }
 
-        $superblock = new Superblock($cType, $cOptions, $node->getLine(), $node->getNodeTag());
-        $name = $superblock->getAttribute('name');
+        // end schortcut
+        if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')) {
+            $stream->next();
+            $skip = true;
+        }
 
-        $this->parser->setBlock($name, $superblock);
+        $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        return new SuperblockReference($name, $cVariables, $node->getLine(), $node->getNodeTag());
+        if (null !== $isNotSupported) {
+            foreach ($options->getIterator() as $test) {
+                if ($test instanceof \Twig_Node_Expression_Constant
+                    && in_array($test->getAttribute('value'), array('block_name', 'id'))) {
+                    $isNotSupported = null;
+                }
+            }
+
+            if (null !== $isNotSupported || $options->count() !== 2) {
+                throw new \Twig_Error_Syntax(sprintf($tagNotSupported, $isNotSupported, $isNotSupported));
+            }
+        }
+
+        return array($type, $options, $variables, $skip);
     }
 
     /**

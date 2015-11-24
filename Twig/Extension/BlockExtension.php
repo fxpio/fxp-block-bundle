@@ -91,10 +91,6 @@ class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRunt
             new SuperblockTokenParser(),
         );
 
-        foreach ($this->getTypes() as $type) {
-            $tokens[] = new SuperblockTokenParser('sblock_'.$type);
-        }
-
         return $tokens;
     }
 
@@ -108,7 +104,6 @@ class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRunt
             new \Twig_SimpleFunction('block_component',   null, array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_label',       null, array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_row',         null, array('node_class' => 'Sonatra\Bundle\BlockBundle\Twig\Node\SearchAndRenderBlockNode', 'is_safe' => array('html'))),
-            new \Twig_SimpleFunction('sblock',            array($this, 'createAndRenderSuperblock'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('block_twig_render', array($this, 'renderTwigBlock'), array('is_safe' => array('html'))),
         );
 
@@ -143,28 +138,6 @@ class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRunt
     public function getFactory()
     {
         return $this->factory;
-    }
-
-    /**
-     * Create and render a superblock.
-     *
-     * @param string|BlockTypeInterface|BlockInterface|BlockView $type
-     * @param array                                              $options
-     * @param array                                              $variables The twig variables
-     *
-     * @return string The html
-     */
-    public function createAndRenderSuperblock($type, array $options = array(), array $variables = array())
-    {
-        if ($type instanceof BlockView) {
-            $view = $type;
-        } else {
-            /* @var BlockInterface $type */
-            $type = $this->createNamed($type, $options);
-            $view = $type->createView();
-        }
-
-        return $this->renderer->searchAndRenderBlock($view, 'widget', $variables);
     }
 
     /**
@@ -253,32 +226,6 @@ class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRunt
     public function humanize($text)
     {
         return $this->renderer->humanize($text);
-    }
-
-    /**
-     * Get block types.
-     *
-     * @return array
-     */
-    protected function getTypes()
-    {
-        if (null === $this->types) {
-            $this->types = array();
-            $refl = new \ReflectionClass($this->registry);
-            $prop = $refl->getProperty('extensions');
-            $prop->setAccessible(true);
-            $extensions = $prop->getValue($this->registry);
-
-            foreach ($extensions as $extension) {
-                $refl = new \ReflectionClass($extension);
-                $prop = $refl->getProperty('typeServiceIds');
-                $prop->setAccessible(true);
-                $types = array_keys($prop->getValue($extension));
-                $this->types = array_merge($this->types, $types);
-            }
-        }
-
-        return $this->types;
     }
 
     /**
