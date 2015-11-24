@@ -80,7 +80,7 @@ class BlockType extends AbstractType
                 $id = sprintf('%s_%s', $view->parent->vars['id'], $name);
             }
 
-            if (!$translationDomain) {
+            if (null === $translationDomain) {
                 $translationDomain = $view->parent->vars['translation_domain'];
             }
 
@@ -102,7 +102,7 @@ class BlockType extends AbstractType
         }
         $blockPrefixes[] = $uniqueBlockPrefix;
 
-        if (!$translationDomain) {
+        if (true === $translationDomain) {
             $translationDomain = 'messages';
         }
 
@@ -195,6 +195,7 @@ class BlockType extends AbstractType
         $resolver->setAllowedTypes('attr', 'array');
         $resolver->setAllowedTypes('label_attr', 'array');
         $resolver->setAllowedTypes('auto_initialize', 'bool');
+        $resolver->setAllowedTypes('translation_domain', array('null', 'bool', 'string'));
 
         $resolver->setNormalizer('block_name', function (Options $options, $value = null) {
             if (isset($options['id'])) {

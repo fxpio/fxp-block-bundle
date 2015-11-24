@@ -67,7 +67,7 @@
 {%- endblock block_label %}
 
 {% block block_label_content -%}
-    {{- label|trans({}, translation_domain) -}}
+    {{- label|block_trans({}, translation_domain) -}}
 {%- endblock block_label_content %}
 
 {# Rows #}

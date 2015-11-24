@@ -36,10 +36,7 @@
 
 {% block choice_widget_options -%}
     {%- for indice, option in options -%}
-        {% set optionLabel = option.label %}
-        {% if choice_translation_domain is not same as(true) and choice_translation_domain is not empty %}
-            {% set optionLabel = optionLabel|trans({}, choice_translation_domain) %}
-        {% endif %}
+        {% set optionLabel = option.label|block_trans({}, choice_translation_domain) %}
         {%- if route_name is defined and route_name is not null -%}
             {%- set data_indice = data[indice]|default(data) -%}
             {%- set route_parameters = route_parameters|merge({(route_id_name): data_indice.id}) -%}
@@ -91,7 +88,7 @@
         {%- endif -%}
 
         {%- set value -%}
-        <a href="mailto:{{ value }}" tabindex="0">{{ label }}</a>
+        <a href="mailto:{{ value }}" tabindex="0">{{ label|block_trans({}, translation_domain) }}</a>
         {%- endset -%}
     {%- endif -%}
     {{- block('block_widget_simple') -}}

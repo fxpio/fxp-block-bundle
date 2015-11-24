@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="sonatra_block.twig.extension.base.class">Sonatra\Bundle\BlockBundle\Twig\Extension\BlockExtension</parameter>
+        <parameter key="sonatra_block.twig.extension_translator.base.class">Sonatra\Bundle\BlockBundle\Twig\Extension\BlockTranslatorExtension</parameter>
         <parameter key="sonatra_block.twig.renderer.base.class">Sonatra\Bundle\BlockBundle\Twig\Block\TwigRenderer</parameter>
         <parameter key="sonatra_block.twig.engine.base.class">Sonatra\Bundle\BlockBundle\Twig\Block\TwigRendererEngine</parameter>
         <parameter key="sonatra_block.twig.resources" type="collection" />
@@ -17,6 +18,11 @@
             <argument type="service" id="sonatra_block.twig.renderer" />
             <argument type="service" id="sonatra_block.factory" />
             <argument type="service" id="sonatra_block.registry" />
+        </service>
+
+        <service id="sonatra_block.twig.extension_translator" class="%sonatra_block.twig.extension_translator.base.class%" public="false">
+            <tag name="twig.extension" />
+            <argument type="service" id="translator" />
         </service>
 
         <service id="sonatra_block.twig.renderer" class="%sonatra_block.twig.renderer.base.class%" public="false">

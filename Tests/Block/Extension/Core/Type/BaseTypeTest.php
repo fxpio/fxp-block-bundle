@@ -105,7 +105,7 @@ abstract class BaseTypeTest extends TypeTestCase
             ->getBlock()
             ->createView();
 
-        $this->assertEquals('messages', $view['child']->vars['translation_domain']);
+        $this->assertEquals(null, $view['child']->vars['translation_domain']);
     }
 
     public function testPassLabelToView()
