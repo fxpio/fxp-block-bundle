@@ -95,6 +95,10 @@ class ChoiceType extends AbstractType
             return $options['expanded'];
         };
 
+        $emptyValue = function (Options $options) {
+            return $options['empty_data'];
+        };
+
         $choiceTranslationDomainNormalizer = function (Options $options, $choiceTranslationDomain) {
             if (true === $choiceTranslationDomain) {
                 return $options['translation_domain'];
@@ -136,7 +140,7 @@ class ChoiceType extends AbstractType
                 'choice_attr' => null,
                 'preferred_choices' => array(),
                 'group_by' => null,
-                'empty_value' => null,
+                'empty_value' => $emptyValue,
                 'compound' => $compound,
                 'data_class' => null,
                 'block_name' => 'entry',
