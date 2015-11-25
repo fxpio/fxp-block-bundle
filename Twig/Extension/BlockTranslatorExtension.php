@@ -56,15 +56,17 @@ class BlockTranslatorExtension extends \Twig_Extension
     /**
      * Translate the value, only if the domain is defined.
      *
-     * @param string            $value      The value
-     * @param array             $parameters The translation parameters
-     * @param string|false|null $domain     The translation domain
-     * @param string|null       $locale     The translation locale
+     * @param string           $value      The value
+     * @param array            $parameters The translation parameters
+     * @param string|bool|null $domain     The translation domain
+     * @param string|null      $locale     The translation locale
      *
      * @return string
      */
     public function trans($value, array $parameters = array(), $domain = null, $locale = null)
     {
+        $domain = true === $domain ? 'messages' : $domain;
+
         if ($this->isString($value) && $this->isString($domain)) {
             $value = $this->translator->trans($value, $parameters, $domain, $locale);
         }
