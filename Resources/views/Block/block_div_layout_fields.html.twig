@@ -69,7 +69,11 @@
     {%- set title = title|default(value) -%}
     {%- set url_attr = url_attr|merge({'href': value, 'tabindex': 0 }) -%}
     {%- set value -%}
-    <a {% for attrname, attrvalue in url_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ title }}</a>
+        {%- if data is not empty -%}
+            <a {% for attrname, attrvalue in url_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ title }}</a>
+        {%- else -%}
+            {{- value -}}
+        {%- endif -%}
     {%- endset -%}
     {{- block('block_widget_simple') -}}
 {%- endblock url_widget %}
