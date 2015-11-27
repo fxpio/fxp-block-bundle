@@ -37,7 +37,7 @@
 {%- endblock form_end_widget %}
 
 {% block form_errors_widget -%}
-    {%- if block_form is defined -%}
+    {%- if block_form is defined and block_form.parent is empty -%}
         {{- form_errors(block_form) -}}
     {%- endif -%}
 {%- endblock form_errors_widget %}
