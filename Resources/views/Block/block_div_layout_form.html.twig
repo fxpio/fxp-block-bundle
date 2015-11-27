@@ -9,6 +9,7 @@
 
 {% block form_widget -%}
     {{- block('form_start_widget') -}}
+    {{- block('form_errors_widget') -}}
     {{- block('form_content_widget') -}}
     {{- block('form_end_widget') -}}
 {%- endblock form_widget %}
