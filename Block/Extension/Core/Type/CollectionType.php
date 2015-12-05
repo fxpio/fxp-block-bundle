@@ -28,8 +28,8 @@ class CollectionType extends AbstractType
     public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
         $resizeListener = new ResizeBlockListener(
-            $options['type'],
-            $options['options']
+            $options['entry_type'],
+            $options['entry_options']
         );
 
         $builder->addEventSubscriber($resizeListener);
@@ -47,11 +47,11 @@ class CollectionType extends AbstractType
         };
 
         $resolver->setDefaults(array(
-            'type' => 'text',
-            'options' => array(),
+            'entry_type' => 'text',
+            'entry_options' => array(),
         ));
 
-        $resolver->setNormalizer('options', $optionsNormalizer);
+        $resolver->setNormalizer('entry_options', $optionsNormalizer);
     }
 
     /**
