@@ -13,11 +13,11 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "symfony/framework-bundle": "~2.8",
-        "symfony/twig-bundle": "~2.8",
-        "symfony/form": "~2.8",
-        "symfony/validator": "~2.8",
-        "symfony/doctrine-bridge": "~2.8"
+        "symfony/framework-bundle": "~2.8|~3.0",
+        "symfony/twig-bundle": "~2.8|~3.0",
+        "symfony/form": "~2.8|~3.0",
+        "symfony/validator": "~2.8|~3.0",
+        "symfony/doctrine-bridge": "~2.8|~3.0"
     },
     "require-dev": {
         "doctrine/orm": "~2.5"
