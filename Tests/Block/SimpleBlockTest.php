@@ -663,7 +663,9 @@ class SimpleBlockTest extends AbstractBlockTest
 
     public function testSetOptionsWithType()
     {
-        $resolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
+        $resolver = $this->getMockBuilder('Symfony\Component\OptionsResolver\OptionsResolver')
+            ->disableOriginalConstructor()
+            ->getMock();
         $resolver->expects($this->any())
             ->method('resolve')
             ->will($this->returnValue(array(
