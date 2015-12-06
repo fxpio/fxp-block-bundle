@@ -35,10 +35,7 @@ class BlockFormPass implements CompilerPassInterface
 
         // Builds an array with service IDs as keys and tag aliases as values
         foreach ($container->findTaggedServiceIds('form.type') as $serviceId => $tag) {
-            $alias = isset($tag[0]['alias'])
-                ? $tag[0]['alias']
-                : $serviceId;
-
+            $alias = substr($serviceId, strrpos($serviceId, '.') + 1);
             $name = ('form' !== $alias ? 'form_' : '').$alias;
             $definition = new Definition();
             $definition
@@ -50,7 +47,6 @@ class BlockFormPass implements CompilerPassInterface
             ;
 
             $container->setDefinition('sonatra_block.type.'.$name, $definition);
-            $container->createService($definition, 'sonatra_block.type.'.$name);
         }
     }
 }
