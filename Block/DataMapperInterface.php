@@ -19,8 +19,8 @@ interface DataMapperInterface
     /**
      * Maps properties of some data to a list of blocks.
      *
-     * @param mixed $data   Structured data.
-     * @param array $blocks A list of {@link BlockInterface} instances.
+     * @param mixed              $data   Structured data.
+     * @param array|\Traversable $blocks A list of {@link BlockInterface} instances.
      *
      * @throws Exception\UnexpectedTypeException if the type of the data parameter is not supported.
      */
