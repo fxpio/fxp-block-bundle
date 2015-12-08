@@ -119,10 +119,8 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $container = $this->createContainer(array(
                 array(
-                    'block' => array(
-                        'resources' => array(
-                            'foobar.html.twig',
-                        ),
+                    'block_themes' => array(
+                        'foobar.html.twig',
                     ),
                     'profiler' => array(
                         'enabled' => true,

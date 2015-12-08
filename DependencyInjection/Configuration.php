@@ -45,17 +45,11 @@ class Configuration implements ConfigurationInterface
     private function addBlockSection(ArrayNodeDefinition $rootNode)
     {
         $rootNode
-            ->addDefaultsIfNotSet()
+            ->fixXmlConfig('block_theme')
             ->children()
-                ->arrayNode('block')
-                    ->addDefaultsIfNotSet()
-                    ->fixXmlConfig('resource')
-                    ->children()
-                        ->arrayNode('resources')
-                            ->prototype('scalar')->end()
-                            ->example(array('MyBundle::block.html.twig'))
-                        ->end()
-                    ->end()
+                ->arrayNode('block_themes')
+                    ->prototype('scalar')->end()
+                    ->example(array('MyBundle::block.html.twig'))
                 ->end()
             ->end()
         ;

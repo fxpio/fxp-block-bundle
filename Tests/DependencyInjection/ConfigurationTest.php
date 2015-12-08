@@ -35,10 +35,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     public function testCustomConfig()
     {
         $configs = array(array(
-            'block' => array(
-                'resources' => array(
-                    'foobar.html.twig',
-                ),
+            'block_themes' => array(
+                'foobar.html.twig',
             ),
         ));
 
@@ -54,9 +52,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     protected static function getBundleDefaultConfig()
     {
         return array(
-            'block' => array(
-                'resources' => array(),
-            ),
+            'block_themes' => array(),
             'doctrine' => array(
                 'enabled' => true,
             ),
@@ -70,10 +66,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     protected static function getBundleCustomConfig()
     {
         return array(
-            'block' => array(
-                'resources' => array(
-                    'foobar.html.twig',
-                ),
+            'block_themes' => array(
+                'foobar.html.twig',
             ),
             'doctrine' => array(
                 'enabled' => true,

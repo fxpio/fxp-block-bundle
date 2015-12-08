@@ -41,7 +41,7 @@ class SonatraBlockExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('sonatra_block.twig.resources', $config['block']['resources']);
+        $container->setParameter('sonatra_block.twig.resources', $config['block_themes']);
         $this->registerDoctrineConfiguration($config['doctrine'], $loader);
         $this->registerProfilerConfiguration($config['profiler'], $loader);
     }
