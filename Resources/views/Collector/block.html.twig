@@ -3,58 +3,69 @@
 {%- from 'SonatraBlockBundle:Collector:macro.html.twig' import block_tree_entry, block_tree_details -%}
 
 {% block toolbar -%}
-    {%- if collector.data|length -%}
-        {%- set icon -%}
-            <img width="14" height="28" alt="Sonatra Blocks" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAcCAYAAABRVo5BAAABG2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS4xLjIiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIi8+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+MahxaQAAAAlwSFlzAAALEwAACxMBAJqcGAAAACBjSFJNAAB6JQAAgIMAAPn/AACA6AAAUggAARVYAAA6lwAAF2/XWh+QAAABBklEQVR42uSU3W2DMBSFPyLewwZtJygbYKz4OdkgdIOMkBEyAtmg75YsswHdADZwJqAvNxIhP1h5aFX1SDxcw+Ha95zjZBgGnsGCJ/HzxHS6YLTKgAOwAZbAF1Bb5w9zHV+BrZAA3oH97Fat8y1QjpZO8rMLJKuy8De65qOOAD3QTc9YRMziRZ4/pGMvw2IhRQ+8zZBOMjQFNKkUmXW+M1odRcNbqK3zAWgBlUoR5GX3oGO4kMNo9QkE63wFVA+IFbAXS+6SVVmcA9lEaHoEMmA9NnmMEba/m8fmTrTG3px+E5J7l5XRqpUsfljn66itGq12QkIkyGPPmJ89KciugvwP7tXvAQC5F0Yy3yEiEAAAAABJRU5ErkJggg==" />
-            {%- set statut_bar = 'green' -%}
-            {%- if collector.data.duplicate_ids|length > 0 -%}
-                {%- set statut_bar = 'red' -%}
-            {%- endif -%}
-            <span class="sf-toolbar-status sf-toolbar-status-{{ statut_bar }}">{{ collector.data.duplicate_ids|length }}</span>
-        {%- endset -%}
+    {%- if collector.data|length and collector.data.blocks|length -%}
+        {% set status_color = collector.data.duplicate_ids ? 'red' : '' %}
+        {% set icon %}
+            {{ include('@SonatraBlock/Icon/block.svg') }}
+            <span class="sf-toolbar-value">
+                {{ collector.data.duplicate_ids|length ?: collector.data.blocks|length }}
+            </span>
+        {% endset %}
 
-        {%- include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } -%}
+        {% set text %}
+            <div class="sf-toolbar-info-piece">
+                <b>Number of blocks</b>
+                <span class="sf-toolbar-status">{{ collector.data.blocks|length }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Number of duplicate ids</b>
+                <span class="sf-toolbar-status sf-toolbar-status-{{ collector.data.duplicate_ids|length > 0 ? 'red' }}">{{ collector.data.duplicate_ids|length }}</span>
+            </div>
+        {% endset %}
+
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: status_color }) }}
     {%- endif -%}
 {%- endblock toolbar %}
 
 {% block menu -%}
-    <span class="label">
-        <span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAeCAYAAAAhDE4sAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAATtJREFUeNrsVt0NgjAQBuK7jqATiBNYjD6rG+gGjqAbwATCBOqziT8b4Aa4AU6AX82RnNJCa3z0kkvTa/nS+/nucIuicH4hLd3BZCS6WFbQBbRN5qu0HU+X1BgIkjKAUobQECo+L3s1QHuF7aGxO25djODeDMuOmXpwK1MCjYOhqHmVjNGU7Q/kmjLYZ4vkTD+AjWJkJX8grdxUQBF0YwEyQE35RJsX0Jw2IQ7WWO8GIAnjmyzaoFLZqGZJ0m0D0BJAcVOMMoMXVe54sl1AOU18AyBflTXp65kIWvKrSWYsFGtoKklbsFTm1HNMRBI4Jm3zxta3rKE3Av+5ZjaOAs1Zh0qBZzGhLNk1f6qTnMbSFbQQX7lGvCtnm4+9tuq1L1KMonKuCdWk9RombUQfO9ReQh2p3V/9RDwFGACIY16lcht2WwAAAABJRU5ErkJggg==" alt="" /></span>
+    <span class="label label-status-{{ collector.data.duplicate_ids|length ? 'error' }} {{ collector.data.blocks is empty ? 'disabled' }}">
+        <span class="icon">{{ include('@SonatraBlock/Icon/block.svg') }}</span>
         <strong>Blocks</strong>
-        {%- if collector.data.blocks|length -%}
+        {% if collector.data.duplicate_ids|length > 0 %}
             <span class="count">
                 <span>{{ collector.data.duplicate_ids|length }}</span>
-                {%- if collector.data.duplicate_ids|length > 0 -%}
-	                <span>Error</span>
-	            {%- endif -%}
             </span>
-        {%- endif -%}
+        {% endif %}
     </span>
 {%- endblock menu %}
 
+{% block head -%}
+    {{- parent() -}}
+    {%- include 'SonatraBlockBundle:Collector:block.css.twig' -%}
+{%- endblock head %}
 
 {% block panel -%}
-    {%- include 'SonatraBlockBundle:Collector:block.css.twig' -%}
+    <h2>Blocks</h2>
 
-    {%- if collector.data.blocks|length -%}
-        <div class="window">
-            <div class="tree">
-                <h2>Blocks</h2>
-
-                <ul>
-                {%- for blockHash, blockData in collector.data.blocks -%}
-                    {{- block_tree_entry(blockHash, blockData, collector, false) -}}
-                {%- endfor -%}
-                </ul>
-            </div>
-
-            {%- for blockHash, blockData in collector.data.blocks -%}
-                {{- block_tree_details(blockHash, blockData, collector) -}}
-            {%- endfor -%}
+    {% if collector.data.blocks|length %}
+        <div id="tree-menu" class="tree">
+            <ul>
+                {% for blockHash, blockData in collector.data.blocks %}
+                    {{ block_tree_entry(blockHash, blockData, true) }}
+                {% endfor %}
+            </ul>
         </div>
-    {%- else -%}
-        <p><em>No blocks were constructed for this request.</em></p>
-    {%- endif -%}
+
+        <div id="tree-details-container">
+            {% for blockHash, blockData in collector.data.blocks %}
+                {{ block_tree_details(blockHash, blockData, collector.data.duplicate_ids) }}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty">
+            <p>No blocks were constructed for this request.</p>
+        </div>
+    {% endif %}
 
     {%- include 'SonatraBlockBundle:Collector:block.js.twig' -%}
 {%- endblock panel %}
