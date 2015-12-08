@@ -49,6 +49,11 @@ class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRunt
     /**
      * @var array
      */
+    protected $aliases;
+
+    /**
+     * @var array
+     */
     protected $types;
 
     /**
@@ -62,12 +67,14 @@ class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRunt
      * @param TwigRendererInterface  $renderer
      * @param BlockFactoryInterface  $factory
      * @param BlockRegistryInterface $registry
+     * @param array                  $aliases
      */
-    public function __construct(TwigRendererInterface $renderer, BlockFactoryInterface $factory, BlockRegistryInterface $registry)
+    public function __construct(TwigRendererInterface $renderer, BlockFactoryInterface $factory, BlockRegistryInterface $registry, array $aliases = array())
     {
         $this->renderer = $renderer;
         $this->factory = $factory;
         $this->registry = $registry;
+        $this->aliases = $aliases;
     }
 
     /**
@@ -88,7 +95,7 @@ class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRunt
             // {% block_theme form "SomeBundle::widgets.twig" %}
             new BlockThemeTokenParser(),
             // {% sblock 'checkbox', {data: true, label: "My checkbox" with {my_var: "the twig variable"} :%}
-            new SuperblockTokenParser(),
+            new SuperblockTokenParser($this->aliases),
         );
 
         return $tokens;

@@ -23,13 +23,13 @@ class FooSubType extends AbstractType
      */
     public function getParent()
     {
-        return 'foo';
+        return FooType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'foo_sub_type';
     }

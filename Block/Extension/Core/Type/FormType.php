@@ -16,9 +16,10 @@ use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
 use Sonatra\Bundle\BlockBundle\Block\Util\BlockFormUtil;
-use Symfony\Component\Form\FormConfigBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType as FormFormType;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -31,32 +32,13 @@ class FormType extends AbstractType
     protected $formFactory;
 
     /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @var array
-     */
-    protected $formOptions;
-
-    /**
      * Constructor.
      *
      * @param FormFactoryInterface $formFactory
-     * @param string               $type
      */
-    public function __construct(FormFactoryInterface $formFactory, $type = 'form')
+    public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
-        $this->type = $type;
-        $this->name = ('form' !== $type ? 'form_' : '').$type;
-        $this->formOptions = array();
     }
 
     /**
@@ -64,34 +46,18 @@ class FormType extends AbstractType
      */
     public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
-        $name = isset($options['block_name']) ? $options['block_name'] : $builder->getName();
-        $formOptions = array();
+        $form = $this->buildForm($builder, $options);
 
-        foreach ($this->formOptions as $formOption) {
-            $formOptions[$formOption] = $options[$formOption];
+        if (null !== $form->getData()) {
+            $builder->setData($form->getData());
         }
 
-        if (null !== $builder->getData()) {
-            $formOptions['data'] = $builder->getData();
+        if (null !== $form->getConfig()->getDataClass()) {
+            $builder->setDataClass($form->getConfig()->getDataClass());
+            $builder->setInheritData($form->getConfig()->getInheritData());
         }
 
-        if (null !== $builder->getDataClass()) {
-            $formOptions['data_class'] = $builder->getDataClass();
-        }
-
-        if (isset($formOptions['mapped'])) {
-            $builder->setMapped($formOptions['mapped']);
-        }
-
-        if (isset($formOptions['inherit_data'])) {
-            $builder->setInheritData($formOptions['inherit_data']);
-        }
-
-        $type = isset($options['form_type']) && null !== $options['form_type']
-            ? $options['form_type']
-            : $this->type;
-
-        $builder->setForm($this->formFactory->createNamed($name, $type, null, $formOptions));
+        $builder->setForm($form);
     }
 
     /**
@@ -103,11 +69,7 @@ class FormType extends AbstractType
         $form = $child->getForm();
 
         if (null !== $parentForm && null !== $form) {
-            /* @var FormConfigBuilderInterface $formConfig */
-            $formConfig = $form->getConfig();
-
             if (!$parentForm->has($form->getName())) {
-                $formConfig->setAutoInitialize(false);
                 $parentForm->add($form);
             } else {
                 $child->setForm($parentForm->get($form->getName()));
@@ -133,16 +95,6 @@ class FormType extends AbstractType
      */
     public function buildView(BlockView $view, BlockInterface $block, array $options)
     {
-        if ('form' !== $this->type) {
-            $pos = 0;
-
-            if (isset($view->vars['block_prefixes'][0]) && 'block' === $view->vars['block_prefixes'][0]) {
-                $pos = 1;
-            }
-
-            array_splice($view->vars['block_prefixes'], $pos, 0, 'form');
-        }
-
         $view->vars = array_replace($view->vars, array(
             'block_form' => BlockFormUtil::createFormView($view, $block),
         ));
@@ -153,30 +105,53 @@ class FormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $options = $this->formFactory->createBuilder($this->type)->getOptions();
+        $resolver->setDefaults(array(
+            'type' => FormFormType::class,
+            'options' => array(),
+        ));
 
-        unset($options['data_class']);
-        unset($options['empty_data']);
-        unset($options['error_bubbling']);
-
-        $this->formOptions = array_keys($options);
-
-        if ('form' === $this->type) {
-            $options['form_type'] = null;
-        }
-
-        $resolver->setDefaults($options);
-
-        if ('form' === $this->type) {
-            $resolver->addAllowedTypes('form_type', array('null', 'string', 'Symfony\Component\Form\FormTypeInterface'));
-        }
+        $resolver->addAllowedTypes('type', array('string', 'Symfony\Component\Form\FormInterface'));
+        $resolver->addAllowedTypes('options', 'array');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return $this->name;
+        return 'form';
+    }
+
+    /**
+     * Build the form.
+     *
+     * @param BlockBuilderInterface $builder      The block builder
+     * @param array                 $blockOptions The block options
+     *
+     * @return FormInterface
+     */
+    protected function buildForm(BlockBuilderInterface $builder, array $blockOptions)
+    {
+        $type = $blockOptions['type'];
+
+        if (!$type instanceof FormInterface) {
+            $name = isset($blockOptions['block_name']) ? $blockOptions['block_name'] : $builder->getName();
+            $options = $blockOptions['options'];
+            $options['auto_initialize'] = false;
+
+            if (null !== $builder->getData()) {
+                $options['auto_initialize'] = true;
+                $options['data'] = $builder->getData();
+            }
+
+            if (null !== $builder->getDataClass()) {
+                $options['auto_initialize'] = true;
+                $options['data_class'] = $builder->getDataClass();
+            }
+
+            $type = $this->formFactory->createNamed($name, $type, null, $options);
+        }
+
+        return $type;
     }
 }

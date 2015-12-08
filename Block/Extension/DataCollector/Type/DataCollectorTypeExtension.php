@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Block\Extension\DataCollector\Type;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractTypeExtension;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BlockType;
 use Sonatra\Bundle\BlockBundle\Block\Extension\DataCollector\EventListener\DataCollectorListener;
 use Sonatra\Bundle\BlockBundle\Block\Extension\DataCollector\BlockDataCollectorInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
@@ -51,6 +52,6 @@ class DataCollectorTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'block';
+        return BlockType::class;
     }
 }

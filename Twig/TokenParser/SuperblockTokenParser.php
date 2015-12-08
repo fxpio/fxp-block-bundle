@@ -23,6 +23,21 @@ use Sonatra\Bundle\BlockBundle\Twig\Node\SuperblockClosure;
 class SuperblockTokenParser extends \Twig_TokenParser
 {
     /**
+     * @var array
+     */
+    protected $aliases;
+
+    /**
+     * Constructor.
+     *
+     * @param array $aliases The aliases of block type classes
+     */
+    public function __construct(array $aliases = array())
+    {
+        $this->aliases = $aliases;
+    }
+
+    /**
      * Parses a token and returns a node.
      *
      * @param \Twig_Token $token A Twig_Token instance
@@ -147,7 +162,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
             $isNotSupported = $stream->getCurrent()->getValue();
         }
 
-        $type = $this->parser->getExpressionParser()->parseExpression();
+        $type = $this->getRealType($this->parser->getExpressionParser()->parseExpression());
 
         if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
             $stream->next();
@@ -249,5 +264,18 @@ class SuperblockTokenParser extends \Twig_TokenParser
 
         $this->parser->setBlock($name, $previous);
         $blocks->setNode(count($blocks), $reference);
+    }
+
+    protected function getRealType(\Twig_Node $type)
+    {
+        if ($type instanceof \Twig_Node_Expression_Constant) {
+            $name = $type->getAttribute('value');
+
+            if (isset($this->aliases[$name])) {
+                $type->setAttribute('value', $this->aliases[$name]);
+            }
+        }
+
+        return $type;
     }
 }

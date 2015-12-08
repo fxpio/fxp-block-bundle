@@ -103,14 +103,14 @@ class Block implements \IteratorAggregate, BlockInterface
      * manually, making the initialization with the configured default value
      * superfluous.
      *
-     * @var Boolean
+     * @var bool
      */
     protected $defaultDataSet = false;
 
     /**
      * Whether setData() is currently being called.
      *
-     * @var Boolean
+     * @var bool
      */
     protected $lockSetData = false;
 
@@ -374,7 +374,7 @@ class Block implements \IteratorAggregate, BlockInterface
             throw new RuntimeException('A cycle was detected. Listeners to the PRE_SET_DATA event must not call setData(). You should call setData() on the BlockEvent object instead.');
         }
 
-        if (null !== $this->getForm()) {
+        if (null !== $this->getForm() && null === $this->getForm()->getData()) {
             $this->getForm()->setData($modelData);
         }
 

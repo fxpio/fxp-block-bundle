@@ -11,9 +11,12 @@
 
 namespace Sonatra\Bundle\BlockBundle\Tests\Block;
 
+use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
 use Sonatra\Bundle\BlockBundle\Block\DataMapperInterface;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataMapper\PropertyPathMapper;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType;
+use Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\DataTransformer\FixedDataTransformer;
 
 /**
@@ -76,13 +79,13 @@ class CompoundBlockTest extends AbstractBlockTest
 
         $this->factory->expects($this->once())
             ->method('create')
-            ->with('text', null, array(
+            ->with(TextType::class, null, array(
                 'bar' => 'baz',
                 'auto_initialize' => false,
             ))
             ->will($this->returnValue($child));
 
-        $this->block->add(null, 'text', array('bar' => 'baz'));
+        $this->block->add(null, TextType::class, array('bar' => 'baz'));
 
         $this->assertTrue($this->block->has('foo'));
         $this->assertSame($this->block, $child->getParent());
@@ -95,13 +98,13 @@ class CompoundBlockTest extends AbstractBlockTest
 
         $this->factory->expects($this->once())
             ->method('createNamed')
-            ->with('foo', 'text', null, array(
+            ->with('foo', TextType::class, null, array(
                 'bar' => 'baz',
                 'auto_initialize' => false,
             ))
             ->will($this->returnValue($child));
 
-        $this->block->add('foo', 'text', array('bar' => 'baz'));
+        $this->block->add('foo', TextType::class, array('bar' => 'baz'));
 
         $this->assertTrue($this->block->has('foo'));
         $this->assertSame($this->block, $child->getParent());
@@ -114,14 +117,14 @@ class CompoundBlockTest extends AbstractBlockTest
 
         $this->factory->expects($this->once())
             ->method('createNamed')
-            ->with('0', 'text', null, array(
+            ->with('0', TextType::class, null, array(
                 'bar' => 'baz',
                 'auto_initialize' => false,
             ))
             ->will($this->returnValue($child));
 
         // in order to make casting unnecessary
-        $this->block->add(0, 'text', array('bar' => 'baz'));
+        $this->block->add(0, TextType::class, array('bar' => 'baz'));
 
         $this->assertTrue($this->block->has(0));
         $this->assertTrue($child->hasParent());
@@ -276,6 +279,7 @@ class CompoundBlockTest extends AbstractBlockTest
         $test = $this;
         /* @var DataMapperInterface $mapper */
         $mapper = $this->getDataMapper();
+        /* @var BlockInterface $block */
         $block = $this->getBuilder()
             ->setCompound(true)
             ->setDataMapper($mapper)
@@ -413,6 +417,7 @@ class CompoundBlockTest extends AbstractBlockTest
      */
     public function testCreateViewWithChildren()
     {
+        /* @var ResolvedBlockTypeInterface|\PHPUnit_Framework_MockObject_MockObject $type */
         $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
         $options = array('a' => 'Foo', 'b' => 'Bar');
         $field1 = $this->getMockBlock('foo');

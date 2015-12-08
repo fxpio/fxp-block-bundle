@@ -342,7 +342,7 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
 
-        /* @var DataMapperInterface $dataMapper */
+        /* @var FormInterface $form */
         $form = $this->getMock('Symfony\Component\Form\FormInterface');
 
         $config = $this->getBlockConfig();

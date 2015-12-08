@@ -15,12 +15,11 @@ use Sonatra\Bundle\BlockBundle\Block\BlockFactory;
 use Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockRegistryInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserChain;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\PasswordType;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType;
 use Sonatra\Bundle\BlockBundle\Block\Guess\Guess;
 use Sonatra\Bundle\BlockBundle\Block\Guess\TypeGuess;
 use Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactoryInterface;
-use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooSubType;
-use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooSubTypeWithParentInstance;
-use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -113,126 +112,14 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->builder, $this->factory->createNamedBuilder('name', 'type', null, $options));
     }
 
-    public function testCreateNamedBuilderWithTypeInstance()
-    {
-        $options = array('a' => '1', 'b' => '2');
-        $expectedOptions = array_merge($options, array('id' => 'name'));
-        $resolvedOptions = array('a' => '2', 'b' => '3');
-        $type = new FooType();
-        $resolvedType = $this->getMockResolvedType();
-
-        $this->resolvedTypeFactory->expects($this->once())
-            ->method('createResolvedType')
-            ->with($type)
-            ->will($this->returnValue($resolvedType));
-
-        $resolvedType->expects($this->once())
-            ->method('createBuilder')
-            ->with($this->factory, 'name', $expectedOptions)
-            ->will($this->returnValue($this->builder));
-
-        $this->builder->expects($this->any())
-            ->method('getOptions')
-            ->will($this->returnValue($resolvedOptions));
-
-        $resolvedType->expects($this->once())
-            ->method('buildBlock')
-            ->with($this->builder, $resolvedOptions);
-
-        $this->assertSame($this->builder, $this->factory->createNamedBuilder('name', $type, null, $options));
-    }
-
-    public function testCreateNamedBuilderWithTypeInstanceWithParentType()
-    {
-        $options = array('a' => '1', 'b' => '2');
-        $expectedOptions = array_merge($options, array('id' => 'name'));
-        $resolvedOptions = array('a' => '2', 'b' => '3');
-        $type = new FooSubType();
-        $resolvedType = $this->getMockResolvedType();
-        $parentResolvedType = $this->getMockResolvedType();
-
-        $this->registry->expects($this->once())
-            ->method('getType')
-            ->with('foo')
-            ->will($this->returnValue($parentResolvedType));
-
-        $this->resolvedTypeFactory->expects($this->once())
-            ->method('createResolvedType')
-            ->with($type, array(), $parentResolvedType)
-            ->will($this->returnValue($resolvedType));
-
-        $resolvedType->expects($this->once())
-            ->method('createBuilder')
-            ->with($this->factory, 'name', $expectedOptions)
-            ->will($this->returnValue($this->builder));
-
-        $this->builder->expects($this->any())
-            ->method('getOptions')
-            ->will($this->returnValue($resolvedOptions));
-
-        $resolvedType->expects($this->once())
-            ->method('buildBlock')
-            ->with($this->builder, $resolvedOptions);
-
-        $this->assertSame($this->builder, $this->factory->createNamedBuilder('name', $type, null, $options));
-    }
-
-    public function testCreateNamedBuilderWithTypeInstanceWithParentTypeInstance()
-    {
-        $options = array('a' => '1', 'b' => '2');
-        $expectedOptions = array_merge($options, array('id' => 'name'));
-        $resolvedOptions = array('a' => '2', 'b' => '3');
-        $type = new FooSubTypeWithParentInstance();
-        $resolvedType = $this->getMockResolvedType();
-        $parentResolvedType = $this->getMockResolvedType();
-
-        $this->resolvedTypeFactory->expects($this->at(0))
-            ->method('createResolvedType')
-            ->with($type->getParent())
-            ->will($this->returnValue($parentResolvedType));
-
-        $this->resolvedTypeFactory->expects($this->at(1))
-            ->method('createResolvedType')
-            ->with($type, array(), $parentResolvedType)
-            ->will($this->returnValue($resolvedType));
-
-        $resolvedType->expects($this->once())
-            ->method('createBuilder')
-            ->with($this->factory, 'name', $expectedOptions)
-            ->will($this->returnValue($this->builder));
-
-        $this->builder->expects($this->any())
-            ->method('getOptions')
-            ->will($this->returnValue($resolvedOptions));
-
-        $resolvedType->expects($this->once())
-            ->method('buildBlock')
-            ->with($this->builder, $resolvedOptions);
-
-        $this->assertSame($this->builder, $this->factory->createNamedBuilder('name', $type, null, $options));
-    }
-
     public function testCreateNamedBuilderWithResolvedTypeInstance()
     {
+        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException', 'Expected argument of type "string",');
+
         $options = array('a' => '1', 'b' => '2');
-        $expectedOptions = array_merge($options, array('id' => 'name'));
-        $resolvedOptions = array('a' => '2', 'b' => '3');
         $resolvedType = $this->getMockResolvedType();
 
-        $resolvedType->expects($this->once())
-            ->method('createBuilder')
-            ->with($this->factory, 'name', $expectedOptions)
-            ->will($this->returnValue($this->builder));
-
-        $this->builder->expects($this->any())
-            ->method('getOptions')
-            ->will($this->returnValue($resolvedOptions));
-
-        $resolvedType->expects($this->once())
-            ->method('buildBlock')
-            ->with($this->builder, $resolvedOptions);
-
-        $this->assertSame($this->builder, $this->factory->createNamedBuilder('name', $resolvedType, null, $options));
+        $this->factory->createNamedBuilder('name', $resolvedType, null, $options);
     }
 
     public function testCreateNamedBuilderFillsDataOption()
@@ -293,7 +180,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateNamedBuilderThrowsUnderstandableException()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException', 'Expected argument of type "string, Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface or Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface", "stdClass" given');
+        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException', 'Expected argument of type "string", "stdClass" given');
 
         $this->factory->createNamedBuilder('name', new \stdClass());
     }
@@ -330,25 +217,10 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateUsesTypeNameIfTypeGivenAsObject()
     {
+        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException', 'Expected argument of type "string", ');
+
         $options = array('a' => '1', 'b' => '2');
-        $resolvedOptions = array('a' => '2', 'b' => '3');
         $resolvedType = $this->getMockResolvedType();
-
-        $resolvedType->expects($this->once())
-            ->method('createBuilder')
-            ->will($this->returnValue($this->builder));
-
-        $this->builder->expects($this->any())
-            ->method('getOptions')
-            ->will($this->returnValue($resolvedOptions));
-
-        $resolvedType->expects($this->once())
-            ->method('buildBlock')
-            ->with($this->builder, $resolvedOptions);
-
-        $this->builder->expects($this->once())
-            ->method('getBlock')
-            ->will($this->returnValue('BLOCK'));
 
         $this->assertSame('BLOCK', $this->factory->create($resolvedType, null, $options));
     }
@@ -395,7 +267,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factory->expects($this->once())
             ->method('createNamedBuilder')
-            ->with('firstName', 'text', null, array())
+            ->with('firstName', TextType::class, null, array())
             ->will($this->returnValue('builderInstance'));
 
         /* @var BlockFactoryInterface $factory */
@@ -410,7 +282,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('guessType')
             ->with('Application\Author', 'firstName')
             ->will($this->returnValue(new TypeGuess(
-                        'text',
+                        TextType::class,
                         array('attr' => array('data-maxlength' => 10)),
                         Guess::MEDIUM_CONFIDENCE
                     )));
@@ -419,7 +291,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('guessType')
             ->with('Application\Author', 'firstName')
             ->will($this->returnValue(new TypeGuess(
-                        'password',
+                        PasswordType::class,
                         array('attr' => array('data-maxlength' => 7)),
                         Guess::HIGH_CONFIDENCE
                     )));
@@ -428,7 +300,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factory->expects($this->once())
             ->method('createNamedBuilder')
-            ->with('firstName', 'password', null, array('attr' => array('data-maxlength' => 7)))
+            ->with('firstName', PasswordType::class, null, array('attr' => array('data-maxlength' => 7)))
             ->will($this->returnValue('builderInstance'));
 
         /* @var BlockFactoryInterface $factory */
@@ -448,7 +320,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factory->expects($this->once())
             ->method('createNamedBuilder')
-            ->with('firstName', 'text')
+            ->with('firstName', TextType::class)
             ->will($this->returnValue('builderInstance'));
 
         /* @var BlockFactoryInterface $factory */
@@ -463,7 +335,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('guessType')
             ->with('Application\Author', 'firstName')
             ->will($this->returnValue(new TypeGuess(
-                'text',
+                'Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType',
                 array('attr' => array('data-maxlength' => 10)),
                 Guess::MEDIUM_CONFIDENCE
             )));
@@ -472,7 +344,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factory->expects($this->once())
             ->method('createNamedBuilder')
-            ->with('firstName', 'text', null, array('attr' => array('data-maxlength' => 11)))
+            ->with('firstName', TextType::class, null, array('attr' => array('data-maxlength' => 11)))
             ->will($this->returnValue('builderInstance'));
 
         /* @var BlockFactoryInterface $factory */
@@ -494,7 +366,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->registry->expects($this->once())
             ->method('getType')
-            ->with('text')
+            ->with('Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType')
             ->will($this->returnValue($resolvedType));
 
         $resolvedType->expects($this->once())

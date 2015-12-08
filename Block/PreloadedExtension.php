@@ -21,12 +21,12 @@ use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 class PreloadedExtension implements BlockExtensionInterface
 {
     /**
-     * @var array
+     * @var BlockTypeInterface[]
      */
     private $types = array();
 
     /**
-     * @var array
+     * @var array[BlockTypeExtensionInterface[]]
      */
     private $typeExtensions = array();
 
@@ -38,15 +38,18 @@ class PreloadedExtension implements BlockExtensionInterface
     /**
      * Creates a new preloaded extension.
      *
-     * @param array                          $types          The types that the extension should support.
-     * @param array                          $typeExtensions The type extensions that the extension should support.
-     * @param BlockTypeGuesserInterface|null $typeGuesser    The guesser that the extension should support.
+     * @param BlockTypeInterface[]            $types          The types that the extension should support.
+     * @param BlockTypeExtensionInterface[][] $typeExtensions The type extensions that the extension should support.
+     * @param BlockTypeGuesserInterface|null  $typeGuesser    The guesser that the extension should support.
      */
     public function __construct(array $types, array $typeExtensions, BlockTypeGuesserInterface $typeGuesser = null)
     {
-        $this->types = $types;
         $this->typeExtensions = $typeExtensions;
         $this->typeGuesser = $typeGuesser;
+
+        foreach ($types as $type) {
+            $this->types[get_class($type)] = $type;
+        }
     }
 
     /**

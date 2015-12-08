@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Tests\Block\Extension\Core\Type;
 
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BlockType;
 use Sonatra\Bundle\BlockBundle\Tests\Block\TypeTestCase;
 
 /**
@@ -40,7 +41,7 @@ abstract class BaseTypeTest extends TypeTestCase
 
     public function testPassIdAndNameToViewWithParent()
     {
-        $view = $this->factory->createNamedBuilder('parent', 'block')
+        $view = $this->factory->createNamedBuilder('parent', BlockType::class)
             ->add('child', $this->getTestedType(), array('chained_block' => true))
             ->getBlock()
             ->createView();
@@ -51,8 +52,8 @@ abstract class BaseTypeTest extends TypeTestCase
 
     public function testPassIdAndNameToViewWithGrandParent()
     {
-        $builder = $this->factory->createNamedBuilder('parent', 'block')
-            ->add('child', 'block', array('chained_block' => true));
+        $builder = $this->factory->createNamedBuilder('parent', BlockType::class)
+            ->add('child', BlockType::class, array('chained_block' => true));
         $builder->get('child')->add('grand_child', $this->getTestedType(), array('chained_block' => true));
         $view = $builder->getBlock()->createView();
 
@@ -73,7 +74,7 @@ abstract class BaseTypeTest extends TypeTestCase
     public function testInheritTranslationDomainBlockParent()
     {
         $view = $this->factory
-            ->createNamedBuilder('parent', 'block', null, array(
+            ->createNamedBuilder('parent', BlockType::class, null, array(
                 'translation_domain' => 'domain',
             ))
             ->add('child', $this->getTestedType())
@@ -86,7 +87,7 @@ abstract class BaseTypeTest extends TypeTestCase
     public function testPreferOwnTranslationDomain()
     {
         $view = $this->factory
-            ->createNamedBuilder('parent', 'block', null, array(
+            ->createNamedBuilder('parent', BlockType::class, null, array(
                 'translation_domain' => 'parent_domain',
             ))
             ->add('child', $this->getTestedType(), array(
@@ -100,7 +101,7 @@ abstract class BaseTypeTest extends TypeTestCase
 
     public function testDefaultTranslationDomain()
     {
-        $view = $this->factory->createNamedBuilder('parent', 'block')
+        $view = $this->factory->createNamedBuilder('parent', BlockType::class)
             ->add('child', $this->getTestedType())
             ->getBlock()
             ->createView();

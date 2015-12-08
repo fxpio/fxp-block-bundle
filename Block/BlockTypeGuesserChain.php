@@ -24,7 +24,7 @@ class BlockTypeGuesserChain implements BlockTypeGuesserInterface
     /**
      * Constructor.
      *
-     * @param array $guessers Guessers as instances of BlockTypeGuesserInterface
+     * @param BlockTypeGuesserInterface[] $guessers Guessers as instances of BlockTypeGuesserInterface
      *
      * @throws UnexpectedTypeException if any guesser does not implement BlockTypeGuesserInterface
      */

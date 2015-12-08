@@ -98,7 +98,7 @@ class BlockType extends AbstractType
 
         $blockPrefixes = array();
         for ($type = $block->getConfig()->getType(); null !== $type; $type = $type->getParent()) {
-            array_unshift($blockPrefixes, $type->getName());
+            array_unshift($blockPrefixes, $type->getBlockPrefix());
         }
         $blockPrefixes[] = $uniqueBlockPrefix;
 
@@ -129,7 +129,7 @@ class BlockType extends AbstractType
                 // Including the type is important too, because if rows of a
                 // collection block have different types (dynamically), they should
                 // be rendered differently.
-                'cache_key' => $uniqueBlockPrefix.'_'.$block->getConfig()->getType()->getName(),
+                'cache_key' => $uniqueBlockPrefix.'_'.$block->getConfig()->getType()->getBlockPrefix(),
         ));
     }
 
@@ -217,7 +217,7 @@ class BlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'block';
     }

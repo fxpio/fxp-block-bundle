@@ -39,7 +39,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Returns whether the block has a parent.
      *
-     * @return Boolean
+     * @return bool
      */
     public function hasParent();
 
@@ -74,7 +74,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
      *
      * @param string $name The option name,
      *
-     * @return Boolean Whether the option exists.
+     * @return bool Whether the option exists.
      */
     public function hasOption($name);
 
@@ -119,7 +119,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
      *
      * @param string $name The attribute name,
      *
-     * @return Boolean Whether the attribute exists.
+     * @return bool Whether the attribute exists.
      */
     public function hasAttribute($name);
 
@@ -160,7 +160,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
      *
      * @param string $name The name of the child
      *
-     * @return Boolean
+     * @return bool
      */
     public function has($name);
 
@@ -252,7 +252,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Returns whether the block is empty.
      *
-     * @return Boolean
+     * @return bool
      */
     public function isEmpty();
 
@@ -275,7 +275,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Returns whether the field is the root of the block tree.
      *
-     * @return Boolean
+     * @return bool
      */
     public function isRoot();
 

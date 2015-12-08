@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Tests\Block;
 
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilder;
+use Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -27,7 +28,7 @@ abstract class AbstractBlockTest extends \PHPUnit_Framework_TestCase
     protected $dispatcher;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var BlockFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $factory;
 

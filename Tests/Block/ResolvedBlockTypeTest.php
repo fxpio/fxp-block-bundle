@@ -12,7 +12,6 @@
 namespace Sonatra\Bundle\BlockBundle\Tests\Block;
 
 use Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface;
-use Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface;
 use Sonatra\Bundle\BlockBundle\Block\ResolvedBlockType;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Extension\FooExtension;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooSubType;
@@ -23,19 +22,6 @@ use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType;
  */
 class ResolvedBlockTypeTest extends \PHPUnit_Framework_TestCase
 {
-    public function testClassUnexist()
-    {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException');
-
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo@bar'));
-
-        /* @var BlockTypeInterface $type */
-        new ResolvedBlockType($type);
-    }
-
     public function testWrongExtensions()
     {
         $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
@@ -49,7 +35,7 @@ class ResolvedBlockTypeTest extends \PHPUnit_Framework_TestCase
         $type = new FooType();
         $rType = new ResolvedBlockType($type, array(new FooExtension()), new ResolvedBlockType($parentType));
 
-        $this->assertEquals($type->getName(), $rType->getName());
+        $this->assertEquals($type->getBlockPrefix(), $rType->getBlockPrefix());
         $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface', $rType->getParent());
         $this->assertEquals($type, $rType->getInnerType());
 
@@ -121,6 +107,6 @@ class ResolvedBlockTypeTest extends \PHPUnit_Framework_TestCase
     {
         /* @var \Sonatra\Bundle\BlockBundle\Block\AbstractType $type */
         $type = $this->getMockForAbstractClass('Sonatra\Bundle\BlockBundle\Block\AbstractType');
-        $this->assertEquals('block', $type->getParent());
+        $this->assertEquals('Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BlockType', $type->getParent());
     }
 }

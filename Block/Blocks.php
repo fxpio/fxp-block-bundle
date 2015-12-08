@@ -21,14 +21,17 @@ use Sonatra\Bundle\BlockBundle\Block\Extension\Core\CoreExtension;
  *
  * <code>
  * use Sonatra\Bundle\BlockBundle\Block\Blocks;
+ * use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType;
+ * use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\IntegerType;
+ * use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ChoiceType;
  *
  * $blockFactory = Blocks::createBlockFactory();
  *
  * $block = $blockFactory->createBuilder()
- *     ->add('firstName', 'text')
- *     ->add('lastName', 'text')
- *     ->add('age', 'integer')
- *     ->add('gender', 'choice')
+ *     ->add('firstName', TextType::class)
+ *     ->add('lastName', TextType::class)
+ *     ->add('age', IntegerType::class)
+ *     ->add('gender', ChoiceType::class)
  *     ->getBlock();
  * </code>
  *

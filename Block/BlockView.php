@@ -49,7 +49,7 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
      * Row implicitly includes widget, however certain rendering mechanisms
      * have to skip widget rendering when a row is rendered.
      *
-     * @var Boolean
+     * @var bool
      */
     protected $rendered = false;
 
@@ -66,7 +66,7 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Returns whether the block was already rendered.
      *
-     * @return Boolean Whether this block's widget is rendered.
+     * @return bool Whether this block's widget is rendered.
      */
     public function isRendered()
     {
@@ -119,7 +119,7 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
      *
      * @param string $name The child name
      *
-     * @return Boolean Whether the child view exists
+     * @return bool Whether the child view exists
      */
     public function offsetExists($name)
     {

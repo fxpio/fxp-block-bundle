@@ -13,6 +13,7 @@ namespace Sonatra\Bundle\BlockBundle\Block\Extension\DataCollector;
 
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
+use Sonatra\Bundle\BlockBundle\Block\Util\StringUtil;
 use Symfony\Component\HttpKernel\DataCollector\Util\ValueExporter;
 
 /**
@@ -42,10 +43,13 @@ class BlockDataExtractor implements BlockDataExtractorInterface
      */
     public function extractConfiguration(BlockInterface $block)
     {
+        $typeClass = get_class($block->getConfig()->getType()->getInnerType());
+
         $data = array(
             'id' => $this->buildId($block),
-            'type' => $block->getConfig()->getType()->getName(),
-            'type_class' => get_class($block->getConfig()->getType()->getInnerType()),
+            'name' => $block->getName(),
+            'type' => StringUtil::fqcnToBlockPrefix($typeClass, true),
+            'type_class' => $typeClass,
             'passed_options' => array(),
             'resolved_options' => array(),
         );

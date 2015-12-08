@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Templating\Helper;
 
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BlockType;
 use Symfony\Component\Templating\Helper\Helper;
 use Sonatra\Bundle\BlockBundle\Block\BlockRendererInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
@@ -42,7 +43,7 @@ class BlockHelper extends Helper
      */
     public function getName()
     {
-        return 'block';
+        return BlockType::class;
     }
 
     /**

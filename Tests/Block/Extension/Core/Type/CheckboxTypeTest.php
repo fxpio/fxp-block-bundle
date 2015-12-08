@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Tests\Block\Extension\Core\Type;
 
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer\CallbackTransformer;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CheckboxType;
 use Sonatra\Bundle\BlockBundle\Tests\Block\TypeTestCase;
 
 /**
@@ -21,7 +22,7 @@ class CheckboxTypeTest extends TypeTestCase
 {
     public function testDataIsFalseByDefault()
     {
-        $block = $this->factory->create('checkbox');
+        $block = $this->factory->create(CheckboxType::class);
 
         $this->assertFalse($block->getData());
         $this->assertFalse($block->getNormData());
@@ -30,7 +31,7 @@ class CheckboxTypeTest extends TypeTestCase
 
     public function testCheckedIfDataTrue()
     {
-        $block = $this->factory->create('checkbox');
+        $block = $this->factory->create(CheckboxType::class);
         $block->setData(true);
         $view = $block->createView();
 
@@ -40,7 +41,7 @@ class CheckboxTypeTest extends TypeTestCase
 
     public function testNotCheckedIfDataFalse()
     {
-        $block = $this->factory->create('checkbox');
+        $block = $this->factory->create(CheckboxType::class);
         $block->setData(false);
         $view = $block->createView();
 
@@ -68,7 +69,7 @@ class CheckboxTypeTest extends TypeTestCase
             }
         );
 
-        $builder = $this->factory->createBuilder('checkbox');
+        $builder = $this->factory->createBuilder(CheckboxType::class);
         $builder->addModelTransformer($transformer);
         $block = $builder->getBlock();
 

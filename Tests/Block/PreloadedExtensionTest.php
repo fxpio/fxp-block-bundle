@@ -24,10 +24,10 @@ class PreloadedExtensionTest extends AbstractBaseExtensionTest
     protected function setUp()
     {
         $types = array(
-            'foo' => new FooType(),
+            FooType::class => new FooType(),
         );
         $extensions = array(
-            'foo' => array(new FooExtension()),
+            FooType::class => array(new FooExtension()),
         );
         /* @var BlockTypeGuesserInterface $guesser */
         $guesser = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface');

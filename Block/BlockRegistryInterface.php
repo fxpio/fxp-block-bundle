@@ -27,7 +27,6 @@ interface BlockRegistryInterface
      *
      * @return ResolvedBlockTypeInterface The type
      *
-     * @throws Exception\UnexpectedTypeException  If the passed name is not a string
      * @throws Exception\InvalidArgumentException If the type can not be retrieved block any extension
      */
     public function getType($name);
@@ -37,7 +36,7 @@ interface BlockRegistryInterface
      *
      * @param string $name The name of the type
      *
-     * @return Boolean Whether the type is supported
+     * @return bool Whether the type is supported
      */
     public function hasType($name);
 
@@ -51,7 +50,7 @@ interface BlockRegistryInterface
     /**
      * Returns the extensions loaded by the framework.
      *
-     * @return array
+     * @return BlockExtensionInterface[]
      */
     public function getExtensions();
 }

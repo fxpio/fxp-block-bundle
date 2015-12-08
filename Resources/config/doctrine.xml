@@ -15,7 +15,7 @@
         </service>
 
         <service id="sonatra_block.type.entity" class="Sonatra\Bundle\BlockBundle\Doctrine\Block\Type\EntityType">
-            <tag name="sonatra_block.type" alias="entity" />
+            <tag name="sonatra_block.type" />
             <argument type="service" id="doctrine" />
         </service>
     </services>

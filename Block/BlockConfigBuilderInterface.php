@@ -48,7 +48,7 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
      * normalized to the view format.
      *
      * @param DataTransformerInterface $viewTransformer
-     * @param Boolean                  $forcePrepend    if set to true, prepend instead of appending
+     * @param bool                     $forcePrepend    if set to true, prepend instead of appending
      *
      * @return self The configuration object.
      */
@@ -68,7 +68,7 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
      * model to the normalized format.
      *
      * @param DataTransformerInterface $modelTransformer
-     * @param Boolean                  $forceAppend      if set to true, append instead of prepending
+     * @param bool                     $forceAppend      if set to true, append instead of prepending
      *
      * @return self The configuration object.
      */
@@ -141,7 +141,7 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
      * Sets whether the block should be mapped to an element of its
      * parent's data.
      *
-     * @param Boolean $mapped Whether the block should be mapped.
+     * @param bool $mapped Whether the block should be mapped.
      *
      * @return self The configuration object.
      */
@@ -150,7 +150,7 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
     /**
      * Sets whether the block should be inherit data.
      *
-     * @param Boolean $inheritData Whether the block should be inherit data.
+     * @param bool $inheritData Whether the block should be inherit data.
      *
      * @return self The configuration object.
      */
@@ -159,7 +159,7 @@ interface BlockConfigBuilderInterface extends BlockConfigInterface
     /**
      * Sets whether the block should be compound.
      *
-     * @param Boolean $compound Whether the block should be compound.
+     * @param bool $compound Whether the block should be compound.
      *
      * @return self The configuration object.
      *

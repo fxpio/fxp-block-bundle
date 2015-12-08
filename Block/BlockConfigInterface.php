@@ -43,7 +43,7 @@ interface BlockConfigInterface
      * Returns whether the block should be mapped to an element of its
      * parent's data.
      *
-     * @return Boolean Whether the block is mapped.
+     * @return bool Whether the block is mapped.
      */
     public function getMapped();
 
@@ -54,7 +54,7 @@ interface BlockConfigInterface
      * should ignore inherit data blocks and map to the children of the
      * inherit data block instead.
      *
-     * @return Boolean Whether the block is inherit data.
+     * @return bool Whether the block is inherit data.
      */
     public function getInheritData();
 
@@ -65,7 +65,7 @@ interface BlockConfigInterface
      * children. A block can be compound and have no children at all, like
      * for example an empty collection block.
      *
-     * @return Boolean Whether the block is compound.
+     * @return bool Whether the block is compound.
      */
     public function getCompound();
 
@@ -123,7 +123,7 @@ interface BlockConfigInterface
      *
      * @param string $name The attribute name.
      *
-     * @return Boolean Whether the attribute exists.
+     * @return bool Whether the attribute exists.
      */
     public function hasAttribute($name);
 
@@ -178,7 +178,7 @@ interface BlockConfigInterface
      *
      * @param string $name The option name,
      *
-     * @return Boolean Whether the option exists.
+     * @return bool Whether the option exists.
      */
     public function hasOption($name);
 

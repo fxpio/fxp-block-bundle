@@ -34,13 +34,13 @@ class TextType extends AbstractType
      */
     public function getParent()
     {
-        return 'field';
+        return FieldType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'text';
     }

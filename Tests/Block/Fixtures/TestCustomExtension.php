@@ -36,7 +36,7 @@ class TestCustomExtension implements BlockExtensionInterface
 
     public function addType(BlockTypeInterface $type)
     {
-        $this->types[$type->getName()] = $type;
+        $this->types[get_class($type)] = $type;
     }
 
     public function getType($name)

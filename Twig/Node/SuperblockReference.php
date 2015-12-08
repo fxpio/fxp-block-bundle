@@ -49,7 +49,7 @@ class SuperblockReference extends \Twig_Node implements \Twig_NodeOutputInterfac
                 ->addDebugInfo($this)
                 ->write(sprintf('$%s = ', $name))
                 ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
-                ->raw('"closure"')
+                ->raw('"Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ClosureType"')
                 ->raw(', ')
                 ->raw(sprintf('array("data" => function ($blockView) use ($context, $blocks) {$this->block_%s(array_merge($context, array(\'closure\' => $blockView)), $blocks);}', $name))
                 ->raw(sprintf(', "block_name" => "%s", "label" => "")', $name))

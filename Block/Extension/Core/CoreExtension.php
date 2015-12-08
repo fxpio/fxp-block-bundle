@@ -13,6 +13,7 @@ namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractExtension;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Represents the main block extension, which loads the core functionality.
@@ -21,10 +22,28 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  */
 class CoreExtension extends AbstractExtension
 {
+    /**
+     * @var PropertyAccessorInterface
+     */
+    private $propertyAccessor;
+
+    /**
+     * Constructor.
+     *
+     * @param PropertyAccessorInterface|null $propertyAccessor
+     */
+    public function __construct(PropertyAccessorInterface $propertyAccessor = null)
+    {
+        $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function loadTypes()
     {
         return array(
-            new Type\BlockType(PropertyAccess::createPropertyAccessor()),
+            new Type\BlockType($this->propertyAccessor),
             new Type\BirthdayType(),
             new Type\CheckboxType(),
             new Type\ChoiceType(),

@@ -50,16 +50,14 @@ class NumberType extends AbstractType
             'compound' => false,
         ));
 
-        $resolver->setAllowedValues(array(
-            'rounding_mode' => array(
-                NumberToLocalizedStringTransformer::ROUND_CEILING,
-                NumberToLocalizedStringTransformer::ROUND_DOWN,
-                NumberToLocalizedStringTransformer::ROUND_FLOOR,
-                NumberToLocalizedStringTransformer::ROUND_HALF_DOWN,
-                NumberToLocalizedStringTransformer::ROUND_HALF_EVEN,
-                NumberToLocalizedStringTransformer::ROUND_HALF_UP,
-                NumberToLocalizedStringTransformer::ROUND_UP,
-            ),
+        $resolver->setAllowedValues('rounding_mode', array(
+            NumberToLocalizedStringTransformer::ROUND_CEILING,
+            NumberToLocalizedStringTransformer::ROUND_DOWN,
+            NumberToLocalizedStringTransformer::ROUND_FLOOR,
+            NumberToLocalizedStringTransformer::ROUND_HALF_DOWN,
+            NumberToLocalizedStringTransformer::ROUND_HALF_EVEN,
+            NumberToLocalizedStringTransformer::ROUND_HALF_UP,
+            NumberToLocalizedStringTransformer::ROUND_UP,
         ));
     }
 
@@ -68,13 +66,13 @@ class NumberType extends AbstractType
      */
     public function getParent()
     {
-        return 'field';
+        return FieldType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'number';
     }

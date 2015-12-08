@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Tests\Block;
 
+use Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface;
 use Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactory;
 
 /**
@@ -20,6 +21,7 @@ class ResolvedBlockTypeFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateResolvedType()
     {
+        /* @var BlockTypeInterface|\PHPUnit_Framework_MockObject_MockObject $type */
         $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
         $type->expects($this->any())
             ->method('getName')

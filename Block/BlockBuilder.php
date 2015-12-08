@@ -14,6 +14,7 @@ namespace Sonatra\Bundle\BlockBundle\Block;
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType;
 use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -78,7 +79,7 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
             throw new BadMethodCallException('BlockBuilder methods cannot be accessed anymore once the builder is turned into a BlockConfigInterface instance.');
         }
 
-        if ($child instanceof self) {
+        if ($child instanceof BlockBuilderInterface) {
             $this->children[$child->getName()] = $child;
 
             // In case an unresolved child with the same name exists
@@ -119,7 +120,7 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
         }
 
         if (null === $type && null === $this->getDataClass()) {
-            $type = 'text';
+            $type = TextType::class;
         }
 
         if (null !== $type) {
@@ -239,7 +240,8 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
 
         /* @var BlockBuilderInterface $child */
         foreach ($this->children as $child) {
-            $block->add($child->setAutoInitialize(false)->getBlock());
+            $child->setAutoInitialize(false);
+            $block->add($child->getBlock());
         }
 
         if ($this->getAutoInitialize()) {

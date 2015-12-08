@@ -25,7 +25,7 @@ class BlockRegistry implements BlockRegistryInterface
     /**
      * Extensions.
      *
-     * @var array An array of BlockExtensionInterface
+     * @var BlockExtensionInterface[] An array of BlockExtensionInterface
      */
     protected $extensions = array();
 
@@ -47,7 +47,7 @@ class BlockRegistry implements BlockRegistryInterface
     /**
      * Constructor.
      *
-     * @param array                             $extensions          An array of BlockExtensionInterface
+     * @param BlockExtensionInterface[]         $extensions          An array of BlockExtensionInterface
      * @param ResolvedBlockTypeFactoryInterface $resolvedTypeFactory The factory for resolved block types.
      *
      * @throws UnexpectedTypeException if any extension does not implement BlockExtensionInterface
@@ -78,7 +78,6 @@ class BlockRegistry implements BlockRegistryInterface
             $type = null;
 
             foreach ($this->extensions as $extension) {
-                /* @var BlockExtensionInterface $extension */
                 if ($extension->hasType($name)) {
                     $type = $extension->getType($name);
                     break;
@@ -86,10 +85,15 @@ class BlockRegistry implements BlockRegistryInterface
             }
 
             if (!$type) {
-                throw new InvalidArgumentException(sprintf('Could not load type "%s"', $name));
+                // Support fully-qualified class names
+                if (class_exists($name) && in_array('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface', class_implements($name))) {
+                    $type = new $name();
+                } else {
+                    throw new InvalidArgumentException(sprintf('Could not load type "%s"', $name));
+                }
             }
 
-            $this->resolveAndAddType($type);
+            $this->types[$name] = $this->resolveType($type);
         }
 
         return $this->types[$name];
@@ -122,7 +126,6 @@ class BlockRegistry implements BlockRegistryInterface
             $guessers = array();
 
             foreach ($this->extensions as $extension) {
-                /* @var BlockExtensionInterface $extension */
                 $guesser = $extension->getTypeGuesser();
 
                 if ($guesser) {
@@ -152,31 +155,23 @@ class BlockRegistry implements BlockRegistryInterface
      *
      * @return ResolvedBlockTypeInterface The resolved type.
      */
-    private function resolveAndAddType(BlockTypeInterface $type)
+    private function resolveType(BlockTypeInterface $type)
     {
-        $parentType = $type->getParent();
-
-        if ($parentType instanceof BlockTypeInterface) {
-            $this->resolveAndAddType($parentType);
-            $parentType = $parentType->getName();
-        }
-
         $typeExtensions = array();
+        $parentType = $type->getParent();
+        $fqcn = get_class($type);
 
         foreach ($this->extensions as $extension) {
-            /* @var BlockExtensionInterface $extension */
             $typeExtensions = array_merge(
                 $typeExtensions,
-                $extension->getTypeExtensions($type->getName())
+                $extension->getTypeExtensions($fqcn)
             );
         }
 
-        $rType = $this->resolvedTypeFactory->createResolvedType(
-                $type,
-                $typeExtensions,
-                $parentType ? $this->getType($parentType) : null
+        return $this->resolvedTypeFactory->createResolvedType(
+            $type,
+            $typeExtensions,
+            $parentType ? $this->getType($parentType) : null
         );
-
-        $this->types[$type->getName()] = $rType;
     }
 }

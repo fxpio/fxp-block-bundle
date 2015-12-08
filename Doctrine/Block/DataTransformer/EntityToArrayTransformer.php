@@ -21,7 +21,7 @@ class EntityToArrayTransformer implements DataTransformerInterface
     /**
      * Transforms a entity into an array.
      *
-     * @param Object $entity A entity
+     * @param object $entity A entity
      *
      * @return mixed An array of entity
      */

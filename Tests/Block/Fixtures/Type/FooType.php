@@ -29,7 +29,7 @@ class FooType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'foo';
     }

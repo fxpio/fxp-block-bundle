@@ -22,7 +22,7 @@ abstract class AbstractExtension implements BlockExtensionInterface
     /**
      * The types provided by this extension.
      *
-     * @var array An array of BlockTypeInterface
+     * @var BlockTypeInterface[] An array of BlockTypeInterface
      */
     private $types;
 
@@ -43,7 +43,7 @@ abstract class AbstractExtension implements BlockExtensionInterface
     /**
      * Whether the type guesser has been loaded.
      *
-     * @var Boolean
+     * @var bool
      */
     private $typeGuesserLoaded = false;
 
@@ -116,7 +116,7 @@ abstract class AbstractExtension implements BlockExtensionInterface
     /**
      * Registers the types.
      *
-     * @return array An array of BlockTypeInterface instances
+     * @return BlockTypeInterface[] An array of BlockTypeInterface instances
      */
     protected function loadTypes()
     {
@@ -126,7 +126,7 @@ abstract class AbstractExtension implements BlockExtensionInterface
     /**
      * Registers the type extensions.
      *
-     * @return array An array of BlockTypeExtensionInterface instances
+     * @return BlockTypeExtensionInterface[] An array of BlockTypeExtensionInterface instances
      */
     protected function loadTypeExtensions()
     {
@@ -157,7 +157,7 @@ abstract class AbstractExtension implements BlockExtensionInterface
                 throw new UnexpectedTypeException($type, 'Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
             }
 
-            $this->types[$type->getName()] = $type;
+            $this->types[get_class($type)] = $type;
         }
     }
 

@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractExtension;
+use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType;
 
 /**
  * Test for extensions which provide types and type extensions.
@@ -23,7 +24,7 @@ class TestExpectedExtension extends AbstractExtension
     protected function loadTypes()
     {
         return array(
-            'foo',
+            FooType::class,
         );
     }
 

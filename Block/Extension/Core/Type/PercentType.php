@@ -41,13 +41,13 @@ class PercentType extends AbstractType
      */
     public function getParent()
     {
-        return 'number';
+        return NumberType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'percent';
     }

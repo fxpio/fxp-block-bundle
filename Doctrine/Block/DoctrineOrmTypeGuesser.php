@@ -17,8 +17,18 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException as LegacyMappingException;
 use Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CheckboxType;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CollectionType;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\DateTimeType;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\DateType;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\IntegerType;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\NumberType;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextareaType;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TimeType;
 use Sonatra\Bundle\BlockBundle\Block\Guess\Guess;
 use Sonatra\Bundle\BlockBundle\Block\Guess\TypeGuess;
+use Sonatra\Bundle\BlockBundle\Doctrine\Block\Type\EntityType;
 
 class DoctrineOrmTypeGuesser implements BlockTypeGuesserInterface
 {
@@ -42,7 +52,7 @@ class DoctrineOrmTypeGuesser implements BlockTypeGuesserInterface
     public function guessType($class, $property)
     {
         if (!$ret = $this->getMetadata($class)) {
-            return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
+            return new TypeGuess(TextType::class, array(), Guess::LOW_CONFIDENCE);
         }
 
         /* @var ClassMetadataInfo $metadata */
@@ -52,44 +62,44 @@ class DoctrineOrmTypeGuesser implements BlockTypeGuesserInterface
             $multiple = $metadata->isCollectionValuedAssociation($property);
             $mapping = $metadata->getAssociationMapping($property);
 
-            return new TypeGuess('entity', array('em' => $name, 'class' => $mapping['targetEntity'], 'multiple' => $multiple), Guess::HIGH_CONFIDENCE);
+            return new TypeGuess(EntityType::class, array('em' => $name, 'class' => $mapping['targetEntity'], 'multiple' => $multiple), Guess::HIGH_CONFIDENCE);
         }
 
         switch ($metadata->getTypeOfField($property)) {
             case 'array':
-                return new TypeGuess('collection', array(), Guess::MEDIUM_CONFIDENCE);
+                return new TypeGuess(CollectionType::class, array(), Guess::MEDIUM_CONFIDENCE);
 
             case 'boolean':
-                return new TypeGuess('checkbox', array(), Guess::HIGH_CONFIDENCE);
+                return new TypeGuess(CheckboxType::class, array(), Guess::HIGH_CONFIDENCE);
 
             case 'datetime':
             case 'vardatetime':
             case 'datetimetz':
-                return new TypeGuess('datetime', array(), Guess::HIGH_CONFIDENCE);
+                return new TypeGuess(DateTimeType::class, array(), Guess::HIGH_CONFIDENCE);
 
             case 'date':
-                return new TypeGuess('date', array(), Guess::HIGH_CONFIDENCE);
+                return new TypeGuess(DateType::class, array(), Guess::HIGH_CONFIDENCE);
 
             case 'time':
-                return new TypeGuess('time', array(), Guess::HIGH_CONFIDENCE);
+                return new TypeGuess(TimeType::class, array(), Guess::HIGH_CONFIDENCE);
 
             case 'decimal':
             case 'float':
-                return new TypeGuess('number', array(), Guess::MEDIUM_CONFIDENCE);
+                return new TypeGuess(NumberType::class, array(), Guess::MEDIUM_CONFIDENCE);
 
             case 'integer':
             case 'bigint':
             case 'smallint':
-                return new TypeGuess('integer', array(), Guess::MEDIUM_CONFIDENCE);
+                return new TypeGuess(IntegerType::class, array(), Guess::MEDIUM_CONFIDENCE);
 
             case 'string':
-                return new TypeGuess('text', array(), Guess::MEDIUM_CONFIDENCE);
+                return new TypeGuess(TextType::class, array(), Guess::MEDIUM_CONFIDENCE);
 
             case 'text':
-                return new TypeGuess('textarea', array(), Guess::MEDIUM_CONFIDENCE);
+                return new TypeGuess(TextareaType::class, array(), Guess::MEDIUM_CONFIDENCE);
 
             default:
-                return new TypeGuess('text', array(), Guess::LOW_CONFIDENCE);
+                return new TypeGuess(TextType::class, array(), Guess::LOW_CONFIDENCE);
         }
     }
 

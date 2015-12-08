@@ -37,7 +37,7 @@ class BlockUtil
      *
      * @param mixed $data
      *
-     * @return Boolean
+     * @return bool
      */
     public static function isEmpty($data)
     {
@@ -147,7 +147,7 @@ class BlockUtil
     {
         if (null === $rType) {
             return false;
-        } elseif (!in_array($rType->getName(), $allowed)) {
+        } elseif (!in_array(get_class($rType->getInnerType()), $allowed)) {
             return static::isValidType($allowed, $rType->getParent());
         }
 

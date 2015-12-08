@@ -35,13 +35,13 @@ class ObjectType extends AbstractType
      */
     public function getParent()
     {
-        return 'block';
+        return BlockType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'object';
     }

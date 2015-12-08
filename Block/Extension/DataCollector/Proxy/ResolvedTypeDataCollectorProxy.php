@@ -50,9 +50,9 @@ class ResolvedTypeDataCollectorProxy implements ResolvedBlockTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return $this->proxiedType->getName();
+        return $this->proxiedType->getBlockPrefix();
     }
 
     /**

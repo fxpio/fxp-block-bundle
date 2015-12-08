@@ -14,6 +14,7 @@ namespace Sonatra\Bundle\BlockBundle\Block;
 use Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException;
 use Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException;
+use Symfony\Component\EventDispatcher\ImmutableEventDispatcher;
 use Symfony\Component\Form\Form;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
@@ -29,7 +30,7 @@ use Symfony\Component\Form\FormInterface;
 class BlockConfigBuilder implements BlockConfigBuilderInterface
 {
     /**
-     * @var Boolean
+     * @var bool
      */
     protected $locked = false;
 
@@ -49,17 +50,17 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     private $propertyPath;
 
     /**
-     * @var Boolean
+     * @var bool
      */
     private $mapped = true;
 
     /**
-     * @var Boolean
+     * @var bool
      */
     private $inheritData = false;
 
     /**
-     * @var Boolean
+     * @var bool
      */
     private $compound = false;
 
@@ -246,6 +247,10 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      */
     public function getEventDispatcher()
     {
+        if ($this->locked && !$this->dispatcher instanceof ImmutableEventDispatcher) {
+            $this->dispatcher = new ImmutableEventDispatcher($this->dispatcher);
+        }
+
         return $this->dispatcher;
     }
 
@@ -667,7 +672,7 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      *
      * @param string $name The tested block name.
      *
-     * @return Boolean Whether the name is valid.
+     * @return bool Whether the name is valid.
      */
     public static function isValidName($name)
     {

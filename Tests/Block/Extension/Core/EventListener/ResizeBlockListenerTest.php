@@ -18,6 +18,7 @@ use Sonatra\Bundle\BlockBundle\Block\DataMapperInterface;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\EventListener\ResizeBlockListener;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilder;
 use Sonatra\Bundle\BlockBundle\Block\BlockEvent;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType;
 use Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -97,7 +98,7 @@ class ResizeBlockListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSubscriber()
     {
-        $listener = new ResizeBlockListener('text', array());
+        $listener = new ResizeBlockListener(TextType::class, array());
 
         $this->assertEquals(array(BlockEvents::PRE_SET_DATA => 'preSetData'), $listener->getSubscribedEvents());
     }
@@ -109,16 +110,16 @@ class ResizeBlockListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->factory->expects($this->at(0))
             ->method('createNamed')
-            ->with(1, 'text', null, array('property_path' => '[1]', 'auto_initialize' => false))
+            ->with(1, TextType::class, null, array('property_path' => '[1]', 'auto_initialize' => false))
             ->will($this->returnValue($this->getBlock('1')));
         $this->factory->expects($this->at(1))
             ->method('createNamed')
-            ->with(2, 'text', null, array('property_path' => '[2]', 'auto_initialize' => false))
+            ->with(2, TextType::class, null, array('property_path' => '[2]', 'auto_initialize' => false))
             ->will($this->returnValue($this->getBlock('2')));
 
         $data = array(1 => 'string', 2 => 'string');
         $event = new BlockEvent($this->block, $data);
-        $listener = new ResizeBlockListener('text', array());
+        $listener = new ResizeBlockListener(TextType::class, array());
         $listener->preSetData($event);
 
         $this->assertFalse($this->block->has('0'));
@@ -133,7 +134,7 @@ class ResizeBlockListenerTest extends \PHPUnit_Framework_TestCase
     {
         $data = 'no array or traversable';
         $event = new BlockEvent($this->block, $data);
-        $listener = new ResizeBlockListener('text', array());
+        $listener = new ResizeBlockListener(TextType::class, array());
         $listener->preSetData($event);
     }
 
@@ -143,7 +144,7 @@ class ResizeBlockListenerTest extends \PHPUnit_Framework_TestCase
 
         $data = null;
         $event = new BlockEvent($this->block, $data);
-        $listener = new ResizeBlockListener('text', array());
+        $listener = new ResizeBlockListener(TextType::class, array());
         $listener->preSetData($event);
     }
 }

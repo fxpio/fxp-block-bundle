@@ -97,35 +97,6 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($container->hasDefinition('form.extension'));
 
         $this->assertTrue($container->hasDefinition('sonatra_block.type.form'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_birthday'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_checkbox'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_choice'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_collection'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_country'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_date'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_datetime'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_email'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_file'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_hidden'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_integer'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_language'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_locale'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_money'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_number'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_password'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_percent'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_radio'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_repeated'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_search'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_textarea'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_text'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_time'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_timezone'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_url'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_button'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_submit'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_reset'));
-        $this->assertTrue($container->hasDefinition('sonatra_block.type.form_currency'));
     }
 
     public function testExtensionLoaderWithDebugAndCollector()

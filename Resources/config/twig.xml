@@ -18,6 +18,7 @@
             <argument type="service" id="sonatra_block.twig.renderer" />
             <argument type="service" id="sonatra_block.factory" />
             <argument type="service" id="sonatra_block.registry" />
+            <argument type="collection" />
         </service>
 
         <service id="sonatra_block.twig.extension_translator" class="%sonatra_block.twig.extension_translator.base.class%" public="false">

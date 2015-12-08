@@ -12,6 +12,7 @@
 namespace Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Extension;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractTypeExtension;
+use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -23,6 +24,6 @@ class FooExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'foo';
+        return FooType::class;
     }
 }

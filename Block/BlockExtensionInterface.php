@@ -34,7 +34,7 @@ interface BlockExtensionInterface
      *
      * @param string $name The name of the type
      *
-     * @return Boolean Whether the type is supported by this extension
+     * @return bool Whether the type is supported by this extension
      */
     public function hasType($name);
 
@@ -52,7 +52,7 @@ interface BlockExtensionInterface
      *
      * @param string $name The name of the type
      *
-     * @return Boolean Whether the given type has extensions
+     * @return bool Whether the given type has extensions
      */
     public function hasTypeExtensions($name);
 

@@ -31,35 +31,52 @@ class BlockPass implements CompilerPassInterface
             return;
         }
 
+        $definition = $container->getDefinition('sonatra_block.extension');
+
         // Builds an array with service IDs as keys and tag aliases as values
         $types = array();
 
         foreach ($container->findTaggedServiceIds('sonatra_block.type') as $serviceId => $tag) {
-            $alias = isset($tag[0]['alias'])
-                ? $tag[0]['alias']
-                : $serviceId;
+            $serviceDefinition = $container->getDefinition($serviceId);
 
-            // Flip, because we want tag aliases (= type identifiers) as keys
-            $types[$alias] = $serviceId;
+            if (!$serviceDefinition->isPublic()) {
+                throw new \InvalidArgumentException(sprintf('The service "%s" must be public as block types are lazy-loaded.', $serviceId));
+            }
+
+            // Support type access by FQCN
+            $types[$serviceDefinition->getClass()] = $serviceId;
         }
 
-        $container->getDefinition('sonatra_block.extension')->replaceArgument(0, $types);
+        $definition->replaceArgument(0, $types);
 
         $typeExtensions = array();
 
         foreach ($container->findTaggedServiceIds('sonatra_block.type_extension') as $serviceId => $tag) {
-            $alias = isset($tag[0]['alias'])
-                ? $tag[0]['alias']
-                : $serviceId;
+            $serviceDefinition = $container->getDefinition($serviceId);
+            if (!$serviceDefinition->isPublic()) {
+                throw new \InvalidArgumentException(sprintf('The service "%s" must be public as block type extensions are lazy-loaded.', $serviceId));
+            }
 
-            $typeExtensions[$alias][] = $serviceId;
+            if (isset($tag[0]['extended_type'])) {
+                $extendedType = $tag[0]['extended_type'];
+            } else {
+                throw new \InvalidArgumentException(sprintf('Tagged block type extension must have the extended type configured using the extended_type/extended-type attribute, none was configured for the "%s" service.', $serviceId));
+            }
+
+            $typeExtensions[$extendedType][] = $serviceId;
         }
 
-        $container->getDefinition('sonatra_block.extension')->replaceArgument(1, $typeExtensions);
+        $definition->replaceArgument(1, $typeExtensions);
 
-        // Find all services annotated with "block.type_guesser"
+        // Find all services annotated with "sonatra_block.type_guesser"
         $guessers = array_keys($container->findTaggedServiceIds('sonatra_block.type_guesser'));
+        foreach ($guessers as $serviceId) {
+            $serviceDefinition = $container->getDefinition($serviceId);
+            if (!$serviceDefinition->isPublic()) {
+                throw new \InvalidArgumentException(sprintf('The service "%s" must be public as block type guessers are lazy-loaded.', $serviceId));
+            }
+        }
 
-        $container->getDefinition('sonatra_block.extension')->replaceArgument(2, $guessers);
+        $definition->replaceArgument(2, $guessers);
     }
 }

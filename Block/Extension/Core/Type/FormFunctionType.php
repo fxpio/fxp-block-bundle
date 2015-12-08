@@ -56,7 +56,7 @@ class FormFunctionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'form_'.$this->functionName;
     }

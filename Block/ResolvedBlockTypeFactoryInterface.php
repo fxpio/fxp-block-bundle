@@ -25,9 +25,9 @@ interface ResolvedBlockTypeFactoryInterface
     /**
      * Resolves a block type.
      *
-     * @param BlockTypeInterface         $type
-     * @param array                      $typeExtensions
-     * @param ResolvedBlockTypeInterface $parent
+     * @param BlockTypeInterface            $type
+     * @param BlockTypeExtensionInterface[] $typeExtensions
+     * @param ResolvedBlockTypeInterface    $parent
      *
      * @return ResolvedBlockTypeInterface
      *

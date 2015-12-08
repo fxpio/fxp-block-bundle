@@ -55,14 +55,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
      */
     public function __construct(BlockTypeInterface $innerType, array $typeExtensions = array(), ResolvedBlockTypeInterface $parent = null)
     {
-        if (!preg_match('/^[a-z0-9_]*$/i', $innerType->getName())) {
-            throw new InvalidArgumentException(sprintf(
-                'The "%s" block type name ("%s") is not valid. Names must only contain letters, numbers, and "_".',
-                get_class($innerType),
-                $innerType->getName()
-            ));
-        }
-
         foreach ($typeExtensions as $extension) {
             if (!$extension instanceof BlockTypeExtensionInterface) {
                 throw new UnexpectedTypeException($extension, 'Symfony\Component\Form\FormTypeExtensionInterface');
@@ -77,9 +69,9 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return $this->innerType->getName();
+        return $this->innerType->getBlockPrefix();
     }
 
     /**
@@ -116,7 +108,7 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         // Should be decoupled from the specific option at some point
         $dataClass = isset($options['data_class']) ? $options['data_class'] : null;
 
-        $builder = new BlockBuilder($name, $dataClass, new EventDispatcher(), $factory, $options);
+        $builder = $this->newBuilder($name, $dataClass, $factory, $options);
         $builder->setType($this);
 
         return $builder;
@@ -127,7 +119,7 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
      */
     public function createView(BlockInterface $block, BlockView $parent = null)
     {
-        return new BlockView($parent);
+        return $this->newView($parent);
     }
 
     /**
@@ -142,7 +134,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         $this->innerType->buildBlock($builder, $options);
 
         foreach ($this->typeExtensions as $extension) {
-            /* @var BlockTypeExtensionInterface $extension */
             $extension->buildBlock($builder, $options);
         }
     }
@@ -159,7 +150,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         $this->innerType->finishBlock($builder, $options);
 
         foreach ($this->typeExtensions as $extension) {
-            /* @var BlockTypeExtensionInterface $extension */
             $extension->finishBlock($builder, $options);
         }
     }
@@ -176,7 +166,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         $this->innerType->addParent($parent, $block, $options);
 
         foreach ($this->typeExtensions as $extension) {
-            /* @var BlockTypeExtensionInterface $extension */
             $extension->addParent($parent, $block, $options);
         }
     }
@@ -193,7 +182,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         $this->innerType->removeParent($parent, $block, $options);
 
         foreach ($this->typeExtensions as $extension) {
-            /* @var BlockTypeExtensionInterface $extension */
             $extension->removeParent($parent, $block, $options);
         }
     }
@@ -210,7 +198,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         $this->innerType->addChild($child, $block, $options);
 
         foreach ($this->typeExtensions as $extension) {
-            /* @var BlockTypeExtensionInterface $extension */
             $extension->addChild($child, $block, $options);
         }
     }
@@ -227,7 +214,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         $this->innerType->removeChild($child, $block, $options);
 
         foreach ($this->typeExtensions as $extension) {
-            /* @var BlockTypeExtensionInterface $extension */
             $extension->removeChild($child, $block, $options);
         }
     }
@@ -244,7 +230,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         $this->innerType->buildView($view, $block, $options);
 
         foreach ($this->typeExtensions as $extension) {
-            /* @var BlockTypeExtensionInterface $extension */
             $extension->buildView($view, $block, $options);
         }
     }
@@ -261,7 +246,6 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
         $this->innerType->finishView($view, $block, $options);
 
         foreach ($this->typeExtensions as $extension) {
-            /* @var BlockTypeExtensionInterface $extension */
             $extension->finishView($view, $block, $options);
         }
     }
@@ -281,11 +265,41 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
             $this->innerType->configureOptions($this->optionsResolver);
 
             foreach ($this->typeExtensions as $extension) {
-                /* @var BlockTypeExtensionInterface $extension */
                 $extension->configureOptions($this->optionsResolver);
             }
         }
 
         return $this->optionsResolver;
+    }
+
+    /**
+     * Creates a new builder instance.
+     *
+     * Override this method if you want to customize the builder class.
+     *
+     * @param string                $name      The name of the builder
+     * @param string                $dataClass The data class
+     * @param BlockFactoryInterface $factory   The current block factory
+     * @param array                 $options   The builder options
+     *
+     * @return BlockBuilderInterface The new builder instance.
+     */
+    protected function newBuilder($name, $dataClass, BlockFactoryInterface $factory, array $options)
+    {
+        return new BlockBuilder($name, $dataClass, new EventDispatcher(), $factory, $options);
+    }
+
+    /**
+     * Creates a new view instance.
+     *
+     * Override this method if you want to customize the view class.
+     *
+     * @param BlockView|null $parent The parent view, if available.
+     *
+     * @return BlockView A new view instance.
+     */
+    protected function newView(BlockView $parent = null)
+    {
+        return new BlockView($parent);
     }
 }

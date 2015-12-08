@@ -62,7 +62,7 @@ class EntityType extends DoctrineType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'entity';
     }

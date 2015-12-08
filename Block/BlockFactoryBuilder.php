@@ -24,22 +24,22 @@ class BlockFactoryBuilder implements BlockFactoryBuilderInterface
     private $resolvedTypeFactory;
 
     /**
-     * @var array
+     * @var BlockExtensionInterface[]
      */
     private $extensions = array();
 
     /**
-     * @var array
+     * @var BlockTypeInterface[]
      */
     private $types = array();
 
     /**
-     * @var array
+     * @var BlockTypeExtensionInterface[]
      */
     private $typeExtensions = array();
 
     /**
-     * @var array
+     * @var BlockTypeGuesserInterface[]
      */
     private $typeGuessers = array();
 
@@ -78,7 +78,7 @@ class BlockFactoryBuilder implements BlockFactoryBuilderInterface
      */
     public function addType(BlockTypeInterface $type)
     {
-        $this->types[$type->getName()] = $type;
+        $this->types[] = $type;
 
         return $this;
     }
@@ -90,7 +90,7 @@ class BlockFactoryBuilder implements BlockFactoryBuilderInterface
     {
         /* @var BlockTypeInterface $type */
         foreach ($types as $type) {
-            $this->types[$type->getName()] = $type;
+            $this->types[] = $type;
         }
 
         return $this;

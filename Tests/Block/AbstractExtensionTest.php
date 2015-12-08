@@ -14,6 +14,7 @@ namespace Sonatra\Bundle\BlockBundle\Tests\Block;
 use Sonatra\Bundle\BlockBundle\Block\BlockExtensionInterface;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\TestExpectedExtension;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\TestExtension;
+use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -70,7 +71,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetType()
     {
         $ext = new TestExtension();
-        $type = $ext->getType('foo');
+        $type = $ext->getType(FooType::class);
 
         $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface', $type);
     }
@@ -79,13 +80,13 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $ext = new TestExtension();
 
-        $this->assertTrue($ext->hasType('foo'));
+        $this->assertTrue($ext->hasType(FooType::class));
     }
 
     public function testGetTypeExtensions()
     {
         $ext = new TestExtension();
-        $typeExts = $ext->getTypeExtensions('foo');
+        $typeExts = $ext->getTypeExtensions(FooType::class);
 
         $this->assertTrue(is_array($typeExts));
         $this->assertCount(1, $typeExts);
@@ -96,7 +97,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $ext = new TestExtension();
 
-        $this->assertTrue($ext->hasTypeExtensions('foo'));
+        $this->assertTrue($ext->hasTypeExtensions(FooType::class));
     }
 
     public function testGetTypeGuesser()

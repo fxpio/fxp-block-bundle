@@ -549,6 +549,7 @@ class SimpleBlockTest extends AbstractBlockTest
         $child = $this->getBuilder('child')
             ->setInheritData(true);
 
+        /* @var BlockInterface $parent */
         $parent = $this->getBuilder('parent')
             ->setCompound(true)
             ->setDataMapper($dataMapper)

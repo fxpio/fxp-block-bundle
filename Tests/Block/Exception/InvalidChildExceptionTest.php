@@ -13,6 +13,7 @@ namespace Sonatra\Bundle\BlockBundle\Tests\Block\Exception;
 
 use Sonatra\Bundle\BlockBundle\Block\Exception\InvalidChildException;
 use Sonatra\Bundle\BlockBundle\Test\BlockBuilderInterface;
+use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
@@ -31,10 +32,10 @@ class InvalidChildExceptionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('custom_type'));
+        $rType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $rType->expects($this->any())
+            ->method('getInnerType')
+            ->will($this->returnValue(new FooType()));
 
         $this->builder = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface');
         $this->builder->expects($this->any())
@@ -42,7 +43,7 @@ class InvalidChildExceptionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('foo'));
         $this->builder->expects($this->any())
             ->method('getType')
-            ->will($this->returnValue($type));
+            ->will($this->returnValue($rType));
 
         $this->builderChild = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface');
         $this->builderChild->expects($this->any())
@@ -50,7 +51,7 @@ class InvalidChildExceptionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('bar'));
         $this->builderChild->expects($this->any())
             ->method('getType')
-            ->will($this->returnValue($type));
+            ->will($this->returnValue($rType));
     }
 
     protected function tearDown()
@@ -61,7 +62,7 @@ class InvalidChildExceptionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidChildException
-     * @expectedExceptionMessage The child "bar" ("custom_type" type) is not allowed for "foo" block ("custom_type" type)
+     * @expectedExceptionMessage The child "bar" ("Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType" type) is not allowed for "foo" block ("Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType" type)
      */
     public function testExceptionWithoutAllowedType()
     {
@@ -70,7 +71,7 @@ class InvalidChildExceptionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidChildException
-     * @expectedExceptionMessage The child "bar" ("custom_type" type) is not allowed for "foo" block ("custom_type" type), only "baz" allowed
+     * @expectedExceptionMessage The child "bar" ("Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType" type) is not allowed for "foo" block ("Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType" type), only "baz" allowed
      */
     public function testExceptionWithSingleAllowedType()
     {
@@ -79,10 +80,10 @@ class InvalidChildExceptionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidChildException
-     * @expectedExceptionMessage The child "bar" ("custom_type" type) is not allowed for "foo" block ("custom_type" type), only "baz", "boo" allowed
+     * @expectedExceptionMessage The child "bar" ("Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType" type) is not allowed for "foo" block ("Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType" type), only "Baz", "Boo" allowed
      */
     public function testExceptionWithMultipleAllowedType()
     {
-        throw new InvalidChildException($this->builder, $this->builderChild, array('baz', 'boo'));
+        throw new InvalidChildException($this->builder, $this->builderChild, array('Baz', 'Boo'));
     }
 }

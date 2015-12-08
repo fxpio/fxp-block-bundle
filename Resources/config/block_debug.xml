@@ -19,7 +19,7 @@
 
         <!-- DataCollectorTypeExtension -->
         <service id="sonatra_block.type_extension.block.data_collector" class="%sonatra_block.type_extension.block.data_collector.class%">
-            <tag name="sonatra_block.type_extension" alias="block" />
+            <tag name="sonatra_block.type_extension" extended-type="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BlockType" />
             <argument type="service" id="data_collector.sonatra_block" />
         </service>
     </services>

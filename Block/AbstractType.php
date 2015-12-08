@@ -11,6 +11,9 @@
 
 namespace Sonatra\Bundle\BlockBundle\Block;
 
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BlockType;
+use Sonatra\Bundle\BlockBundle\Block\Util\StringUtil;
+
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
@@ -19,8 +22,16 @@ abstract class AbstractType extends AbstractCommonType implements BlockTypeInter
     /**
      * {@inheritdoc}
      */
+    public function getBlockPrefix()
+    {
+        return StringUtil::fqcnToBlockPrefix(get_class($this));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
-        return 'block';
+        return BlockType::class;
     }
 }

@@ -15,7 +15,6 @@ use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockView;
-use Sonatra\Bundle\BlockBundle\Block\Exception\LogicException;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer\ChoicesToValuesTransformer;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\DataTransformer\ChoiceToValueTransformer;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
@@ -53,14 +52,13 @@ class ChoiceType extends AbstractType
      */
     public function buildBlock(BlockBuilderInterface $builder, array $options)
     {
-        if (!$options['choice_list'] && !is_array($options['choices']) && !$options['choices'] instanceof \Traversable) {
-            throw new LogicException('Either the option "choices" or "choice_list" must be set.');
-        }
+        $choiceList = $this->createChoiceList($options);
+        $builder->setAttribute('choice_list', $choiceList);
 
         if ($options['multiple']) {
-            $builder->addViewTransformer(new ChoicesToValuesTransformer($options['choice_list']));
+            $builder->addViewTransformer(new ChoicesToValuesTransformer($choiceList));
         } else {
-            $builder->addViewTransformer(new ChoiceToValueTransformer($options['choice_list']));
+            $builder->addViewTransformer(new ChoiceToValueTransformer($choiceList));
         }
     }
 
@@ -72,13 +70,18 @@ class ChoiceType extends AbstractType
         /* @var ChoiceListView $choiceListView */
         $choiceListView = $block->getConfig()->hasAttribute('choice_list_view')
             ? $block->getConfig()->getAttribute('choice_list_view')
-            : $this->createChoiceListView($options['choice_list'], $options);
+            : $this->createChoiceListView($block->getConfig()->getAttribute('choice_list'), $options);
+        $emptyValue = $options['empty_value'];
+
+        if ($emptyValue instanceof \Closure) {
+            $emptyValue = $emptyValue($block);
+        }
 
         $view->vars = array_replace($view->vars, array(
             'multiple' => $options['multiple'],
             'expanded' => $options['expanded'],
             'selected_choices' => $this->getSelectedChoices($choiceListView->choices, (array) $view->vars['value']),
-            'empty_value' => $options['empty_value'],
+            'empty_value' => $emptyValue,
             'choice_translation_domain' => $options['choice_translation_domain'],
             'inline' => $options['inline'],
         ));
@@ -89,8 +92,6 @@ class ChoiceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $choiceListFactory = $this->choiceListFactory;
-
         $compound = function (Options $options) {
             return $options['expanded'];
         };
@@ -107,32 +108,11 @@ class ChoiceType extends AbstractType
             return $choiceTranslationDomain;
         };
 
-        $choiceListNormalizer = function (Options $options) use ($choiceListFactory) {
-            if (null !== $options['choice_loader']) {
-                return $choiceListFactory->createListFromLoader(
-                    $options['choice_loader'],
-                    $options['choice_value']
-                );
-            }
-
-            // Harden against NULL values (like in EntityType and ModelType)
-            $choices = null !== $options['choices'] ? $options['choices'] : array();
-
-            // BC when choices are in the keys, not in the values
-            if (!$options['choices_as_values']) {
-                return $choiceListFactory->createListFromFlippedChoices($choices, $options['choice_value']);
-            }
-
-            return $choiceListFactory->createListFromChoices($choices, $options['choice_value']);
-        };
-
         $resolver->setDefaults(array(
                 'inline' => true,
                 'multiple' => false,
                 'expanded' => false,
-                'choice_list' => null, // deprecated
                 'choices' => array(),
-                'choices_as_values' => false,
                 'choice_loader' => null,
                 'choice_label' => null,
                 'choice_name' => null,
@@ -147,10 +127,8 @@ class ChoiceType extends AbstractType
                 'choice_translation_domain' => true,
         ));
 
-        $resolver->setAllowedTypes('choice_list', array('null', 'Symfony\Component\Form\ChoiceList\ChoiceListInterface'));
         $resolver->setAllowedTypes('choices', array('null', 'array', '\Traversable'));
         $resolver->setAllowedTypes('choice_translation_domain', array('null', 'bool', 'string'));
-        $resolver->setAllowedTypes('choices_as_values', 'bool');
         $resolver->setAllowedTypes('choice_loader', array('null', 'Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface'));
         $resolver->setAllowedTypes('choice_label', array('null', 'callable', 'string', 'Symfony\Component\PropertyAccess\PropertyPath'));
         $resolver->setAllowedTypes('choice_name', array('null', 'callable', 'string', 'Symfony\Component\PropertyAccess\PropertyPath'));
@@ -160,7 +138,6 @@ class ChoiceType extends AbstractType
         $resolver->setAllowedTypes('group_by', array('null', 'array', '\Traversable', 'string', 'callable', 'string', 'Symfony\Component\PropertyAccess\PropertyPath'));
 
         $resolver->setNormalizer('choice_translation_domain', $choiceTranslationDomainNormalizer);
-        $resolver->setNormalizer('choice_list', $choiceListNormalizer);
     }
 
     /**
@@ -168,15 +145,37 @@ class ChoiceType extends AbstractType
      */
     public function getParent()
     {
-        return 'field';
+        return FieldType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'choice';
+    }
+
+    /**
+     * Create the choice list.
+     *
+     * @param array $options The block options
+     *
+     * @return ChoiceListInterface
+     */
+    protected function createChoiceList(array $options)
+    {
+        if (null !== $options['choice_loader']) {
+            return $this->choiceListFactory->createListFromLoader(
+                $options['choice_loader'],
+                $options['choice_value']
+            );
+        }
+
+        // Harden against NULL values (like in EntityType and ModelType)
+        $choices = null !== $options['choices'] ? $options['choices'] : array();
+
+        return $this->choiceListFactory->createListFromChoices($choices, $options['choice_value']);
     }
 
     /**
@@ -209,9 +208,7 @@ class ChoiceType extends AbstractType
         // If no explicit grouping information is given, use the structural
         // information from the "choices" option for creating groups
         if (!$options['group_by'] && $options['choices']) {
-            $options['group_by'] = !$options['choices_as_values']
-                ? self::flipRecursive($options['choices'])
-                : $options['choices'];
+            $options['group_by'] = $options['choices'];
         }
 
         return $this->choiceListFactory->createView(
@@ -222,20 +219,5 @@ class ChoiceType extends AbstractType
             $options['group_by'],
             $options['choice_attr']
         );
-    }
-
-    private static function flipRecursive($choices, &$output = array())
-    {
-        foreach ($choices as $key => $value) {
-            if (is_array($value)) {
-                $output[$key] = array();
-                self::flipRecursive($value, $output[$key]);
-                continue;
-            }
-
-            $output[$value] = $key;
-        }
-
-        return $output;
     }
 }

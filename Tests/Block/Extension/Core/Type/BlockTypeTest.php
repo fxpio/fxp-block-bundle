@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Tests\Block\Extension\Core\Type;
 
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BlockType;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\DataTransformer\FixedDataTransformer;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\Foo;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -22,38 +23,38 @@ class BlockTypeTest extends BaseTypeTest
 {
     protected function getTestedType()
     {
-        return 'block';
+        return BlockType::class;
     }
 
     public function testCreateBlockInstances()
     {
-        $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\Block', $this->factory->create('block'));
+        $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\Block', $this->factory->create(BlockType::class));
     }
 
     public function testDataClassMayBeNull()
     {
-        $this->factory->createBuilder('block', null, array(
+        $this->factory->createBuilder(BlockType::class, null, array(
             'data_class' => null,
         ));
     }
 
     public function testDataClassMayBeAbstractClass()
     {
-        $this->factory->createBuilder('block', null, array(
+        $this->factory->createBuilder(BlockType::class, null, array(
             'data_class' => 'Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\AbstractFoo',
         ));
     }
 
     public function testDataClassMayBeInterface()
     {
-        $this->factory->createBuilder('block', null, array(
+        $this->factory->createBuilder(BlockType::class, null, array(
             'data_class' => 'Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\FooInterface',
         ));
     }
 
     public function testEmptyDataCreateNewInstanceWithoutConstructorArguments()
     {
-        $block = $this->factory->create('block', null, array(
+        $block = $this->factory->create(BlockType::class, null, array(
             'data_class' => 'Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\Foo',
         ));
 
@@ -66,7 +67,7 @@ class BlockTypeTest extends BaseTypeTest
     {
         $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidConfigurationException');
 
-        $this->factory->create('block', null, array(
+        $this->factory->create(BlockType::class, null, array(
             'data_class' => 'Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\SimpleBlockTestCountable',
         ));
     }
@@ -85,7 +86,7 @@ class BlockTypeTest extends BaseTypeTest
      */
     public function testSetDataThroughParamsWithZero($data, $dataAsString)
     {
-        $block = $this->factory->create('block', null, array(
+        $block = $this->factory->create(BlockType::class, null, array(
             'data' => $data,
             'compound' => false,
         ));
@@ -102,20 +103,20 @@ class BlockTypeTest extends BaseTypeTest
      */
     public function testAttributesException()
     {
-        $this->factory->create('block', null, array('attr' => ''));
+        $this->factory->create(BlockType::class, null, array('attr' => ''));
     }
 
     public function testNameCanBeEmptyString()
     {
-        $block = $this->factory->createNamed('', 'block');
+        $block = $this->factory->createNamed('', BlockType::class);
 
         $this->assertEquals('', $block->getName());
     }
 
     public function testViewIsNotRenderedByDefault()
     {
-        $view = $this->factory->createBuilder('block')
-            ->add('foo', 'block')
+        $view = $this->factory->createBuilder(BlockType::class)
+            ->add('foo', BlockType::class)
             ->getBlock()
             ->createView();
 
@@ -124,7 +125,7 @@ class BlockTypeTest extends BaseTypeTest
 
     public function testPropertyPath()
     {
-        $block = $this->factory->create('block', null, array(
+        $block = $this->factory->create(BlockType::class, null, array(
             'property_path' => 'foo',
             'mapped' => true,
         ));
@@ -135,7 +136,7 @@ class BlockTypeTest extends BaseTypeTest
 
     public function testPropertyPathNullImpliesDefault()
     {
-        $block = $this->factory->createNamed('name', 'block', null, array(
+        $block = $this->factory->createNamed('name', BlockType::class, null, array(
             'property_path' => null,
             'mapped' => true,
         ));
@@ -146,7 +147,7 @@ class BlockTypeTest extends BaseTypeTest
 
     public function testNotMapped()
     {
-        $block = $this->factory->create('block', null, array(
+        $block = $this->factory->create(BlockType::class, null, array(
             'property_path' => 'foo',
             'mapped' => false,
         ));
@@ -157,7 +158,7 @@ class BlockTypeTest extends BaseTypeTest
 
     public function testDataOptionSupersedesSetDataCalls()
     {
-        $block = $this->factory->create('block', null, array(
+        $block = $this->factory->create(BlockType::class, null, array(
             'data' => 'default',
             'compound' => false,
         ));
@@ -169,7 +170,7 @@ class BlockTypeTest extends BaseTypeTest
 
     public function testDataOptionSupersedesSetDataCallsIfNull()
     {
-        $block = $this->factory->create('block', null, array(
+        $block = $this->factory->create(BlockType::class, null, array(
             'data' => null,
             'compound' => false,
         ));
@@ -181,7 +182,7 @@ class BlockTypeTest extends BaseTypeTest
 
     public function testNormDataIsPassedToView()
     {
-        $view = $this->factory->createBuilder('block')
+        $view = $this->factory->createBuilder(BlockType::class)
             ->addViewTransformer(new FixedDataTransformer(array(
                 'foo' => 'bar',
             )))
@@ -195,7 +196,7 @@ class BlockTypeTest extends BaseTypeTest
 
     public function testPassZeroLabelToView()
     {
-        $view = $this->factory->create('block', null, array(
+        $view = $this->factory->create(BlockType::class, null, array(
             'label' => '0',
         ))
         ->createView();

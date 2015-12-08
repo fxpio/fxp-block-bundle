@@ -16,7 +16,6 @@ use Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserChain;
 use Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface;
 use Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactoryInterface;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\TestCustomExtension;
-use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooSubTypeWithParentInstance;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooSubType;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Extension\FooTypeBazExtension;
 use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Extension\FooTypeBarExtension;
@@ -90,13 +89,9 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
             ->with($type)
             ->will($this->returnValue($resolvedType));
 
-        $resolvedType->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo'));
+        $resolvedType = $this->registry->getType(FooType::class);
 
-        $resolvedType = $this->registry->getType('foo');
-
-        $this->assertSame($resolvedType, $this->registry->getType('foo'));
+        $this->assertSame($resolvedType, $this->registry->getType(FooType::class));
     }
 
     public function testGetTypeWithTypeExtensions()
@@ -119,7 +114,7 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $this->assertSame($resolvedType, $this->registry->getType('foo'));
+        $this->assertSame($resolvedType, $this->registry->getType(FooType::class));
     }
 
     public function testGetTypeConnectsParent()
@@ -150,36 +145,7 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('foo_sub_type'));
 
-        $this->assertSame($resolvedType, $this->registry->getType('foo_sub_type'));
-    }
-
-    public function testGetTypeConnectsParentIfGetParentReturnsInstance()
-    {
-        $type = new FooSubTypeWithParentInstance();
-        $parentResolvedType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
-        $resolvedType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
-
-        $this->extension1->addType($type);
-
-        $this->resolvedTypeFactory->expects($this->at(0))
-            ->method('createResolvedType')
-            ->with($this->isInstanceOf('Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType'))
-            ->will($this->returnValue($parentResolvedType));
-
-        $this->resolvedTypeFactory->expects($this->at(1))
-            ->method('createResolvedType')
-            ->with($type, array(), $parentResolvedType)
-            ->will($this->returnValue($resolvedType));
-
-        $parentResolvedType->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo'));
-
-        $resolvedType->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo_sub_type_parent_instance'));
-
-        $this->assertSame($resolvedType, $this->registry->getType('foo_sub_type_parent_instance'));
+        $this->assertSame($resolvedType, $this->registry->getType(FooSubType::class));
     }
 
     /**
@@ -228,8 +194,8 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
 
         $this->extension2->addType($type);
 
-        $this->assertTrue($this->registry->hasType('foo'));
-        $this->assertTrue($this->registry->hasType('foo'));
+        $this->assertTrue($this->registry->hasType(FooType::class));
+        $this->assertTrue($this->registry->hasType(FooType::class));
     }
 
     public function testGetTypeGuesser()

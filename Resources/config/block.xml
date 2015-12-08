@@ -53,102 +53,106 @@
         <!-- CoreExtension -->
         <service id="sonatra_block.type.block" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BlockType">
             <argument type="service" id="property_accessor"/>
-            <tag name="sonatra_block.type" alias="block" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.twig" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TwigType">
-            <tag name="sonatra_block.type" alias="twig" />
+            <tag name="sonatra_block.type" />
             <argument type="service" id="twig" />
         </service>
         <service id="sonatra_block.type.output" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\OutputType">
-            <tag name="sonatra_block.type" alias="output" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.object" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ObjectType">
-            <tag name="sonatra_block.type" alias="object" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.field" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\FieldType">
-            <tag name="sonatra_block.type" alias="field" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.text" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType">
-            <tag name="sonatra_block.type" alias="text" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.textarea" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextareaType">
-            <tag name="sonatra_block.type" alias="textarea" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.password" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\PasswordType">
-            <tag name="sonatra_block.type" alias="password" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.email" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\EmailType">
-            <tag name="sonatra_block.type" alias="email" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.url" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\UrlType">
-            <tag name="sonatra_block.type" alias="url" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.checkbox" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CheckboxType">
-            <tag name="sonatra_block.type" alias="checkbox" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.radio" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\RadioType">
-            <tag name="sonatra_block.type" alias="radio" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.datetime" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\DateTimeType">
-            <tag name="sonatra_block.type" alias="datetime" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.date" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\DateType">
-            <tag name="sonatra_block.type" alias="date" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.time" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TimeType">
-            <tag name="sonatra_block.type" alias="time" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.birthday" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\BirthdayType">
-            <tag name="sonatra_block.type" alias="birthday" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.timezone" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TimezoneType">
-            <tag name="sonatra_block.type" alias="timezone" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.number" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\NumberType">
-            <tag name="sonatra_block.type" alias="number" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.integer" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\IntegerType">
-            <tag name="sonatra_block.type" alias="integer" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.percent" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\PercentType">
-            <tag name="sonatra_block.type" alias="percent" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.money" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\MoneyType">
-            <tag name="sonatra_block.type" alias="money" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.currency" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CurrencyType">
-            <tag name="sonatra_block.type" alias="currency" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.choice" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ChoiceType">
-            <tag name="sonatra_block.type" alias="choice" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.country" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CountryType">
-            <tag name="sonatra_block.type" alias="country" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.locale" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\LocaleType">
-            <tag name="sonatra_block.type" alias="locale" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.language" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\LanguageType">
-            <tag name="sonatra_block.type" alias="language" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.collection" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\CollectionType">
-            <tag name="sonatra_block.type" alias="collection" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.repeated" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\RepeatedType">
-            <tag name="sonatra_block.type" alias="repeated" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.hidden" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\HiddenType">
-            <tag name="sonatra_block.type" alias="hidden" />
+            <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.closure" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ClosureType">
-            <tag name="sonatra_block.type" alias="closure" />
+            <tag name="sonatra_block.type" />
+        </service>
+        <service id="sonatra_block.type.form" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\FormType">
+            <tag name="sonatra_block.type" />
+            <argument type="service" id="form.factory" />
         </service>
         <service id="sonatra_block.type.form_errors" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\FormFunctionType">
-            <tag name="sonatra_block.type" alias="form_errors" />
+            <tag name="sonatra_block.type" />
             <argument>errors</argument>
         </service>
         <service id="sonatra_block.type.form_rest" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\FormFunctionType">
-            <tag name="sonatra_block.type" alias="form_rest" />
+            <tag name="sonatra_block.type" />
             <argument>rest</argument>
         </service>
     </services>

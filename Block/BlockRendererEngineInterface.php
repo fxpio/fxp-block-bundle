@@ -128,7 +128,7 @@ interface BlockRendererEngineInterface
      *                                      the first element of
      *                                      $blockNameHierarchy.
      *
-     * @return int|Boolean The hierarchy level or false, if no resource was found.
+     * @return int|bool The hierarchy level or false, if no resource was found.
      */
     public function getResourceHierarchyLevel(BlockView $view, array $blockNameHierarchy, $hierarchyLevel);
 

@@ -47,7 +47,7 @@ class CollectionType extends AbstractType
         };
 
         $resolver->setDefaults(array(
-            'entry_type' => 'text',
+            'entry_type' => TextType::class,
             'entry_options' => array(),
         ));
 
@@ -59,13 +59,13 @@ class CollectionType extends AbstractType
      */
     public function getParent()
     {
-        return 'field';
+        return FieldType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'collection';
     }

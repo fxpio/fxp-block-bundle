@@ -13,6 +13,7 @@ namespace Sonatra\Bundle\BlockBundle\Tests\Block\Util;
 
 use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
 use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
+use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType;
 
 /**
  * Block Util Test.
@@ -64,13 +65,15 @@ class BlockUtilTest extends \PHPUnit_Framework_TestCase
     {
         $parentType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
         $parentType->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo'));
+            ->method('getInnerType')
+            ->will($this->returnValue(new FooType()));
+
+        $blockInnerType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
 
         $blockType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
         $blockType->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('bar'));
+            ->method('getInnerType')
+            ->will($this->returnValue($blockInnerType));
         $blockType->expects($this->any())
             ->method('getParent')
             ->will($this->returnValue($parentType));
@@ -86,11 +89,11 @@ class BlockUtilTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($blockConfig));
 
         /* @var BlockInterface $block */
-        $this->assertTrue(BlockUtil::isValidBlock('foo', $block));
-        $this->assertTrue(BlockUtil::isValidBlock('bar', $block));
-        $this->assertTrue(BlockUtil::isValidBlock(array('foo', 'bar'), $block));
-        $this->assertTrue(BlockUtil::isValidBlock(array('foo', 'baz'), $block));
-        $this->assertFalse(BlockUtil::isValidBlock('baz', $block));
-        $this->assertFalse(BlockUtil::isValidBlock(array('baz', 'boo!'), $block));
+        $this->assertTrue(BlockUtil::isValidBlock(FooType::class, $block));
+        $this->assertTrue(BlockUtil::isValidBlock(get_class($blockInnerType), $block));
+        $this->assertTrue(BlockUtil::isValidBlock(array(FooType::class, get_class($blockInnerType)), $block));
+        $this->assertTrue(BlockUtil::isValidBlock(array(FooType::class, 'Baz'), $block));
+        $this->assertFalse(BlockUtil::isValidBlock('Baz', $block));
+        $this->assertFalse(BlockUtil::isValidBlock(array('Baz', 'Boo!'), $block));
     }
 }

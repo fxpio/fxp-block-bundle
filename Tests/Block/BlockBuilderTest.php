@@ -15,6 +15,7 @@ use Sonatra\Bundle\BlockBundle\Block\BlockBuilder;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
 use Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface;
 use Sonatra\Bundle\BlockBundle\Block\DataMapperInterface;
+use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType;
 use Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -87,14 +88,14 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testAddIsFluent()
     {
-        $builder = $this->builder->add('foo', 'text', array('bar' => 'baz'));
+        $builder = $this->builder->add('foo', TextType::class, array('bar' => 'baz'));
         $this->assertSame($builder, $this->builder);
     }
 
     public function testAdd()
     {
         $this->assertFalse($this->builder->has('foo'));
-        $this->builder->add('foo', 'text');
+        $this->builder->add('foo', TextType::class);
         $this->assertTrue($this->builder->has('foo'));
     }
 
@@ -105,13 +106,13 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
 
         $factory->expects($this->once())
             ->method('createNamedBuilder')
-            ->with('foo', 'text')
+            ->with('foo', TextType::class)
             ->will($this->returnValue(new BlockBuilder('foo', null, $this->dispatcher, $this->factory)));
 
         $this->assertCount(0, $this->builder->all());
         $this->assertFalse($this->builder->has('foo'));
 
-        $this->builder->add('foo', 'text');
+        $this->builder->add('foo', TextType::class);
         $children = $this->builder->all();
 
         $this->assertTrue($this->builder->has('foo'));
@@ -121,9 +122,9 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testMaintainOrderOfLazyAndExplicitChildren()
     {
-        $this->builder->add('foo', 'text');
+        $this->builder->add('foo', TextType::class);
         $this->builder->add($this->getBlockBuilder('bar'));
-        $this->builder->add('baz', 'text');
+        $this->builder->add('baz', TextType::class);
 
         $children = $this->builder->all();
 
@@ -139,7 +140,7 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testRemove()
     {
-        $this->builder->add('foo', 'text');
+        $this->builder->add('foo', TextType::class);
         $this->builder->remove('foo');
         $this->assertFalse($this->builder->has('foo'));
     }
@@ -152,7 +153,7 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testRemoveAndGetForm()
     {
-        $this->builder->add('foo', 'text');
+        $this->builder->add('foo', TextType::class);
         $this->builder->remove('foo');
         $block = $this->builder->getBlock();
         $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\Block', $block);
@@ -165,7 +166,7 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
 
         $factory->expects($this->once())
             ->method('createNamedBuilder')
-            ->with('foo', 'text', null, array())
+            ->with('foo', TextType::class, null, array())
         ;
 
         $this->builder->create('foo');
@@ -181,7 +182,7 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
     {
         /* @var \PHPUnit_Framework_MockObject_MockObject $factory */
         $factory = $this->factory;
-        $expectedType = 'text';
+        $expectedType = TextType::class;
         $expectedName = 'foo';
         $expectedOptions = array('bar' => 'baz');
 
@@ -236,7 +237,7 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testAddChildWithoutName()
     {
-        $this->builder->add(null, 'text');
+        $this->builder->add(null, TextType::class);
         $this->assertEquals(1, $this->builder->count());
         $keyBlocks = array_keys($this->builder->all());
         $this->assertNotNull($keyBlocks[0]);
@@ -296,7 +297,7 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         $config = $this->builder->getBlockConfig();
         /* @var BlockBuilder $config */
-        $config->add('foo', 'text');
+        $config->add('foo', TextType::class);
     }
 
     public function testCreateTypeAfterGetBlock()
@@ -304,7 +305,7 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         $config = $this->builder->getBlockConfig();
         /* @var BlockBuilder $config */
-        $config->create('foo', 'text');
+        $config->create('foo', TextType::class);
     }
 
     public function testGetTypeAfterGetBlock()
