@@ -217,6 +217,12 @@ class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRunt
     public function formatter($value, $type, array $options = array(), array $variables = array())
     {
         $options = array_replace(array('wrapped' => false, 'inherit_data' => false), $options, array('data' => $value));
+        $type = isset($this->aliases[$type]) ? $this->aliases[$type] : $type;
+
+        if (isset($options['entry_type']) && isset($this->aliases[$options['entry_type']])) {
+            $options['entry_type'] = $this->aliases[$options['entry_type']];
+        }
+
         /* @var BlockInterface $block */
         $block = $this->createNamed($type, $options);
 
