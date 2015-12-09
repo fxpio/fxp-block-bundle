@@ -38,7 +38,10 @@ class TemplateAliasPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('sonatra_block.type') as $serviceId => $tag) {
             $serviceDefinition = $container->getDefinition($serviceId);
             $class = $serviceDefinition->getClass();
-            $aliases[StringUtil::fqcnToBlockPrefix($class, true)] = $class;
+            $alias = isset($tag[0]['template_alias'])
+                ? $tag[0]['template_alias']
+                : StringUtil::fqcnToBlockPrefix($class, true);
+            $aliases[$alias] = $class;
         }
 
         $definition->replaceArgument(3, $aliases);

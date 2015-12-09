@@ -90,7 +90,7 @@
             <tag name="sonatra_block.type" />
         </service>
         <service id="sonatra_block.type.datetime" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\DateTimeType">
-            <tag name="sonatra_block.type" />
+            <tag name="sonatra_block.type" template-alias="datetime" />
         </service>
         <service id="sonatra_block.type.date" class="Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\DateType">
             <tag name="sonatra_block.type" />
