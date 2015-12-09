@@ -81,16 +81,16 @@ class BlockUtil
     }
 
     /**
-     * Check if block is allowed.
+     * Check if block is a specific type.
      *
-     * @param string|array   $allowed
-     * @param BlockInterface $block
+     * @param BlockInterface  $block The block
+     * @param string|string[] $types The class name of types
      *
      * @return bool
      */
-    public static function isValidBlock($allowed, BlockInterface $block)
+    public static function isBlockType(BlockInterface $block, $types)
     {
-        return static::isValidType((array) $allowed, $block->getConfig()->getType());
+        return static::isType((array) $types, $block->getConfig()->getType());
     }
 
     /**
@@ -138,17 +138,17 @@ class BlockUtil
     /**
      * Check if the parent type of the current type is allowed.
      *
-     * @param array                      $allowed
-     * @param ResolvedBlockTypeInterface $rType
+     * @param string[]                   $types The class name of types
+     * @param ResolvedBlockTypeInterface $rType The resolved block type
      *
      * @return bool
      */
-    protected static function isValidType(array $allowed, ResolvedBlockTypeInterface $rType = null)
+    protected static function isType(array $types, ResolvedBlockTypeInterface $rType = null)
     {
         if (null === $rType) {
             return false;
-        } elseif (!in_array(get_class($rType->getInnerType()), $allowed)) {
-            return static::isValidType($allowed, $rType->getParent());
+        } elseif (!in_array(get_class($rType->getInnerType()), $types)) {
+            return static::isType($types, $rType->getParent());
         }
 
         return true;

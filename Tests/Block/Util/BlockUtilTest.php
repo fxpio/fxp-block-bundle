@@ -89,11 +89,11 @@ class BlockUtilTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($blockConfig));
 
         /* @var BlockInterface $block */
-        $this->assertTrue(BlockUtil::isValidBlock(FooType::class, $block));
-        $this->assertTrue(BlockUtil::isValidBlock(get_class($blockInnerType), $block));
-        $this->assertTrue(BlockUtil::isValidBlock(array(FooType::class, get_class($blockInnerType)), $block));
-        $this->assertTrue(BlockUtil::isValidBlock(array(FooType::class, 'Baz'), $block));
-        $this->assertFalse(BlockUtil::isValidBlock('Baz', $block));
-        $this->assertFalse(BlockUtil::isValidBlock(array('Baz', 'Boo!'), $block));
+        $this->assertTrue(BlockUtil::isBlockType($block, FooType::class));
+        $this->assertTrue(BlockUtil::isBlockType($block, get_class($blockInnerType)));
+        $this->assertTrue(BlockUtil::isBlockType($block, array(FooType::class, get_class($blockInnerType))));
+        $this->assertTrue(BlockUtil::isBlockType($block, array(FooType::class, 'Baz')));
+        $this->assertFalse(BlockUtil::isBlockType($block, 'Baz'));
+        $this->assertFalse(BlockUtil::isBlockType($block, array('Baz', 'Boo!')));
     }
 }
