@@ -158,10 +158,6 @@ class SuperblockTokenParser extends \Twig_TokenParser
         $isNotSupported = null;
 
         // {% sblock 'checkbox' ... :%}
-        if ($stream->test(\Twig_Token::STRING_TYPE) && 'form' === $stream->getCurrent()->getValue()) {
-            $isNotSupported = $stream->getCurrent()->getValue();
-        }
-
         $type = $this->getRealType($this->parser->getExpressionParser()->parseExpression());
 
         if ($stream->test(\Twig_Token::PUNCTUATION_TYPE, ',')) {
