@@ -13,6 +13,8 @@ namespace Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type;
 
 use Sonatra\Bundle\BlockBundle\Block\AbstractType;
 use Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface;
+use Sonatra\Bundle\BlockBundle\Block\BlockInterface;
+use Sonatra\Bundle\BlockBundle\Block\BlockView;
 use Sonatra\Bundle\BlockBundle\Block\Extension\Core\EventListener\ResizeBlockListener;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,6 +35,18 @@ class CollectionType extends AbstractType
         );
 
         $builder->addEventSubscriber($resizeListener);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(BlockView $view, BlockInterface $block, array $options)
+    {
+        $value = $view->vars['value'];
+
+        if ($value instanceof \Countable && 0 === count($value)) {
+            $view->vars['empty_message'] = (string) $block->getConfig()->getEmptyMessage();
+        }
     }
 
     /**

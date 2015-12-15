@@ -2,6 +2,7 @@
 
 {% block collection_widget -%}
     {{- block('block_widget') -}}
+    {{- empty_message|default(null)|raw -}}
 {%- endblock collection_widget %}
 
 {% block textarea_widget -%}
