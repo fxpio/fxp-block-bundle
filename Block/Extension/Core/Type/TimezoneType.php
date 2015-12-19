@@ -32,7 +32,8 @@ class TimezoneType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'choices' => self::getTimezones(),
+            'choices' => static::getFlippedTimezones(),
+            'choices_as_values' => true,
             'choice_translation_domain' => false,
         ));
     }
@@ -63,7 +64,7 @@ class TimezoneType extends AbstractType
      *
      * @return array The timezone choices
      */
-    public static function getTimezones()
+    private static function getFlippedTimezones()
     {
         if (null === static::$timezones) {
             static::$timezones = array();
@@ -73,16 +74,13 @@ class TimezoneType extends AbstractType
 
                 if (count($parts) > 2) {
                     $region = $parts[0];
-                    $name = $parts[1].' - '.$parts[2];
                 } elseif (count($parts) > 1) {
                     $region = $parts[0];
-                    $name = $parts[1];
                 } else {
                     $region = 'Other';
-                    $name = $parts[0];
                 }
 
-                static::$timezones[$region][$timezone] = str_replace('_', ' ', $name);
+                static::$timezones[$region][str_replace('_', ' ', $timezone)] = $timezone;
             }
         }
 
