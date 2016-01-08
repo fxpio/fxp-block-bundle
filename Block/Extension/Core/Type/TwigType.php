@@ -44,6 +44,7 @@ class TwigType extends AbstractType
         $transformer = new TwigTemplateTransformer($this->twig, $options['resource'],
             $options['resource_block'], $options['variables']);
         $builder->addViewTransformer($transformer);
+        $builder->setDataClass(null);
     }
 
     /**
