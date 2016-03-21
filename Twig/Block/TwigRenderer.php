@@ -19,11 +19,6 @@ use Sonatra\Bundle\BlockBundle\Block\BlockRenderer;
 class TwigRenderer extends BlockRenderer implements TwigRendererInterface
 {
     /**
-     * @var TwigRendererEngineInterface
-     */
-    private $engine;
-
-    /**
      * Constructor.
      *
      * @param TwigRendererEngineInterface $engine
@@ -31,7 +26,5 @@ class TwigRenderer extends BlockRenderer implements TwigRendererInterface
     public function __construct(TwigRendererEngineInterface $engine)
     {
         parent::__construct($engine);
-
-        $this->engine = $engine;
     }
 }
