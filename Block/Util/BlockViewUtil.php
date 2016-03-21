@@ -28,8 +28,8 @@ class BlockViewUtil
     /**
      * Get the parent with a specific type.
      *
-     * @param BlockView $view  The block view
-     * @param string    $type  The first parent type
+     * @param BlockView $view The block view
+     * @param string    $type The first parent type
      *
      * @return BlockView|null
      */
