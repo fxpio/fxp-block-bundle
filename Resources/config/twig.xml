@@ -15,6 +15,7 @@
     <services>
         <service id="sonatra_block.twig.extension" class="%sonatra_block.twig.extension.base.class%" public="false">
             <tag name="twig.extension" />
+            <argument type="service" id="twig" />
             <argument type="service" id="sonatra_block.twig.renderer" />
             <argument type="service" id="sonatra_block.factory" />
             <argument type="service" id="sonatra_block.registry" />
@@ -31,6 +32,7 @@
         </service>
 
         <service id="sonatra_block.twig.engine" class="%sonatra_block.twig.engine.base.class%" public="false">
+            <argument type="service" id="twig" />
             <argument>%sonatra_block.twig.resources%</argument>
         </service>
     </services>

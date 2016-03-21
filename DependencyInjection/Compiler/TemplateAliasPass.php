@@ -44,6 +44,6 @@ class TemplateAliasPass implements CompilerPassInterface
             $aliases[$alias] = $class;
         }
 
-        $definition->replaceArgument(3, $aliases);
+        $definition->replaceArgument(4, $aliases);
     }
 }

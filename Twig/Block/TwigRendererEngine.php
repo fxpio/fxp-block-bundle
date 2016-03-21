@@ -30,10 +30,16 @@ class TwigRendererEngine extends AbstractRendererEngine implements TwigRendererE
     private $template;
 
     /**
-     * {@inheritdoc}
+     * Creates a new renderer engine.
+     *
+     * @param \Twig_Environment $environment   The twig environment
+     * @param array             $defaultThemes The default themes. The type of these
+     *                                         themes is open to the implementation.
      */
-    public function setEnvironment(\Twig_Environment $environment)
+    public function __construct(\Twig_Environment $environment, array $defaultThemes = array())
     {
+        parent::__construct($defaultThemes);
+
         $this->environment = $environment;
     }
 

@@ -26,7 +26,7 @@ use Sonatra\Bundle\BlockBundle\Block\Util\BlockUtil;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRuntimeInterface
+class BlockExtension extends \Twig_Extension
 {
     /**
      * This property is public so that it can be accessed directly from compiled
@@ -64,26 +64,21 @@ class BlockExtension extends \Twig_Extension implements \Twig_Extension_InitRunt
     /**
      * Constructor.
      *
+     * @param \Twig_Environment      $environment
      * @param TwigRendererInterface  $renderer
      * @param BlockFactoryInterface  $factory
      * @param BlockRegistryInterface $registry
      * @param array                  $aliases
      */
-    public function __construct(TwigRendererInterface $renderer, BlockFactoryInterface $factory, BlockRegistryInterface $registry, array $aliases = array())
+    public function __construct(\Twig_Environment $environment, TwigRendererInterface $renderer,
+                                BlockFactoryInterface $factory, BlockRegistryInterface $registry,
+                                array $aliases = array())
     {
+        $this->environment = $environment;
         $this->renderer = $renderer;
         $this->factory = $factory;
         $this->registry = $registry;
         $this->aliases = $aliases;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initRuntime(\Twig_Environment $environment)
-    {
-        $this->environment = $environment;
-        $this->renderer->setEnvironment($environment);
     }
 
     /**

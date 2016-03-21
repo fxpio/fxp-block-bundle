@@ -34,12 +34,4 @@ class TwigRenderer extends BlockRenderer implements TwigRendererInterface
 
         $this->engine = $engine;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setEnvironment(\Twig_Environment $environment)
-    {
-        $this->engine->setEnvironment($environment);
-    }
 }
