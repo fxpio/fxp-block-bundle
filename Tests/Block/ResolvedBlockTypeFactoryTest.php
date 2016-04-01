@@ -23,9 +23,6 @@ class ResolvedBlockTypeFactoryTest extends \PHPUnit_Framework_TestCase
     {
         /* @var BlockTypeInterface|\PHPUnit_Framework_MockObject_MockObject $type */
         $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
-        $type->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo'));
 
         $parentType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
 

@@ -110,10 +110,6 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
             ->with($type, array($ext1, $ext2))
             ->will($this->returnValue($resolvedType));
 
-        $resolvedType->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo'));
-
         $this->assertSame($resolvedType, $this->registry->getType(FooType::class));
     }
 
@@ -136,14 +132,6 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
             ->method('createResolvedType')
             ->with($type, array(), $parentResolvedType)
             ->will($this->returnValue($resolvedType));
-
-        $parentResolvedType->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo'));
-
-        $resolvedType->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo_sub_type'));
 
         $this->assertSame($resolvedType, $this->registry->getType(FooSubType::class));
     }
@@ -185,10 +173,6 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
             ->method('createResolvedType')
             ->with($type)
             ->will($this->returnValue($resolvedType));
-
-        $resolvedType->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('foo'));
 
         $this->assertFalse($this->registry->hasType('foo'));
 
