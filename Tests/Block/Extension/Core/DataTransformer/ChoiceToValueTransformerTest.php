@@ -40,7 +40,7 @@ class ChoiceToValueTransformerTest extends \PHPUnit_Framework_TestCase
         return array(
             // more extensive test set can be found in FormUtilTest
             array(0, '0'),
-            array(false, ''),
+            array(false, '0'),
             array('', ''),
         );
     }
