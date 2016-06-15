@@ -22,10 +22,11 @@ use Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Type\FooType;
  */
 class ResolvedBlockTypeTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     */
     public function testWrongExtensions()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
-
         new ResolvedBlockType(new FooType(), array('wrong_extension'));
     }
 
@@ -54,7 +55,7 @@ class ResolvedBlockTypeTest extends \PHPUnit_Framework_TestCase
         $rType = new ResolvedBlockType($type, array(new FooExtension()), new ResolvedBlockType($parentType));
 
         /* @var BlockFactoryInterface $factory */
-        $factory = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface');
+        $factory = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface')->getMock();
         $builder = $rType->createBuilder($factory, 'name');
 
         $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface', $builder);
@@ -78,7 +79,7 @@ class ResolvedBlockTypeTest extends \PHPUnit_Framework_TestCase
         $rType = new ResolvedBlockType($type, array(new FooExtension()), new ResolvedBlockType($parentType));
 
         /* @var BlockFactoryInterface $factory */
-        $factory = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface');
+        $factory = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface')->getMock();
         $block1 = $rType->createBuilder($factory, 'name1')->getBlock();
         $block2 = $rType->createBuilder($factory, 'name2')->getBlock();
 

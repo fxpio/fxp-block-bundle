@@ -73,13 +73,15 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
         return $container;
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException
+     */
     public function testInvalidServiceAlias()
     {
         $container = $this->getContainer('container2');
         $extension = $container->get('sonatra_block.extension');
         $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\BlockExtensionInterface', $extension);
 
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException');
         $extension->getType('bar');
     }
 }

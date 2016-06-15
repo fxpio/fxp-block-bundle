@@ -63,10 +63,11 @@ class PercentToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCas
         $this->assertEquals('12,34 %', $transformer->transform(0.1234));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException
+     */
     public function testTransformExpectsNumeric()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException');
-
         $transformer = new PercentToLocalizedStringTransformer();
         $transformer->transform('foo');
     }

@@ -18,10 +18,11 @@ use Sonatra\Bundle\BlockBundle\Block\BlockEvents;
  */
 class BlockEventsTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException
+     */
     public function testInstantiationOfClass()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException');
-
         new BlockEvents();
     }
 }

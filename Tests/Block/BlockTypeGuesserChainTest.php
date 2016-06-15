@@ -19,19 +19,20 @@ use Sonatra\Bundle\BlockBundle\Block\Guess\Guess;
  */
 class BlockTypeGuesserChainTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     */
     public function testInvalidGuessers()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
-
         new BlockTypeGuesserChain(array(42));
     }
 
     public function testGuessers()
     {
         $guessers = new BlockTypeGuesserChain(array(
-            $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface'),
+            $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock(),
             new BlockTypeGuesserChain(array(
-                $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface'),
+                $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock(),
             )),
         ));
 
@@ -41,15 +42,15 @@ class BlockTypeGuesserChainTest extends \PHPUnit_Framework_TestCase
         $value = $ref->getValue($guessers);
 
         $this->assertEquals(array(
-            $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface'),
-            $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface'),
+            $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock(),
+            $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock(),
         ), $value);
     }
 
     public function testGuessType()
     {
         $guess = $this->getMockForAbstractClass('Sonatra\Bundle\BlockBundle\Block\Guess\Guess', array(Guess::MEDIUM_CONFIDENCE));
-        $guesser = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface');
+        $guesser = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock();
         $guessers = new BlockTypeGuesserChain(array($guesser));
 
         $guesser->expects($this->any())

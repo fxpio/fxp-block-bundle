@@ -22,9 +22,9 @@ class ResolvedBlockTypeFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreateResolvedType()
     {
         /* @var BlockTypeInterface|\PHPUnit_Framework_MockObject_MockObject $type */
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface')->getMock();
 
-        $parentType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $parentType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
 
         $factory = new ResolvedBlockTypeFactory();
         $rType = $factory->createResolvedType($type, array(), $parentType);

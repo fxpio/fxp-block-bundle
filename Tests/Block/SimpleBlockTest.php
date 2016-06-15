@@ -317,8 +317,8 @@ class SimpleBlockTest extends AbstractBlockTest
     public function testCreateView()
     {
         /* @var ResolvedBlockTypeInterface $type */
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
-        $view = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockView');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
+        $view = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockView')->getMock();
         $block = $this->getBuilder()->setType($type)->getBlock();
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $type */
@@ -333,11 +333,11 @@ class SimpleBlockTest extends AbstractBlockTest
     public function testCreateViewWithParent()
     {
         /* @var ResolvedBlockTypeInterface $type */
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
-        $view = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockView');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
+        $view = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockView')->getMock();
         /* @var BlockInterface $parentBlock */
-        $parentBlock = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockInterface');
-        $parentView = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockView');
+        $parentBlock = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockInterface')->getMock();
+        $parentView = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockView')->getMock();
         $block = $this->getBuilder()->setType($type)->getBlock();
         $block->setParent($parentBlock);
 
@@ -358,10 +358,10 @@ class SimpleBlockTest extends AbstractBlockTest
     public function testCreateViewWithExplicitParent()
     {
         /* @var ResolvedBlockTypeInterface $type */
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
-        $view = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockView');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
+        $view = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockView')->getMock();
         /* @var BlockView $parentView */
-        $parentView = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockView');
+        $parentView = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockView')->getMock();
         $block = $this->getBuilder()->setType($type)->getBlock();
 
         /* @var \PHPUnit_Framework_MockObject_MockObject $type */
@@ -388,10 +388,12 @@ class SimpleBlockTest extends AbstractBlockTest
         $this->assertNull($block->getParent());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\LogicException
+     * @expectedExceptionMessage A block with an empty name cannot have a parent block.
+     */
     public function testBlockCannotHaveEmptyNameNotInRootLevel()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\LogicException', 'A block with an empty name cannot have a parent block.');
-
         /* @var DataMapperInterface $dataMapper */
         $dataMapper = $this->getDataMapper();
 
@@ -485,10 +487,11 @@ class SimpleBlockTest extends AbstractBlockTest
         $this->assertNull($block->getPropertyPath());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\LogicException
+     */
     public function testViewDataMustNotBeObjectIfDataClassIsNull()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\LogicException');
-
         $config = new BlockConfigBuilder('name', null, $this->dispatcher);
         $config->addViewTransformer(new FixedDataTransformer(array(
             '' => '',
@@ -501,7 +504,7 @@ class SimpleBlockTest extends AbstractBlockTest
 
     public function testViewDataMayBeArrayAccessIfDataClassIsNull()
     {
-        $arrayAccess = $this->getMock('\ArrayAccess');
+        $arrayAccess = $this->getMockBuilder('\ArrayAccess')->getMock();
         $config = new BlockConfigBuilder('name', null, $this->dispatcher);
         $config->addViewTransformer(new FixedDataTransformer(array(
             '' => '',
@@ -514,10 +517,11 @@ class SimpleBlockTest extends AbstractBlockTest
         $this->assertSame($arrayAccess, $block->getViewData());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\LogicException
+     */
     public function testViewDataMustBeObjectIfDataClassIsSet()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\LogicException');
-
         $config = new BlockConfigBuilder('name', 'stdClass', $this->dispatcher);
         $config->addViewTransformer(new FixedDataTransformer(array(
             '' => '',
@@ -528,10 +532,11 @@ class SimpleBlockTest extends AbstractBlockTest
         $block->setData('foo');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException
+     */
     public function testSetDataCannotInvokeItself()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException');
-
         // Cycle detection to prevent endless loops
         $config = new BlockConfigBuilder('name', 'stdClass', $this->dispatcher);
         $config->addEventListener(BlockEvents::PRE_SET_DATA, function (BlockEvent $event) {
@@ -568,10 +573,11 @@ class SimpleBlockTest extends AbstractBlockTest
         $this->assertSame('view[foo]', $parent->get('child')->getViewData());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException
+     */
     public function testInheritDataDisallowsSetData()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException');
-
         $block = $this->getBuilder()
             ->setInheritData(true)
             ->getBlock();
@@ -579,10 +585,11 @@ class SimpleBlockTest extends AbstractBlockTest
         $block->setData('foo');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException
+     */
     public function testGetDataRequiresParentToBeSetIfInheritData()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException');
-
         $block = $this->getBuilder()
             ->setInheritData(true)
             ->getBlock();
@@ -590,10 +597,11 @@ class SimpleBlockTest extends AbstractBlockTest
         $block->getData();
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException
+     */
     public function testGetNormDataRequiresParentToBeSetIfInheritData()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException');
-
         $block = $this->getBuilder()
             ->setInheritData(true)
             ->getBlock();
@@ -601,10 +609,11 @@ class SimpleBlockTest extends AbstractBlockTest
         $block->getNormData();
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException
+     */
     public function testGetViewDataRequiresParentToBeSetIfInheritData()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException');
-
         $block = $this->getBuilder()
             ->setInheritData(true)
             ->getBlock();
@@ -612,10 +621,11 @@ class SimpleBlockTest extends AbstractBlockTest
         $block->getViewData();
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\LogicException
+     */
     public function testCreateCompoundBlockWithoutDataMapper()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\LogicException');
-
         $this->getBuilder()
             ->setCompound(true)
             ->getBlock();
@@ -637,10 +647,11 @@ class SimpleBlockTest extends AbstractBlockTest
         $this->assertEquals('bar', $block->getAttribute('foo', 'bar'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException
+     */
     public function testGetInvalidChild()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException');
-
         $block = $this->getBuilder()->getBlock();
         $block->get('foo');
     }
@@ -673,7 +684,7 @@ class SimpleBlockTest extends AbstractBlockTest
                 'foo' => 'bar',
             )));
 
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
         $type->expects($this->any())
             ->method('getOptionsResolver')
             ->will($this->returnValue($resolver));
@@ -701,7 +712,7 @@ class SimpleBlockTest extends AbstractBlockTest
     public function testSetDataWithForm()
     {
         /* @var FormInterface $form */
-        $form = $this->getMock('Symfony\Component\Form\FormInterface');
+        $form = $this->getMockBuilder('Symfony\Component\Form\FormInterface')->getMock();
 
         $builder = $this->getBuilder();
         $builder->setForm($form);

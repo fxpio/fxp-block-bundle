@@ -33,7 +33,7 @@ abstract class TypeTestCase extends BlockIntegrationTestCase
     {
         parent::setUp();
 
-        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
         $this->builder = new BlockBuilder(null, null, $this->dispatcher, $this->factory);
     }
 

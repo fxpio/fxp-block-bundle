@@ -63,10 +63,11 @@ class BlockTypeTest extends BaseTypeTest
         $this->assertEquals(new Foo(), $block->getViewData());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidConfigurationException
+     */
     public function testEmptyDataCreateNewInstanceWithConstructorArguments()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidConfigurationException');
-
         $this->factory->create(BlockType::class, null, array(
             'data_class' => 'Sonatra\Bundle\BlockBundle\Tests\Block\Fixtures\Object\SimpleBlockTestCountable',
         ));

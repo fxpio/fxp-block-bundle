@@ -42,9 +42,9 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         /* @var EventDispatcherInterface $dispatcher */
-        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
         /* @var BlockFactoryInterface $factory */
-        $this->factory = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface');
+        $this->factory = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface')->getMock();
 
         $this->builder = new BlockBuilder('name', null, $this->dispatcher, $this->factory);
     }
@@ -67,15 +67,19 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(method_exists($this->builder, 'setName'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     */
     public function testAddNameNoStringAndNoInteger()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
         $this->builder->add(true);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     */
     public function testAddTypeNoString()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
         $this->builder->add('foo', 1234);
     }
 
@@ -134,7 +138,7 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddFormType()
     {
         $this->assertFalse($this->builder->has('foo'));
-        $this->builder->add('foo', $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface'));
+        $this->builder->add('foo', $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface')->getMock());
         $this->assertTrue($this->builder->has('foo'));
     }
 
@@ -172,9 +176,12 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
         $this->builder->create('foo');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException
+     * @expectedExceptionMessage The child with the name "foo" does not exist.
+     */
     public function testGetUnknown()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException', 'The child with the name "foo" does not exist.');
         $this->builder->get('foo');
     }
 
@@ -263,9 +270,9 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
     public function testGetBlock()
     {
         /* @var DataMapperInterface $dataMapper */
-        $dataMapper = $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataMapperInterface');
+        $dataMapper = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataMapperInterface')->getMock();
         /* @var ResolvedBlockTypeInterface $blockType */
-        $blockType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $blockType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
 
         $builder = new BlockBuilder('name', null, $this->dispatcher, $this->factory);
         $child = new BlockBuilder('child', null, $this->dispatcher, $this->factory);
@@ -292,73 +299,91 @@ class BlockBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($block->getConfig()->getAutoInitialize());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testAddTypeAfterGetBlock()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         $config = $this->builder->getBlockConfig();
         /* @var BlockBuilder $config */
         $config->add('foo', TextType::class);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testCreateTypeAfterGetBlock()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         $config = $this->builder->getBlockConfig();
         /* @var BlockBuilder $config */
         $config->create('foo', TextType::class);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testGetTypeAfterGetBlock()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         $config = $this->builder->getBlockConfig();
         /* @var BlockBuilder $config */
         $config->get('foo');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testRemoveTypeAfterGetBlock()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         $config = $this->builder->getBlockConfig();
         /* @var BlockBuilder $config */
         $config->remove('foo');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testHasTypeAfterGetBlock()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         $config = $this->builder->getBlockConfig();
         /* @var BlockBuilder $config */
         $config->has('foo');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testAllTypeAfterGetBlock()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         $config = $this->builder->getBlockConfig();
         /* @var BlockBuilder $config */
         $config->all();
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testCountTypeAfterGetBlock()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         $config = $this->builder->getBlockConfig();
         /* @var BlockBuilder $config */
         $config->count();
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testGetBlockTypeAfterGetBlock()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         $config = $this->builder->getBlockConfig();
         /* @var BlockBuilder $config */
         $config->getBlock();
     }
 
+    /**
+     * @€@expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testGetIteratorTypeAfterGetBlock()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
         /* @var BlockBuilder $config */
         $config = $this->builder->getBlockConfig();
         $config->getIterator();

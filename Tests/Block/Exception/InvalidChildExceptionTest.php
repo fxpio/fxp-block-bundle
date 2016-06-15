@@ -32,12 +32,12 @@ class InvalidChildExceptionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $rType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $rType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
         $rType->expects($this->any())
             ->method('getInnerType')
             ->will($this->returnValue(new FooType()));
 
-        $this->builder = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface');
+        $this->builder = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface')->getMock();
         $this->builder->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
@@ -45,7 +45,7 @@ class InvalidChildExceptionTest extends \PHPUnit_Framework_TestCase
             ->method('getType')
             ->will($this->returnValue($rType));
 
-        $this->builderChild = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface');
+        $this->builderChild = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface')->getMock();
         $this->builderChild->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));

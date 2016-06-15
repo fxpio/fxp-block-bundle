@@ -40,12 +40,12 @@ class BlockUtilTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateBlockId()
     {
-        $parentBlock = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockInterface');
+        $parentBlock = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockInterface')->getMock();
         $parentBlock->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('foo'));
 
-        $block = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockInterface');
+        $block = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockInterface')->getMock();
         $block->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('bar'));
@@ -63,14 +63,14 @@ class BlockUtilTest extends \PHPUnit_Framework_TestCase
 
     public function testIsValidBlock()
     {
-        $parentType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $parentType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
         $parentType->expects($this->any())
             ->method('getInnerType')
             ->will($this->returnValue(new FooType()));
 
-        $blockInnerType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
+        $blockInnerType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface')->getMock();
 
-        $blockType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $blockType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
         $blockType->expects($this->any())
             ->method('getInnerType')
             ->will($this->returnValue($blockInnerType));
@@ -78,12 +78,12 @@ class BlockUtilTest extends \PHPUnit_Framework_TestCase
             ->method('getParent')
             ->will($this->returnValue($parentType));
 
-        $blockConfig = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface');
+        $blockConfig = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockBuilderInterface')->getMock();
         $blockConfig->expects($this->any())
             ->method('getType')
             ->will($this->returnValue($blockType));
 
-        $block = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockInterface');
+        $block = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockInterface')->getMock();
         $block->expects($this->any())
             ->method('getConfig')
             ->will($this->returnValue($blockConfig));

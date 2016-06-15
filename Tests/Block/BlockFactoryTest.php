@@ -58,11 +58,11 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->resolvedTypeFactory = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactoryInterface');
-        $this->guesser1 = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface');
-        $this->guesser2 = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface');
-        $this->registry = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockRegistryInterface');
-        $this->builder = $this->getMock('Sonatra\Bundle\BlockBundle\Test\BlockBuilderInterface');
+        $this->resolvedTypeFactory = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactoryInterface')->getMock();
+        $this->guesser1 = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock();
+        $this->guesser2 = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock();
+        $this->registry = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockRegistryInterface')->getMock();
+        $this->builder = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Test\BlockBuilderInterface')->getMock();
 
         /* @var BlockRegistryInterface $registry */
         $registry = $this->registry;
@@ -112,10 +112,12 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->builder, $this->factory->createNamedBuilder('name', 'type', null, $options));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     * @expectedExceptionMessage Expected argument of type "string",
+     */
     public function testCreateNamedBuilderWithResolvedTypeInstance()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException', 'Expected argument of type "string",');
-
         $options = array('a' => '1', 'b' => '2');
         $resolvedType = $this->getMockResolvedType();
 
@@ -178,10 +180,12 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->builder, $this->factory->createNamedBuilder('name', 'type', 'DATA', $options));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     * @expectedExceptionMessage Expected argument of type "string", "stdClass" given
+     */
     public function testCreateNamedBuilderThrowsUnderstandableException()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException', 'Expected argument of type "string", "stdClass" given');
-
         $this->factory->createNamedBuilder('name', new \stdClass());
     }
 
@@ -215,10 +219,12 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('BLOCK', $this->factory->create('TYPE', null, $options));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     * \@expectedExceptionMessage Expected argument of type "string",
+     */
     public function testCreateUsesTypeNameIfTypeGivenAsObject()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException', 'Expected argument of type "string", ');
-
         $options = array('a' => '1', 'b' => '2');
         $resolvedType = $this->getMockResolvedType();
 
@@ -259,7 +265,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateBuilderForPropertyWithoutTypeGuesser()
     {
-        $registry = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockRegistryInterface');
+        $registry = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockRegistryInterface')->getMock();
         $factory = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockFactory')
             ->setMethods(array('createNamedBuilder'))
             ->setConstructorArgs(array($registry, $this->resolvedTypeFactory))
@@ -391,7 +397,7 @@ class BlockFactoryTest extends \PHPUnit_Framework_TestCase
 
     private function getMockResolvedType()
     {
-        return $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        return $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
     }
 
     private function getMockFactory(array $methods = array())

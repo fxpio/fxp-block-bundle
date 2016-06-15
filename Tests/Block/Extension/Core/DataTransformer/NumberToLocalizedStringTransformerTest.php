@@ -191,10 +191,11 @@ class NumberToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1234,547', $transformer->transform(1234.547));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException
+     */
     public function testTransformExpectsNumeric()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException');
-
         $transformer = new NumberToLocalizedStringTransformer();
         $transformer->transform('foo');
     }

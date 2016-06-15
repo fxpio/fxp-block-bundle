@@ -55,9 +55,11 @@ abstract class AbstractBaseExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $type->getBlockPrefix());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException
+     */
     public function testGetUnexistingType()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException');
         $this->extension->getType('bar');
     }
 

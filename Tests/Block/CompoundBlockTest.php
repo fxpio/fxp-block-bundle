@@ -183,20 +183,22 @@ class CompoundBlockTest extends AbstractBlockTest
         $this->assertSame(array('foo' => $child), $this->block->all());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\LogicException
+     */
     public function testAddWithoutCompound()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\LogicException');
-
         $builder = $this->getBuilder();
         $builder->setCompound(false);
         $block = $builder->getBlock();
         $block->add('foo');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     */
     public function testAddInvalidChild()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
-
         /* @var DataMapperInterface $dataMapper */
         $dataMapper = $this->getDataMapper();
         $builder = $this->getBuilder();
@@ -206,10 +208,11 @@ class CompoundBlockTest extends AbstractBlockTest
         $block->add(array());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     */
     public function testAddInvalidChildType()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
-
         /* @var DataMapperInterface $dataMapper */
         $dataMapper = $this->getDataMapper();
         $builder = $this->getBuilder();
@@ -264,10 +267,11 @@ class CompoundBlockTest extends AbstractBlockTest
         $this->assertSame($this->block->all(), iterator_to_array($this->block));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException
+     */
     public function testInitializeBlockWithParent()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException');
-
         $child = $this->getBuilder('foo')->getBlock();
         $this->block->add($child);
 
@@ -418,7 +422,7 @@ class CompoundBlockTest extends AbstractBlockTest
     public function testCreateViewWithChildren()
     {
         /* @var ResolvedBlockTypeInterface|\PHPUnit_Framework_MockObject_MockObject $type */
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
         $options = array('a' => 'Foo', 'b' => 'Bar');
         $field1 = $this->getMockBlock('foo');
         $field2 = $this->getMockBlock('bar');

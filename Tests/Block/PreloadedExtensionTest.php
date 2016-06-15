@@ -30,7 +30,7 @@ class PreloadedExtensionTest extends AbstractBaseExtensionTest
             FooType::class => array(new FooExtension()),
         );
         /* @var BlockTypeGuesserInterface $guesser */
-        $guesser = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface');
+        $guesser = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock();
 
         $this->extension = new PreloadedExtension($types, $extensions, $guesser);
     }

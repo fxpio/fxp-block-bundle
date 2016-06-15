@@ -56,7 +56,7 @@ class ValidatorTypeGuesserTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('The "Validator" component is not available');
         }
 
-        $this->metadataFactory = $this->getMock('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface');
+        $this->metadataFactory = $this->getMockBuilder('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface')->getMock();
 
         /* @var MetadataFactoryInterface $metadataFactory */
         $metadataFactory = $this->metadataFactory;

@@ -37,7 +37,7 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
         /* @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->dispatcher;
         $options = array(
@@ -53,31 +53,34 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
         $this->config = null;
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     */
     public function testNotStringName()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
-
         new BlockConfigBuilder(array(), null, $this->dispatcher);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException
+     */
     public function testInvalidName()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException');
-
         new BlockConfigBuilder('foo@bar', null, $this->dispatcher);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException
+     */
     public function testInvalidClassname()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException');
-
         new BlockConfigBuilder('name', 'Foobar', $this->dispatcher);
     }
 
     public function testAddEvents()
     {
         /* @var EventSubscriberInterface $subscriber */
-        $subscriber = $this->getMock('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $subscriber = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventSubscriberInterface')->getMock();
 
         $this->config->addEventListener('foo', function () {}, 0);
         $this->config->addEventSubscriber($subscriber);
@@ -86,9 +89,9 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
     public function testViewTransformers()
     {
         /* @var DataTransformerInterface $dataTransformer */
-        $dataTransformer = $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface');
+        $dataTransformer = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface')->getMock();
         /* @var DataTransformerInterface $dataTransformer2 */
-        $dataTransformer2 = $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface');
+        $dataTransformer2 = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface')->getMock();
 
         $this->config->addViewTransformer($dataTransformer);
         $this->config->addViewTransformer($dataTransformer2, true);
@@ -104,9 +107,9 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
     public function testModelTransformers()
     {
         /* @var DataTransformerInterface $dataTransformer */
-        $dataTransformer = $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface');
+        $dataTransformer = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface')->getMock();
         /* @var DataTransformerInterface $dataTransformer2 */
-        $dataTransformer2 = $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface');
+        $dataTransformer2 = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface')->getMock();
 
         $this->config->addModelTransformer($dataTransformer);
         $this->config->addModelTransformer($dataTransformer2, true);
@@ -122,11 +125,11 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
     public function testGettersAndSetters()
     {
         /* @var ResolvedBlockTypeInterface $type */
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
         /* @var DataMapperInterface $dataMapper */
-        $dataMapper = $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataMapperInterface');
+        $dataMapper = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataMapperInterface')->getMock();
         /* @var FormInterface $form */
-        $form = $this->getMock('Symfony\Component\Form\FormInterface');
+        $form = $this->getMockBuilder('Symfony\Component\Form\FormInterface')->getMock();
 
         $this->assertEquals('name', $this->config->getName());
         $this->assertSame($this->dispatcher, $this->config->getEventDispatcher());
@@ -172,178 +175,198 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->config, $this->config->setData('data'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testAddEventListenerAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->addEventListener('foo', function () {}, 0);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testAddEventSubscriberAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         /* @var EventSubscriberInterface $subscriber */
-        $subscriber = $this->getMock('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $subscriber = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventSubscriberInterface')->getMock();
 
         $config = $this->getBlockConfig();
         $config->addEventSubscriber($subscriber);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testAddViewTransformersAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         /* @var DataTransformerInterface $dataTransformer */
-        $dataTransformer = $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface');
+        $dataTransformer = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface')->getMock();
 
         $config = $this->getBlockConfig();
         $config->addViewTransformer($dataTransformer);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testResetViewTransformersAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->resetViewTransformers();
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testAddModelTransformersAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         /* @var DataTransformerInterface $dataTransformer */
-        $dataTransformer = $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface');
+        $dataTransformer = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface')->getMock();
         $config = $this->getBlockConfig();
         $config->addModelTransformer($dataTransformer);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testResetModelTransformersAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->resetModelTransformers();
     }
 
+    /**
+     * @€@expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testGetBlockConfigAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->getBlockConfig();
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetPropertyPathAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->setPropertyPath('field');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetMappedAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->setMapped(true);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetInheritDataAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->setInheritData(true);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetCompoundAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->setCompound(true);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetTypeAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         /* @var ResolvedBlockTypeInterface $type */
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
 
         $config = $this->getBlockConfig();
         $config->setType($type);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetDataMapperAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         /* @var DataMapperInterface $dataMapper */
-        $dataMapper = $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataMapperInterface');
+        $dataMapper = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataMapperInterface')->getMock();
 
         $config = $this->getBlockConfig();
         $config->setDataMapper($dataMapper);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetEmptyDataAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->setEmptyData('empty');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetEmptyMessageAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->setEmptyMessage('empty message');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetAttributeAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->setAttribute('foo', 'bar');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetAttributesAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->setAttributes(array('foo' => 'bar'));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetDataAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->setData('data');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetDataClassAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         $config = $this->getBlockConfig();
         $config->setDataClass('Foobar');
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException
+     */
     public function testSetFormAfterGetBlockConfig()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\BadMethodCallException');
-
         /* @var FormInterface $form */
-        $form = $this->getMock('Symfony\Component\Form\FormInterface');
+        $form = $this->getMockBuilder('Symfony\Component\Form\FormInterface')->getMock();
 
         $config = $this->getBlockConfig();
         $config->setForm($form);

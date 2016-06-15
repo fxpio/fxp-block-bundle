@@ -43,19 +43,21 @@ class MoneyToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1,23 $US', $transformer->transform(123));
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException
+     */
     public function testTransformWithInvalidCurrency()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\TransformationFailedException');
-
         $transformer = new MoneyToLocalizedStringTransformer(null, null, null, null, '$', 100);
         $transformer->transform(123);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     */
     public function testTransformExpectsNumeric()
     {
         $transformer = new MoneyToLocalizedStringTransformer(null, null, null, null, null, 100);
-
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
 
         $transformer->transform('abcd');
     }

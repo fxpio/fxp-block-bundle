@@ -58,9 +58,9 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->resolvedTypeFactory = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactory');
-        $this->guesser1 = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface');
-        $this->guesser2 = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface');
+        $this->resolvedTypeFactory = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactory')->getMock();
+        $this->guesser1 = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock();
+        $this->guesser2 = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock();
 
         /* @var ResolvedBlockTypeFactoryInterface $rtf */
         $rtf = $this->resolvedTypeFactory;
@@ -80,7 +80,7 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
     public function testGetTypeFromExtension()
     {
         $type = new FooType();
-        $resolvedType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $resolvedType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
 
         $this->extension2->addType($type);
 
@@ -99,7 +99,7 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
         $type = new FooType();
         $ext1 = new FooTypeBarExtension();
         $ext2 = new FooTypeBazExtension();
-        $resolvedType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $resolvedType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
 
         $this->extension2->addType($type);
         $this->extension1->addTypeExtension($ext1);
@@ -117,8 +117,8 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
     {
         $parentType = new FooType();
         $type = new FooSubType();
-        $parentResolvedType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
-        $resolvedType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $parentResolvedType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
+        $resolvedType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
 
         $this->extension1->addType($parentType);
         $this->extension2->addType($type);
@@ -167,7 +167,7 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
     public function testHasTypeAfterLoadingFromExtension()
     {
         $type = new FooType();
-        $resolvedType = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $resolvedType = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
 
         $this->resolvedTypeFactory->expects($this->once())
             ->method('createResolvedType')
@@ -192,7 +192,7 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
         $rtf = $this->resolvedTypeFactory;
 
         $registry = new BlockRegistry(
-            array($this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockExtensionInterface')),
+            array($this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockExtensionInterface')->getMock()),
             $rtf);
 
         $this->assertNull($registry->getTypeGuesser());
@@ -205,10 +205,11 @@ class BlockRegistryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedExtensions, $this->registry->getExtensions());
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException
+     */
     public function testInvalidExtensions()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\UnexpectedTypeException');
-
         /* @var ResolvedBlockTypeFactoryInterface $rtf */
         $rtf = $this->resolvedTypeFactory;
 

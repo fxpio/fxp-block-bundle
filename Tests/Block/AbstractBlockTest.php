@@ -40,7 +40,7 @@ abstract class AbstractBlockTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->dispatcher = new EventDispatcher();
-        $this->factory = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface');
+        $this->factory = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface')->getMock();
         $this->block = $this->createBlock();
     }
 
@@ -76,8 +76,8 @@ abstract class AbstractBlockTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockBlock($name = 'name')
     {
-        $block = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockInterface');
-        $config = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockConfigInterface');
+        $block = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockInterface')->getMock();
+        $config = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockConfigInterface')->getMock();
 
         $block->expects($this->any())
             ->method('getName')
@@ -94,7 +94,7 @@ abstract class AbstractBlockTest extends \PHPUnit_Framework_TestCase
      */
     protected function getDataMapper()
     {
-        return $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataMapperInterface');
+        return $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataMapperInterface')->getMock();
     }
 
     /**
@@ -102,7 +102,7 @@ abstract class AbstractBlockTest extends \PHPUnit_Framework_TestCase
      */
     protected function getDataTransformer()
     {
-        return $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface');
+        return $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataTransformerInterface')->getMock();
     }
 
     /**
@@ -110,6 +110,6 @@ abstract class AbstractBlockTest extends \PHPUnit_Framework_TestCase
      */
     protected function getBlockValidator()
     {
-        return $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockValidatorInterface');
+        return $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockValidatorInterface')->getMock();
     }
 }

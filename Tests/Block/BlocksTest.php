@@ -32,10 +32,11 @@ class BlocksTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface', $bf);
     }
 
+    /**
+     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException
+     */
     public function testInstantiationOfClass()
     {
-        $this->setExpectedException('Sonatra\Bundle\BlockBundle\Block\Exception\RuntimeException');
-
         new Blocks();
     }
 }

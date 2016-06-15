@@ -46,8 +46,8 @@ class ResizeBlockListenerTest extends \PHPUnit_Framework_TestCase
         /* @var DataMapperInterface $dataMapper */
         $dataMapper = $this->getDataMapper();
 
-        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->factory = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface');
+        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+        $this->factory = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockFactoryInterface')->getMock();
         $this->block = $this->getBuilder()
             ->setCompound(true)
             ->setDataMapper($dataMapper)
@@ -68,7 +68,7 @@ class ResizeBlockListenerTest extends \PHPUnit_Framework_TestCase
         /* @var BlockFactoryInterface $factory */
         $factory = $this->factory;
         /* @var ResolvedBlockTypeInterface $type */
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeInterface')->getMock();
         $builder = new BlockBuilder($name, null, $dispatcher, $factory);
         $builder->setType($type);
 
@@ -85,7 +85,7 @@ class ResizeBlockListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getDataMapper()
     {
-        return $this->getMock('Sonatra\Bundle\BlockBundle\Block\DataMapperInterface');
+        return $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\DataMapperInterface')->getMock();
     }
 
     /**
@@ -93,7 +93,7 @@ class ResizeBlockListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockBlock()
     {
-        return $this->getMock('Sonatra\Bundle\BlockBundle\Block\Test\BlockInterface');
+        return $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\Test\BlockInterface')->getMock();
     }
 
     public function testGetSubscriber()

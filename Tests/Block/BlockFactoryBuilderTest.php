@@ -42,7 +42,7 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testSetResolvedBlockTypeFactory()
     {
         /* @var ResolvedBlockTypeFactoryInterface $typeFactory */
-        $typeFactory = $this->getMock('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactoryInterface');
+        $typeFactory = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\ResolvedBlockTypeFactoryInterface')->getMock();
 
         $builder = $this->builder->setResolvedTypeFactory($typeFactory);
 
@@ -52,7 +52,7 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddExtension()
     {
         /* @var BlockExtensionInterface $ext */
-        $ext = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockExtensionInterface');
+        $ext = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockExtensionInterface')->getMock();
 
         $builder = $this->builder->addExtension($ext);
 
@@ -62,7 +62,7 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddExtensions()
     {
         $exts = array(
-            $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockExtensionInterface'),
+            $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockExtensionInterface')->getMock(),
         );
 
         $builder = $this->builder->addExtensions($exts);
@@ -73,7 +73,7 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddType()
     {
         /* @var BlockTypeInterface $type */
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface')->getMock();
 
         $builder = $this->builder->addType($type);
 
@@ -83,7 +83,7 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddTypes()
     {
         $types = array(
-            $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface'),
+            $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface')->getMock(),
         );
 
         $builder = $this->builder->addTypes($types);
@@ -94,7 +94,7 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddTypeExtension()
     {
         /* @var BlockTypeExtensionInterface $ext */
-        $ext = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeExtensionInterface');
+        $ext = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeExtensionInterface')->getMock();
 
         $builder = $this->builder->addTypeExtension($ext);
 
@@ -104,7 +104,7 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddTypeExtensions()
     {
         $exts = array(
-            $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeExtensionInterface'),
+            $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeExtensionInterface')->getMock(),
         );
 
         $builder = $this->builder->addTypeExtensions($exts);
@@ -115,7 +115,7 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddTypeGuesser()
     {
         /* @var BlockTypeGuesserInterface $guesser */
-        $guesser = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface');
+        $guesser = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock();
 
         $builder = $this->builder->addTypeGuesser($guesser);
 
@@ -125,7 +125,7 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddTypeGuessers()
     {
         $guessers = array(
-            $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface'),
+            $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock(),
         );
 
         $builder = $this->builder->addTypeGuessers($guessers);
@@ -136,7 +136,7 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
     public function testGetBlockFactory()
     {
         /* @var BlockTypeInterface $type */
-        $type = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface');
+        $type = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeInterface')->getMock();
         $this->builder->addType($type);
 
         $of = $this->builder->getBlockFactory();
@@ -144,9 +144,9 @@ class BlockFactoryBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\BlockFactory', $of);
 
         /* @var BlockTypeGuesserInterface $guesser */
-        $guesser = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface');
+        $guesser = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock();
         /* @var BlockTypeGuesserInterface $guesser2 */
-        $guesser2 = $this->getMock('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface');
+        $guesser2 = $this->getMockBuilder('Sonatra\Bundle\BlockBundle\Block\BlockTypeGuesserInterface')->getMock();
         $this->builder->addTypeGuesser($guesser);
         $this->builder->addTypeGuesser($guesser2);
 
