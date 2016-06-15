@@ -15,6 +15,7 @@ use Sonatra\Bundle\BlockBundle\DependencyInjection\SonatraBlockExtension;
 use Sonatra\Bundle\BlockBundle\SonatraBlockBundle;
 use Sonatra\Bundle\BlockBundle\Tests\Block\AbstractBaseExtensionTest;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
+use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -42,6 +43,7 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
         $container = new ContainerBuilder(new ParameterBag(array(
             'kernel.bundles' => array(
                 'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
+                'TwigBundle' => 'Symfony\\Bundle\\TwigBundle\\TwigBundle',
                 'SonatraBlockBundle' => 'Sonatra\\Bundle\\BlockBundle\\SonatraBlockBundle',
             ),
             'kernel.cache_dir' => __DIR__,
@@ -50,13 +52,22 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
             'kernel.name' => 'kernel',
             'kernel.root_dir' => __DIR__,
             'kernel.charset' => 'UTF-8',
+            'kernel.secret' => 'TestSecret',
         )));
         $bundle = new SonatraBlockBundle();
         $bundle->build($container); // Attach all default factories
 
         $sfExt = new FrameworkExtension();
         $container->registerExtension($sfExt);
-        $sfExt->load(array(array('validation' => array('enabled' => true))), $container);
+        $sfExt->load(array(array(
+            'validation' => array('enabled' => true),
+            'form' => array('enabled' => true),
+            'templating' => array('engines' => array('twig')),
+        )), $container);
+
+        $twigExt = new TwigExtension();
+        $container->registerExtension($twigExt);
+        $twigExt->load(array(), $container);
 
         $extension = new SonatraBlockExtension();
         $container->registerExtension($extension);
@@ -66,8 +77,8 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
         $load = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Fixtures/config'));
         $load->load($service.'.xml');
 
-        $container->getCompilerPassConfig()->setOptimizationPasses(array());
         $container->getCompilerPassConfig()->setRemovingPasses(array());
+
         $container->compile();
 
         return $container;
