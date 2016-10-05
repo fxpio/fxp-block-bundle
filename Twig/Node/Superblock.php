@@ -70,7 +70,7 @@ class Superblock extends \Twig_Node_Block
 
         // create the block
         $compiler
-            ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
+            ->raw('$this->env->getExtension(\'Sonatra\Bundle\BlockBundle\Twig\Extension\BlockExtension\')->createNamed(')
             ->subcompile($this->getAttribute('type'))
             ->raw(', ')
             ->subcompile($this->getAttribute('options'))

@@ -125,14 +125,6 @@ class BlockExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'sonatra_block';
-    }
-
-    /**
      * Get block factory.
      *
      * @return BlockFactoryInterface

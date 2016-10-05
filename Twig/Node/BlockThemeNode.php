@@ -38,7 +38,7 @@ class BlockThemeNode extends \Twig_Node
     {
         $compiler
             ->addDebugInfo($this)
-            ->write('$this->env->getExtension(\'sonatra_block\')->renderer->setTheme(')
+            ->write('$this->env->getExtension(\'Sonatra\Bundle\BlockBundle\Twig\Extension\BlockExtension\')->renderer->setTheme(')
             ->subcompile($this->getNode('block'))
             ->raw(', ')
             ->subcompile($this->getNode('resources'))

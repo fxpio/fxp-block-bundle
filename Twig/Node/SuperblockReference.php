@@ -48,7 +48,7 @@ class SuperblockReference extends \Twig_Node implements \Twig_NodeOutputInterfac
             $compiler
                 ->addDebugInfo($this)
                 ->write(sprintf('$%s = ', $name))
-                ->raw('$this->env->getExtension(\'sonatra_block\')->createNamed(')
+                ->raw('$this->env->getExtension(\'Sonatra\Bundle\BlockBundle\Twig\Extension\BlockExtension\')->createNamed(')
                 ->raw('"Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\ClosureType"')
                 ->raw(', ')
                 ->raw(sprintf('array("data" => function ($blockView) use ($context, $blocks) {$this->block_%s(array_merge($context, array(\'closure\' => $blockView)), $blocks);}', $name))
@@ -80,7 +80,7 @@ class SuperblockReference extends \Twig_Node implements \Twig_NodeOutputInterfac
                 ->raw(sprintf('instanceof \Sonatra\Bundle\BlockBundle\Block\BlockView ? $%s : $%s->createView();', $name, $name))
                 ->raw("\n")
                 // render
-                ->write('echo $this->env->getExtension(\'sonatra_block\')->renderer->searchAndRenderBlock(')
+                ->write('echo $this->env->getExtension(\'Sonatra\Bundle\BlockBundle\Twig\Extension\BlockExtension\')->renderer->searchAndRenderBlock(')
                 ->raw("\n")
                 ->indent()
                 ->write(sprintf('$%s', $name))

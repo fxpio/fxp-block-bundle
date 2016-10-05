@@ -46,14 +46,6 @@ class BlockTranslatorExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'sonatra_block_translation';
-    }
-
-    /**
      * Translate the value, only if the domain is defined.
      *
      * @param string           $value      The value
