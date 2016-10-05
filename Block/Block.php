@@ -117,7 +117,7 @@ class Block implements \IteratorAggregate, BlockInterface
     /**
      * Creates a new block based on the given configuration.
      *
-     * @param BlockConfigInterface $config The block configuration.
+     * @param BlockConfigInterface $config The block configuration
      *
      * @throws LogicException When compound block has not a data mapper
      */

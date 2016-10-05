@@ -50,9 +50,9 @@ class MoneyToLocalizedStringTransformer extends NumberToLocalizedStringTransform
     /**
      * Transforms a number type into localized money.
      *
-     * @param int|float $value Number value.
+     * @param int|float $value Number value
      *
-     * @return string Localized value.
+     * @return string Localized value
      *
      * @throws UnexpectedTypeException       if the given value is not numeric
      * @throws TransformationFailedException if the value can not be transformed

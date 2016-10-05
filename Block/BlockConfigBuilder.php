@@ -132,9 +132,9 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      * @param EventDispatcherInterface $dispatcher The event dispatcher
      * @param array                    $options    The block options
      *
-     * @throws UnexpectedTypeException  If the name is not a string.
+     * @throws UnexpectedTypeException  If the name is not a string
      * @throws InvalidArgumentException If the data class is not a valid class or if
-     *                                  the name contains invalid characters.
+     *                                  the name contains invalid characters
      */
     public function __construct($name, $dataClass, EventDispatcherInterface $dispatcher, array $options = array())
     {
@@ -641,10 +641,10 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
     /**
      * Validates whether the given variable is a valid block name.
      *
-     * @param string $name The tested block name.
+     * @param string $name The tested block name
      *
-     * @throws UnexpectedTypeException  If the name is not a string.
-     * @throws InvalidArgumentException If the name contains invalid characters.
+     * @throws UnexpectedTypeException  If the name is not a string
+     * @throws InvalidArgumentException If the name contains invalid characters
      */
     public static function validateName($name)
     {
@@ -670,9 +670,9 @@ class BlockConfigBuilder implements BlockConfigBuilderInterface
      *   * contains only letters, digits, numbers, underscores ("_"),
      *     hyphens ("-") and colons (":")
      *
-     * @param string $name The tested block name.
+     * @param string $name The tested block name
      *
-     * @return bool Whether the name is valid.
+     * @return bool Whether the name is valid
      */
     public static function isValidName($name)
     {

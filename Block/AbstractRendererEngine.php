@@ -47,7 +47,7 @@ abstract class AbstractRendererEngine implements BlockRendererEngineInterface
      * Creates a new renderer engine.
      *
      * @param array $defaultThemes The default themes. The type of these
-     *                             themes is open to the implementation.
+     *                             themes is open to the implementation
      */
     public function __construct(array $defaultThemes = array())
     {
@@ -127,11 +127,11 @@ abstract class AbstractRendererEngine implements BlockRendererEngineInterface
      *
      * @see getResourceForBlock()
      *
-     * @param string    $cacheKey  The cache key of the block view.
-     * @param BlockView $view      The block view for finding the applying themes.
-     * @param string    $blockName The name of the block to load.
+     * @param string    $cacheKey  The cache key of the block view
+     * @param BlockView $view      The block view for finding the applying themes
+     * @param string    $blockName The name of the block to load
      *
-     * @return bool True if the resource could be loaded, false otherwise.
+     * @return bool True if the resource could be loaded, false otherwise
      */
     abstract protected function loadResourceForBlockName($cacheKey, BlockView $view, $blockName);
 
@@ -141,15 +141,15 @@ abstract class AbstractRendererEngine implements BlockRendererEngineInterface
      * @see getResourceForBlockHierarchy()
      *
      * @param string    $cacheKey           The cache key used for storing the
-     *                                      resource.
+     *                                      resource
      * @param BlockView $view               The block view for finding the applying
-     *                                      themes.
+     *                                      themes
      * @param array     $blockNameHierarchy The block hierarchy, with the most
-     *                                      specific block name at the end.
+     *                                      specific block name at the end
      * @param int       $hierarchyLevel     The level in the block hierarchy that
-     *                                      should be loaded.
+     *                                      should be loaded
      *
-     * @return bool True if the resource could be loaded, false otherwise.
+     * @return bool True if the resource could be loaded, false otherwise
      */
     private function loadResourceForBlockNameHierarchy($cacheKey, BlockView $view, array $blockNameHierarchy, $hierarchyLevel)
     {

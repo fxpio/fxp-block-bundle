@@ -90,7 +90,7 @@ class OrderedHashMap implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Creates a new map.
      *
-     * @param array $elements The elements to insert initially.
+     * @param array $elements The elements to insert initially
      */
     public function __construct(array $elements = array())
     {

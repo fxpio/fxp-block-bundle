@@ -28,49 +28,49 @@ interface ResolvedBlockTypeInterface extends BlockTypeCommonInterface
     /**
      * Returns the parent type.
      *
-     * @return ResolvedBlockTypeInterface The parent type or null.
+     * @return ResolvedBlockTypeInterface The parent type or null
      */
     public function getParent();
 
     /**
      * Returns the wrapped block type.
      *
-     * @return BlockTypeInterface The wrapped block type.
+     * @return BlockTypeInterface The wrapped block type
      */
     public function getInnerType();
 
     /**
      * Returns the extensions of the wrapped block type.
      *
-     * @return BlockTypeExtensionInterface[] An array of {@link BlockTypeExtensionInterface} instances.
+     * @return BlockTypeExtensionInterface[] An array of {@link BlockTypeExtensionInterface} instances
      */
     public function getTypeExtensions();
 
     /**
      * Creates a new block builder for this type.
      *
-     * @param BlockFactoryInterface $factory The block factory.
-     * @param string                $name    The name for the builder.
-     * @param array                 $options The builder options.
+     * @param BlockFactoryInterface $factory The block factory
+     * @param string                $name    The name for the builder
+     * @param array                 $options The builder options
      *
-     * @return BlockBuilderInterface The created block builder.
+     * @return BlockBuilderInterface The created block builder
      */
     public function createBuilder(BlockFactoryInterface $factory, $name, array $options = array());
 
     /**
      * Creates a new block view for a block of this type.
      *
-     * @param BlockInterface $block  The block to create a block view for.
-     * @param BlockView      $parent The parent block view or null.
+     * @param BlockInterface $block  The block to create a block view for
+     * @param BlockView      $parent The parent block view or null
      *
-     * @return BlockView The created block view.
+     * @return BlockView The created block view
      */
     public function createView(BlockInterface $block, BlockView $parent = null);
 
     /**
      * Returns the configured options resolver used for this type.
      *
-     * @return \Symfony\Component\OptionsResolver\OptionsResolver The options resolver.
+     * @return \Symfony\Component\OptionsResolver\OptionsResolver The options resolver
      */
     public function getOptionsResolver();
 }

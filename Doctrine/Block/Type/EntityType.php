@@ -76,7 +76,7 @@ class EntityType extends DoctrineType
      * @return array
      *
      * @internal This method is public to be usable as callback. It should not
-     *           be used in user code.
+     *           be used in user code
      */
     public function getQueryBuilderPartsForCachingHash($queryBuilder)
     {

@@ -48,7 +48,7 @@ class BlockRegistry implements BlockRegistryInterface
      * Constructor.
      *
      * @param BlockExtensionInterface[]         $extensions          An array of BlockExtensionInterface
-     * @param ResolvedBlockTypeFactoryInterface $resolvedTypeFactory The factory for resolved block types.
+     * @param ResolvedBlockTypeFactoryInterface $resolvedTypeFactory The factory for resolved block types
      *
      * @throws UnexpectedTypeException if any extension does not implement BlockExtensionInterface
      */
@@ -151,9 +151,9 @@ class BlockRegistry implements BlockRegistryInterface
      * Wraps a type into a ResolvedBlockTypeInterface implementation and connects
      * it with its parent type.
      *
-     * @param BlockTypeInterface $type The type to resolve.
+     * @param BlockTypeInterface $type The type to resolve
      *
-     * @return ResolvedBlockTypeInterface The resolved type.
+     * @return ResolvedBlockTypeInterface The resolved type
      */
     private function resolveType(BlockTypeInterface $type)
     {

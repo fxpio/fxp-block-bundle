@@ -116,9 +116,9 @@ class BlockHelper extends Helper
     /**
      * Renders a block of the template.
      *
-     * @param BlockView $view      The view for determining the used themes.
-     * @param string    $blockName The name of the block to render.
-     * @param array     $variables The variable to pass to the template.
+     * @param BlockView $view      The view for determining the used themes
+     * @param string    $blockName The name of the block to render
+     * @param array     $variables The variable to pass to the template
      *
      * @return string The HTML markup
      */

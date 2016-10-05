@@ -66,7 +66,7 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Returns whether the block was already rendered.
      *
-     * @return bool Whether this block's widget is rendered.
+     * @return bool Whether this block's widget is rendered
      */
     public function isRendered()
     {
@@ -93,7 +93,7 @@ class BlockView implements \ArrayAccess, \IteratorAggregate, \Countable
     /**
      * Marks the block as rendered.
      *
-     * @return BlockView The block object.
+     * @return BlockView The block object
      */
     public function setRendered()
     {

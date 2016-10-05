@@ -21,14 +21,14 @@ interface BlockTypeInterface extends BlockTypeCommonInterface
     /**
      * Configures the options for this type.
      *
-     * @param OptionsResolver $resolver The resolver for the options.
+     * @param OptionsResolver $resolver The resolver for the options
      */
     public function configureOptions(OptionsResolver $resolver);
 
     /**
      * Returns the name of the parent type.
      *
-     * @return string|null The name of the parent type if any, null otherwise.
+     * @return string|null The name of the parent type if any, null otherwise
      */
     public function getParent();
 

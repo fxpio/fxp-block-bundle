@@ -227,9 +227,9 @@ class BlockExtension extends \Twig_Extension
     /**
      * Makes a technical name human readable.
      *
-     * @param string $text The text to humanize.
+     * @param string $text The text to humanize
      *
-     * @return string The humanized text.
+     * @return string The humanized text
      */
     public function humanize($text)
     {

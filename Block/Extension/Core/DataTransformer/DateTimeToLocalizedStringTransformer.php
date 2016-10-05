@@ -83,9 +83,9 @@ class DateTimeToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * Transforms a normalized date into a localized date string/array.
      *
-     * @param \DateTime $dateTime Normalized date.
+     * @param \DateTime $dateTime Normalized date
      *
-     * @return string|null Localized date string.
+     * @return string|null Localized date string
      *
      * @throws TransformationFailedException if the given value is not an instance of \DateTime
      */

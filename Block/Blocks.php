@@ -79,7 +79,7 @@ final class Blocks
     /**
      * Creates a block factory with the default configuration.
      *
-     * @return BlockFactoryInterface The block factory.
+     * @return BlockFactoryInterface The block factory
      */
     public static function createBlockFactory()
     {
@@ -89,7 +89,7 @@ final class Blocks
     /**
      * Creates a block factory builder with the default configuration.
      *
-     * @return BlockFactoryBuilderInterface The block factory builder.
+     * @return BlockFactoryBuilderInterface The block factory builder
      */
     public static function createBlockFactoryBuilder()
     {

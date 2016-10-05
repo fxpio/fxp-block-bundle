@@ -56,7 +56,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Sets the options.
      *
-     * @param array $options The options.
+     * @param array $options The options
      *
      * @return BlockInterface The block instance
      */
@@ -65,7 +65,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Returns all options of this Block instance.
      *
-     * @return array The passed options.
+     * @return array The passed options
      */
     public function getOptions();
 
@@ -74,17 +74,17 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
      *
      * @param string $name The option name,
      *
-     * @return bool Whether the option exists.
+     * @return bool Whether the option exists
      */
     public function hasOption($name);
 
     /**
      * Returns the value of a specific option.
      *
-     * @param string $name    The option name.
-     * @param mixed  $default The value returned if the option does not exist.
+     * @param string $name    The option name
+     * @param mixed  $default The value returned if the option does not exist
      *
-     * @return mixed The option value.
+     * @return mixed The option value
      */
     public function getOption($name, $default = null);
 
@@ -101,7 +101,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Sets the attributes.
      *
-     * @param array $attributes The attributes.
+     * @param array $attributes The attributes
      *
      * @return BlockInterface The block instance
      */
@@ -110,7 +110,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Returns all attributes of this Block instance.
      *
-     * @return array The passed attributes.
+     * @return array The passed attributes
      */
     public function getAttributes();
 
@@ -119,30 +119,30 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
      *
      * @param string $name The attribute name,
      *
-     * @return bool Whether the attribute exists.
+     * @return bool Whether the attribute exists
      */
     public function hasAttribute($name);
 
     /**
      * Returns the value of a specific attribute.
      *
-     * @param string $name    The attribute name.
-     * @param mixed  $default The value returned if the attribute does not exist.
+     * @param string $name    The attribute name
+     * @param mixed  $default The value returned if the attribute does not exist
      *
-     * @return mixed The attribute value.
+     * @return mixed The attribute value
      */
     public function getAttribute($name, $default = null);
 
     /**
      * Adds a child to the block.
      *
-     * @param BlockInterface|string|int $child   The BlockInterface instance or the name of the child.
-     * @param string|null               $type    The child's type, if a name was passed.
-     * @param array                     $options The child's options, if a name was passed.
+     * @param BlockInterface|string|int $child   The BlockInterface instance or the name of the child
+     * @param string|null               $type    The child's type, if a name was passed
+     * @param array                     $options The child's options, if a name was passed
      *
      * @return BlockInterface The block instance
      *
-     * @throws Exception\UnexpectedTypeException If $child or $type has an unexpected type.
+     * @throws Exception\UnexpectedTypeException If $child or $type has an unexpected type
      */
     public function add($child, $type = null, array $options = array());
 
@@ -201,7 +201,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
      *
      * @return mixed When the field is not bound, the default data is returned.
      *               When the field is bound, the normalized bound data is
-     *               returned if the field is valid, null otherwise.
+     *               returned if the field is valid, null otherwise
      */
     public function getNormData();
 
@@ -215,7 +215,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Sets the data class of the block.
      *
-     * @param string $dataClass The data class of the block in application format.
+     * @param string $dataClass The data class of the block in application format
      *
      * @return BlockInterface The child block
      */
@@ -224,28 +224,28 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
     /**
      * Returns the class of the block data or null if the data is scalar or an array.
      *
-     * @return string The data class or null.
+     * @return string The data class or null
      */
     public function getDataClass();
 
     /**
      * Returns the block's configuration.
      *
-     * @return BlockConfigInterface The configuration.
+     * @return BlockConfigInterface The configuration
      */
     public function getConfig();
 
     /**
      * Returns the name by which the block is identified in blocks.
      *
-     * @return string The name of the block.
+     * @return string The name of the block
      */
     public function getName();
 
     /**
      * Returns the property path that the block is mapped to.
      *
-     * @return \Symfony\Component\PropertyAccess\PropertyPathInterface The property path.
+     * @return \Symfony\Component\PropertyAccess\PropertyPathInterface The property path
      */
     public function getPropertyPath();
 
@@ -261,7 +261,7 @@ interface BlockInterface extends \ArrayAccess, \Traversable, \Countable
      *
      * Should be called on the root block after constructing the tree.
      *
-     * @return BlockInterface The block instance.
+     * @return BlockInterface The block instance
      */
     public function initialize();
 

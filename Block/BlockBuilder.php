@@ -267,9 +267,9 @@ class BlockBuilder extends BlockConfigBuilder implements \IteratorAggregate, Blo
     /**
      * Converts an unresolved child into a {@link BlockBuilder} instance.
      *
-     * @param string $name The name of the unresolved child.
+     * @param string $name The name of the unresolved child
      *
-     * @return BlockBuilder The created instance.
+     * @return BlockBuilder The created instance
      */
     private function resolveChild($name)
     {

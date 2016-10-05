@@ -282,7 +282,7 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
      * @param BlockFactoryInterface $factory   The current block factory
      * @param array                 $options   The builder options
      *
-     * @return BlockBuilderInterface The new builder instance.
+     * @return BlockBuilderInterface The new builder instance
      */
     protected function newBuilder($name, $dataClass, BlockFactoryInterface $factory, array $options)
     {
@@ -294,9 +294,9 @@ class ResolvedBlockType implements ResolvedBlockTypeInterface
      *
      * Override this method if you want to customize the view class.
      *
-     * @param BlockView|null $parent The parent view, if available.
+     * @param BlockView|null $parent The parent view, if available
      *
-     * @return BlockView A new view instance.
+     * @return BlockView A new view instance
      */
     protected function newView(BlockView $parent = null)
     {

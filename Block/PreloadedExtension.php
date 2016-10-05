@@ -38,9 +38,9 @@ class PreloadedExtension implements BlockExtensionInterface
     /**
      * Creates a new preloaded extension.
      *
-     * @param BlockTypeInterface[]            $types          The types that the extension should support.
-     * @param BlockTypeExtensionInterface[][] $typeExtensions The type extensions that the extension should support.
-     * @param BlockTypeGuesserInterface|null  $typeGuesser    The guesser that the extension should support.
+     * @param BlockTypeInterface[]            $types          The types that the extension should support
+     * @param BlockTypeExtensionInterface[][] $typeExtensions The type extensions that the extension should support
+     * @param BlockTypeGuesserInterface|null  $typeGuesser    The guesser that the extension should support
      */
     public function __construct(array $types, array $typeExtensions, BlockTypeGuesserInterface $typeGuesser = null)
     {
