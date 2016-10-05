@@ -82,7 +82,8 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
         /* @var EventSubscriberInterface $subscriber */
         $subscriber = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventSubscriberInterface')->getMock();
 
-        $this->config->addEventListener('foo', function () {}, 0);
+        $this->config->addEventListener('foo', function () {
+        }, 0);
         $this->config->addEventSubscriber($subscriber);
     }
 
@@ -181,7 +182,8 @@ class BlockConfigBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddEventListenerAfterGetBlockConfig()
     {
         $config = $this->getBlockConfig();
-        $config->addEventListener('foo', function () {}, 0);
+        $config->addEventListener('foo', function () {
+        }, 0);
     }
 
     /**

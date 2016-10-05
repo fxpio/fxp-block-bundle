@@ -409,9 +409,9 @@ class CompoundBlockTest extends AbstractBlockTest
             ->method('mapDataToViews')
             ->with('bar', $this->isInstanceOf('\RecursiveIteratorIterator'))
             ->will($this->returnCallback(function ($data, \RecursiveIteratorIterator $iterator) use ($child1, $child2, $test) {
-                        $test->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\Util\InheritDataAwareIterator', $iterator->getInnerIterator());
-                        $test->assertSame(array('firstName' => $child1, 'lastName' => $child2), iterator_to_array($iterator));
-                    }));
+                $test->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\Util\InheritDataAwareIterator', $iterator->getInnerIterator());
+                $test->assertSame(array('firstName' => $child1, 'lastName' => $child2), iterator_to_array($iterator));
+            }));
 
         $block->setData('foo');
     }
