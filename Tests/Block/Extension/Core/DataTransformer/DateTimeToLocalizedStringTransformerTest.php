@@ -60,9 +60,9 @@ class DateTimeToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCa
     {
         return array(
             array(\IntlDateFormatter::SHORT, null, '11/10/2013 05:05', '2013-10-11 05:05:00 UTC'),
-            array(\IntlDateFormatter::MEDIUM, null, '11 oct. 2013 05:05', '2013-10-11 05:05:00 UTC'),
-            array(\IntlDateFormatter::LONG, null, '11 octobre 2013 05:05', '2013-10-11 05:05:00 UTC'),
-            array(\IntlDateFormatter::FULL, null, 'vendredi 11 octobre 2013 05:05', '2013-10-11 05:05:00 UTC'),
+            array(\IntlDateFormatter::MEDIUM, null, '11 oct. 2013 à 05:05', '2013-10-11 05:05:00 UTC'),
+            array(\IntlDateFormatter::LONG, null, '11 octobre 2013 à 05:05', '2013-10-11 05:05:00 UTC'),
+            array(\IntlDateFormatter::FULL, null, 'vendredi 11 octobre 2013 à 05:05', '2013-10-11 05:05:00 UTC'),
             array(\IntlDateFormatter::SHORT, \IntlDateFormatter::NONE, '23/05/2012', '2012-05-23 00:00:00 UTC'),
             array(\IntlDateFormatter::MEDIUM, \IntlDateFormatter::NONE, '23 mai 2012', '2012-05-23 00:00:00 UTC'),
             array(\IntlDateFormatter::LONG, \IntlDateFormatter::NONE, '23 mai 2012', '2012-05-23 00:00:00 UTC'),
@@ -99,7 +99,7 @@ class DateTimeToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCa
     {
         $transformer = new DateTimeToLocalizedStringTransformer(null, null, \IntlDateFormatter::FULL, 'Europe/Paris');
 
-        $this->assertEquals('11/10/2013 07:05:05 heure avancée d’Europe centrale', $transformer->transform($this->dateTime));
+        $this->assertEquals('11/10/2013 07:05:05 heure d’été d’Europe centrale', $transformer->transform($this->dateTime));
     }
 
     public function testTransformToDifferentLocale()
@@ -134,7 +134,7 @@ class DateTimeToLocalizedStringTransformerTest extends \PHPUnit_Framework_TestCa
     {
         $transformer = new DateTimeToLocalizedStringTransformer(\IntlDateFormatter::GREGORIAN, \IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'UTC');
 
-        $this->assertEquals('vendredi 11 octobre 2013 05:05:05 UTC', $transformer->transform($this->dateTime));
+        $this->assertEquals('vendredi 11 octobre 2013 à 05:05:05 UTC', $transformer->transform($this->dateTime));
     }
 
     /**
