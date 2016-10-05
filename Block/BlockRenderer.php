@@ -143,22 +143,22 @@ class BlockRenderer implements BlockRendererInterface
         $viewAndSuffixCacheKey = $viewCacheKey.$blockNameSuffix;
 
         // In templates, we have to deal with two kinds of block hierarchies:
-        //
+
         //   +---------+          +---------+
         //   | Theme B | -------> | Theme A |
         //   +---------+          +---------+
-        //
+
         //  block_widget -------> block_widget
         //       ^
         //       |
         //  choice_widget -----> choice_widget
-        //
+
         // The first kind of hierarchy is the theme hierarchy. This allows to
         // override the block "choice_widget" from Theme A in the extending
         // Theme B. This kind of inheritance needs to be supported by the
         // template engine and, for example, offers "parent()" or similar
         // functions to fall back from the custom to the parent implementation.
-        //
+
         // The second kind of hierarchy is the block type hierarchy. This allows
         // to implement a custom "choice_widget" block (no matter in which theme),
         // or to fallback to the block of the parent type, which would be
@@ -167,7 +167,7 @@ class BlockRenderer implements BlockRendererInterface
         // custom "choice_widget", for example because he only wants to wrap
         // a <div> around the original implementation, he can simply call the
         // widget() function again to render the block for the parent type.
-        //
+
         // The second kind is implemented in the following blocks.
         if (!isset($this->blockNameHierarchyMap[$viewAndSuffixCacheKey])) {
             // INITIAL CALL
@@ -242,7 +242,7 @@ class BlockRenderer implements BlockRendererInterface
         // In order to make recursive calls possible, we need to store the block hierarchy,
         // the current level of the hierarchy and the variables so that this method can
         // resume rendering one level higher of the hierarchy when it is called recursively.
-        //
+
         // We need to store these values in maps (associative arrays) because within a
         // call to widget() another call to widget() can be made, but for a different block view
         // object. These nested calls should not override each other.
