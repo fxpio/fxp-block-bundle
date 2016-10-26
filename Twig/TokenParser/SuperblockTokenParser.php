@@ -99,7 +99,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
                     $sBlocks->setNode(count($sBlocks), $node);
                 } elseif (!$node instanceof \Twig_Node_Text || ($node instanceof \Twig_Node_Text && '' !== trim($node->getAttribute('data')))) {
                     if (null === $previousTwigNode) {
-                        $previousTwigNode = new SuperblockClosure(new \Twig_Node(array(), array(), $lineno), $node->getLine());
+                        $previousTwigNode = new SuperblockClosure(new \Twig_Node(array(), array(), $lineno), $node->getTemplateLine());
                     }
 
                     $previousTwigNode->getNode('body')->setNode(count($previousTwigNode->getNode('body')), $node);
@@ -172,7 +172,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
             do {
                 if (!$stream->test(\Twig_Token::NAME_TYPE)
                     && !$stream->test(\Twig_Token::STRING_TYPE)) {
-                    throw new \Twig_Error_Syntax(sprintf('The attribute name "%s" must be an STRING or CONSTANT', $stream->getCurrent()->getValue()), $stream->getCurrent()->getLine(), $stream->getFilename());
+                    throw new \Twig_Error_Syntax(sprintf('The attribute name "%s" must be an STRING or CONSTANT', $stream->getCurrent()->getValue()), $stream->getCurrent()->getLine(), $stream->getSourceContext()->getName());
                 }
 
                 $attr = $stream->getCurrent();
@@ -180,7 +180,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
                 $stream->next();
 
                 if (!$stream->test(\Twig_Token::OPERATOR_TYPE, '=')) {
-                    throw new \Twig_Error_Syntax("The attribute must be followed by '=' operator", $stream->getCurrent()->getLine(), $stream->getFilename());
+                    throw new \Twig_Error_Syntax("The attribute must be followed by '=' operator", $stream->getCurrent()->getLine(), $stream->getSourceContext()->getName());
                 }
 
                 $stream->next();
@@ -209,7 +209,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
                     $stream->next();
                 } elseif (!$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
                     && !$stream->test(\Twig_Token::BLOCK_END_TYPE)) {
-                    throw new \Twig_Error_Syntax("The parameters after 'with' must be separated by commas", $stream->getCurrent()->getLine(), $stream->getFilename());
+                    throw new \Twig_Error_Syntax("The parameters after 'with' must be separated by commas", $stream->getCurrent()->getLine(), $stream->getSourceContext()->getName());
                 }
             } while (!$stream->test(\Twig_Token::PUNCTUATION_TYPE, ':')
                 && !$stream->test(\Twig_Token::BLOCK_END_TYPE));
@@ -254,7 +254,7 @@ class SuperblockTokenParser extends \Twig_TokenParser
         }
 
         $name = $previous->getAttribute('name');
-        $reference = new SuperblockReference($name, $variables, $previous->getLine(), $previous->getNodeTag());
+        $reference = new SuperblockReference($name, $variables, $previous->getTemplateLine(), $previous->getNodeTag());
         $reference->setAttribute('is_closure', true);
         $reference->setAttribute('parent_name', $parentName);
 
