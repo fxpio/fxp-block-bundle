@@ -8,9 +8,9 @@ namespace Acme\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\DateTimeType;
-use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextType;
-use Sonatra\Bundle\BlockBundle\Block\Extension\Core\Type\TextareaType;
+use Sonatra\Component\Block\Extension\Core\Type\DateTimeType;
+use Sonatra\Component\Block\Extension\Core\Type\TextType;
+use Sonatra\Component\Block\Extension\Core\Type\TextareaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class DefaultController extends Controller

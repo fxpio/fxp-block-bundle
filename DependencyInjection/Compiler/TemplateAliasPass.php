@@ -11,7 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler;
 
-use Sonatra\Bundle\BlockBundle\Block\Util\StringUtil;
+use Sonatra\Component\Block\Util\StringUtil;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 

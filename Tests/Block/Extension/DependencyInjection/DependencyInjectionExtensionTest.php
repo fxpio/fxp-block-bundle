@@ -13,7 +13,7 @@ namespace Sonatra\Bundle\BlockBundle\Tests\Block\Extension\DependencyInjection;
 
 use Sonatra\Bundle\BlockBundle\DependencyInjection\SonatraBlockExtension;
 use Sonatra\Bundle\BlockBundle\SonatraBlockBundle;
-use Sonatra\Bundle\BlockBundle\Tests\Block\AbstractBaseExtensionTest;
+use Sonatra\Component\Block\Tests\AbstractBaseExtensionTest;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\Config\FileLocator;
@@ -35,7 +35,7 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
 
     protected function assertPreConditions()
     {
-        $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\BlockExtensionInterface', $this->extension);
+        $this->assertInstanceOf('Sonatra\Component\Block\BlockExtensionInterface', $this->extension);
     }
 
     protected function getContainer($service)
@@ -85,13 +85,13 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
     }
 
     /**
-     * @expectedException \Sonatra\Bundle\BlockBundle\Block\Exception\InvalidArgumentException
+     * @expectedException \Sonatra\Component\Block\Exception\InvalidArgumentException
      */
     public function testInvalidServiceAlias()
     {
         $container = $this->getContainer('container2');
         $extension = $container->get('sonatra_block.extension');
-        $this->assertInstanceOf('Sonatra\Bundle\BlockBundle\Block\BlockExtensionInterface', $extension);
+        $this->assertInstanceOf('Sonatra\Component\Block\BlockExtensionInterface', $extension);
 
         $extension->getType('bar');
     }

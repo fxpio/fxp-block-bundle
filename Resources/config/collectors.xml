@@ -5,8 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="data_collector.sonatra_block.class">Sonatra\Bundle\BlockBundle\Block\Extension\DataCollector\BlockDataCollector</parameter>
-        <parameter key="data_collector.sonatra_block.extractor.class">Sonatra\Bundle\BlockBundle\Block\Extension\DataCollector\BlockDataExtractor</parameter>
+        <parameter key="data_collector.sonatra_block.class">Sonatra\Component\Block\Extension\DataCollector\BlockDataCollector</parameter>
+        <parameter key="data_collector.sonatra_block.extractor.class">Sonatra\Component\Block\Extension\DataCollector\BlockDataExtractor</parameter>
     </parameters>
 
     <services>

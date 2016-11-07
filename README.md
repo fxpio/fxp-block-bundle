@@ -18,24 +18,11 @@ the features available in this bundle.
 
 Features include:
 
-- Block Registry
-- Block Factory
-- Block Type Builder
-- Block Type Configuration
-- Block Type Extension
-- Data Mapper
-- Data Transformer
-- All same default Form Types
-- Automatic type detection
-- Templating Engine
-- Block Renderer
-- Twig Renderer Engine
-- Twig Extension
-- Block Theme and hierarchy for search parent block
-- Doctrine Entity Type
-- Twig filter formatter for convert the value in the specific block type
-- Profiler
-- Auto registration of all blocks for create the twig tags and functions (Domain Specific Language)
+- All features of [Sonatra Block](https://github.com/sonatra/sonatra-block)
+- Compiler pass to register blocks
+- Compiler pass to register block extensions
+- Compiler pass to register block templates
+- Compiler pass to register block aliases
 
 Documentation
 -------------
@@ -61,7 +48,7 @@ About
 -----
 
 Sonatra BlockBundle is a [sonatra](https://github.com/sonatra) initiative.
-See also the list of [contributors](https://github.com/sonatra/SonatraBlockBundle/contributors).
+See also the list of [contributors](https://github.com/sonatra/SonatraBlockBundle/graphs/contributors).
 
 Reporting an issue or a feature request
 ---------------------------------------

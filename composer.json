@@ -14,16 +14,14 @@
     "require": {
         "php": ">=5.5.0",
         "symfony/framework-bundle": "~3.0",
-        "symfony/twig-bundle": "~3.0",
-        "symfony/form": "~3.0",
-        "symfony/validator": "~3.0",
-        "symfony/doctrine-bridge": "~3.0"
+        "sonatra/block": "~1.0@dev"
     },
     "require-dev": {
+        "symfony/twig-bundle": "~3.0",
+        "symfony/validator": "~3.0",
         "doctrine/orm": "~2.5"
     },
     "suggest": {
-        "doctrine/orm": "For doctrine block type",
         "sonatra/bootstrap-bundle": "The twitter bootstrap DSL twig tag"
     },
     "autoload": {
