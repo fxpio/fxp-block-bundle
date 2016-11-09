@@ -2,9 +2,9 @@ Sonatra Block Bundle
 ====================
 
 [![Latest Version](https://img.shields.io/packagist/v/sonatra/block-bundle.svg)](https://packagist.org/packages/sonatra/block-bundle)
-[![Build Status](https://img.shields.io/travis/sonatra/SonatraBlockBundle/master.svg)](https://travis-ci.org/sonatra/SonatraBlockBundle)
-[![Coverage Status](https://img.shields.io/coveralls/sonatra/SonatraBlockBundle/master.svg)](https://coveralls.io/r/sonatra/SonatraBlockBundle?branch=master)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/sonatra/SonatraBlockBundle/master.svg)](https://scrutinizer-ci.com/g/sonatra/SonatraBlockBundle?branch=master)
+[![Build Status](https://img.shields.io/travis/sonatra/sonatra-block-bundle/master.svg)](https://travis-ci.org/sonatra/sonatra-block-bundle)
+[![Coverage Status](https://img.shields.io/coveralls/sonatra/sonatra-block-bundle/master.svg)](https://coveralls.io/r/sonatra/sonatra-block-bundle?branch=master)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/sonatra/sonatra-block-bundle/master.svg)](https://scrutinizer-ci.com/g/sonatra/sonatra-block-bundle?branch=master)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/0d1dda71-3f47-4dad-be53-017da27d21a8.svg)](https://insight.sensiolabs.com/projects/0d1dda71-3f47-4dad-be53-017da27d21a8)
 
 The Sonatra BlockBundle provides tools for defining UI blocks, rendering and mapping
@@ -48,12 +48,12 @@ About
 -----
 
 Sonatra BlockBundle is a [sonatra](https://github.com/sonatra) initiative.
-See also the list of [contributors](https://github.com/sonatra/SonatraBlockBundle/graphs/contributors).
+See also the list of [contributors](https://github.com/sonatra/sonatra-block-bundle/graphs/contributors).
 
 Reporting an issue or a feature request
 ---------------------------------------
 
-Issues and feature requests are tracked in the [Github issue tracker](https://github.com/sonatra/SonatraBlockBundle/issues).
+Issues and feature requests are tracked in the [Github issue tracker](https://github.com/sonatra/sonatra-block-bundle/issues).
 
 When reporting a bug, it may be a good idea to reproduce it in a basic project
 built using the [Symfony Standard Edition](https://github.com/symfony/symfony-standard)

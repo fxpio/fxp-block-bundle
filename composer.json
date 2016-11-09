@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "Provides tools for defining UI blocks, rendering and mapping response data to related models",
     "keywords": ["block", "user interface", "ui"],
-    "homepage": "https://github.com/sonatra/SonatraBlockBundle",
+    "homepage": "https://github.com/sonatra/sonatra-block-bundle",
     "license": "MIT",
     "authors": [
         {
