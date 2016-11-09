@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "27bd92ef558425d1ae67d132bdb55e43",
+    "hash": "fb616fc0cea3f3d3f96fd385641b1f19",
     "content-hash": "9a29d91f1e22e00e125e1ccd5e2f6521",
     "packages": [
         {
@@ -201,16 +201,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.3",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "c0125896dbb151380ab47e96c621741e79623beb"
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/c0125896dbb151380ab47e96c621741e79623beb",
-                "reference": "c0125896dbb151380ab47e96c621741e79623beb",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
                 "shasum": ""
             },
             "require": {
@@ -245,7 +245,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-10-17 15:23:22"
+            "time": "2016-11-07 23:38:38"
         },
         {
             "name": "psr/cache",
@@ -346,12 +346,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonatra/sonatra-block.git",
-                "reference": "8b9fb618b940fb13773f7c9da6faa24c82494b25"
+                "reference": "cd803e19cb0c63bb9c774dbfea23b323e72f934e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonatra/sonatra-block/zipball/8b9fb618b940fb13773f7c9da6faa24c82494b25",
-                "reference": "8b9fb618b940fb13773f7c9da6faa24c82494b25",
+                "url": "https://api.github.com/repos/sonatra/sonatra-block/zipball/cd803e19cb0c63bb9c774dbfea23b323e72f934e",
+                "reference": "cd803e19cb0c63bb9c774dbfea23b323e72f934e",
                 "shasum": ""
             },
             "require": {
@@ -404,7 +404,7 @@
                 "ui",
                 "user interface"
             ],
-            "time": "2016-11-07 14:07:47"
+            "time": "2016-11-07 15:28:16"
         },
         {
             "name": "symfony/asset",
