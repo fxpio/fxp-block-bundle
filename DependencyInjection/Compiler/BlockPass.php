@@ -11,8 +11,8 @@
 
 namespace Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Adds all services with the tags "sonatra_block.type" and "sonatra_block.type_guesser" as

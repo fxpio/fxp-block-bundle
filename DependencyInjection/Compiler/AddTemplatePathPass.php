@@ -12,8 +12,8 @@
 namespace Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler;
 
 use Sonatra\Bundle\BlockBundle\SonatraBlockBundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * This compiler pass adds the path for the Block template in the twig loader.

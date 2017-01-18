@@ -11,11 +11,11 @@
 
 namespace Sonatra\Bundle\BlockBundle\Tests\DependencyInjection;
 
+use Sonatra\Bundle\BlockBundle\DependencyInjection\SonatraBlockExtension;
+use Sonatra\Bundle\BlockBundle\SonatraBlockBundle;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Sonatra\Bundle\BlockBundle\SonatraBlockBundle;
-use Sonatra\Bundle\BlockBundle\DependencyInjection\SonatraBlockExtension;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**

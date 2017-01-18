@@ -12,8 +12,8 @@
 namespace Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler;
 
 use Sonatra\Component\Block\Util\StringUtil;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Adds all aliases of block in template extension.

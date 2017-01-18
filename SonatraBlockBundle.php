@@ -11,12 +11,12 @@
 
 namespace Sonatra\Bundle\BlockBundle;
 
+use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\AddTemplatePathPass;
+use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\BlockPass;
 use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\BlockTemplatePass;
 use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\TemplateAliasPass;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\BlockPass;
-use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\AddTemplatePathPass;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * @author François Pluchino <francois.pluchino@sonatra.com>
