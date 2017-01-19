@@ -35,7 +35,7 @@ class DefaultController extends Controller
         ->add('postedAt', DateTimeType::class, array('label' => 'Posted at'))
         ->getBlock();
 
-        return $this->render("AcmeBlogBundle:Default:post_create.html.twig", array('block' => $block->createView()));
+        return $this->render("@AcmeBlog/Default/post_create.html.twig", array('block' => $block->createView()));
     }
 }
 ```

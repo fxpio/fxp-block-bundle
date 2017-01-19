@@ -1,6 +1,6 @@
-{%- extends 'WebProfilerBundle:Profiler:layout.html.twig' -%}
+{%- extends '@WebProfiler/Profiler/layout.html.twig' -%}
 
-{%- from 'SonatraBlockBundle:Collector:macro.html.twig' import block_tree_entry, block_tree_details -%}
+{%- from '@SonatraBlock/Collector/macro.html.twig' import block_tree_entry, block_tree_details -%}
 
 {% block toolbar -%}
     {%- if collector.data|length and collector.data.blocks|length -%}
@@ -41,7 +41,7 @@
 
 {% block head -%}
     {{- parent() -}}
-    {%- include 'SonatraBlockBundle:Collector:block.css.twig' -%}
+    {%- include '@SonatraBlock/Collector/block.css.twig' -%}
 {%- endblock head %}
 
 {% block panel -%}
@@ -67,5 +67,5 @@
         </div>
     {% endif %}
 
-    {%- include 'SonatraBlockBundle:Collector:block.js.twig' -%}
+    {%- include '@SonatraBlock/Collector/block.js.twig' -%}
 {%- endblock panel %}
