@@ -134,7 +134,7 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
             ));
 
         $validResources = array(
-            'SonatraBlockBundle:Block:block_div_layout.html.twig',
+            'block_div_layout.html.twig',
             'foobar.html.twig',
         );
 

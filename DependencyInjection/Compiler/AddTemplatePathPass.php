@@ -11,7 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler;
 
-use Sonatra\Bundle\BlockBundle\SonatraBlockBundle;
+use Sonatra\Component\Block\Block;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -31,7 +31,7 @@ class AddTemplatePathPass implements CompilerPassInterface
             return;
         }
 
-        $refl = new \ReflectionClass(SonatraBlockBundle::class);
+        $refl = new \ReflectionClass(Block::class);
 
         $path = dirname($refl->getFileName()).'/Resources/views/Block';
         $container->getDefinition('twig.loader.filesystem')->addMethodCall('addPath', array($path));

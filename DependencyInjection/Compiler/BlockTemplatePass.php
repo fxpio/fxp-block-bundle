@@ -33,7 +33,7 @@ class BlockTemplatePass implements CompilerPassInterface
         $resources = $container->getParameter('sonatra_block.twig.resources');
 
         array_splice($resources, 0, 0, array(
-            'SonatraBlockBundle:Block:block_div_layout.html.twig',
+            'block_div_layout.html.twig',
         ));
 
         $container->setParameter('sonatra_block.twig.resources', $resources);
