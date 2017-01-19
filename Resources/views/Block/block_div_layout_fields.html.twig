@@ -1,28 +1,37 @@
 {# Widgets #}
 
 {% block collection_widget -%}
+{%- if rendered -%}
     {{- block('block_widget') -}}
     {{- empty_message|default(null)|raw -}}
+{%- endif -%}
 {%- endblock collection_widget %}
 
 {% block textarea_widget -%}
+{%- if rendered -%}
     {%- set value = value|raw|nl2br -%}
     {{- block('block_widget_simple') -}}
+{%- endif -%}
 {%- endblock textarea_widget %}
 
 {% block choice_widget -%}
+{%- if rendered -%}
     {%- if expanded -%}
         {{- block('choice_widget_expanded') -}}
     {%- else -%}
         {{- block('choice_widget_collapsed') -}}
     {%- endif -%}
+{%- endif -%}
 {%- endblock choice_widget %}
 
 {% block choice_widget_expanded -%}
+{%- if rendered -%}
     {{- block('choice_widget_collapsed') -}}
+{%- endif -%}
 {%- endblock choice_widget_expanded %}
 
 {% block choice_widget_collapsed -%}
+{%- if rendered -%}
     {%- if multiple -%}
         {%- set attr = attr|merge({'class': attr.class|default('') ~ ' choice_multiple' }) -%}
     {%- else -%}
@@ -33,9 +42,11 @@
         {%- set options = selected_choices -%}
         {{- block('choice_widget_options') -}}
     </div>
+{%- endif -%}
 {%- endblock choice_widget_collapsed %}
 
 {% block choice_widget_options -%}
+{%- if rendered -%}
     {%- for indice, option in options -%}
         {% set optionLabel = option.label|block_trans({}, choice_translation_domain) %}
         {%- if route_name is defined and route_name is not null -%}
@@ -49,14 +60,18 @@
     {%- if options|length == 0 -%}
         <span class="choice-empty">{{ empty_value }}</span>
     {%- endif -%}
+{%- endif -%}
 {%- endblock choice_widget_options %}
 
 {% block checkbox_widget -%}
+{%- if rendered -%}
     {%- set attr = attr|merge({'class': (attr.class|default('') ~ ' block_checkbox ' ~ value)|trim}) -%}
     <div{{ block('widget_attributes') }}></div>
+{%- endif -%}
 {%- endblock checkbox_widget %}
 
 {% block radio_widget -%}
+{%- if rendered -%}
     {%- if value -%}
         {%- set attr = attr|merge({'class': (attr.class|default('') ~ ' block_radio checked')|trim}) -%}
     {%- else -%}
@@ -64,9 +79,11 @@
     {%- endif -%}
 
     <div{{ block('widget_attributes') }}></div>
+{%- endif -%}
 {%- endblock radio_widget %}
 
 {% block url_widget -%}
+{%- if rendered -%}
     {%- set title = title|default(value) -%}
     {%- set url_attr = url_attr|merge({'href': value, 'tabindex': 0 }) -%}
     {%- set value -%}
@@ -77,12 +94,14 @@
         {%- endif -%}
     {%- endset -%}
     {{- block('block_widget_simple') -}}
+{%- endif -%}
 {%- endblock url_widget %}
 
 {% block hidden_widget -%}
 {%- endblock hidden_widget %}
 
 {% block email_widget -%}
+{%- if rendered -%}
     {%- if mailto -%}
         {%- set label = label|default(value) -%}
         {%- if label_format is not empty -%}
@@ -97,8 +116,11 @@
         {%- endset -%}
     {%- endif -%}
     {{- block('block_widget_simple') -}}
+{%- endif -%}
 {%- endblock email_widget %}
 
 {% block entity_widget -%}
+{%- if rendered -%}
     {{- block('choice_widget') -}}
+{%- endif -%}
 {%- endblock entity_widget %}

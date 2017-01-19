@@ -13,34 +13,43 @@
 
 
 {% block block_widget_simple -%}
+{%- if rendered -%}
     {% if wrapped %}<div{{ block('widget_attributes') }}>{% endif %}{{ value|raw }}{% if wrapped %}</div>{% endif %}
+{%- endif -%}
 {%- endblock block_widget_simple %}
 
 {% block block_widget_compound -%}
+{%- if rendered -%}
     {%- if wrapped %}<div{{ block('widget_container_attributes') }}>{% endif %}
     {{- block('block_rows') -}}
     {% if wrapped %}</div>{% endif -%}
+{%- endif -%}
 {%- endblock block_widget_compound %}
 
 
 {% block output_widget -%}
+{%- if rendered -%}
     {%- if escape -%}
         {{- value -}}
     {%- else -%}
         {{ value|raw }}
     {%- endif -%}
     {{- block('block_rows') -}}
+{%- endif -%}
 {%- endblock output_widget %}
 
 
 {% block closure_widget -%}
+{%- if rendered -%}
     {{- value|raw_closure(block) -}}
     {{- block('block_rows') -}}
+{%- endif -%}
 {%- endblock closure_widget %}
 
 {# Labels #}
 
 {% block block_label -%}
+{%- if rendered -%}
     {%- if not compound -%}
         {%- set label_attr = label_attr -%}
     {%- endif -%}
@@ -64,19 +73,25 @@
             {{- block(block_label_content) -}}
         </div>
     {%- endif -%}
+{%- endif -%}
 {%- endblock block_label %}
 
 {% block block_label_content -%}
+{%- if rendered -%}
     {{- label|block_trans({}, translation_domain) -}}
+{%- endif -%}
 {%- endblock block_label_content %}
 
 {# Rows #}
 
 {% block repeated_row -%}
+{%- if rendered -%}
     {{- block('block_rows') -}}
+{%- endif -%}
 {%- endblock repeated_row %}
 
 {% block block_row -%}
+{%- if rendered -%}
     {%- if block.parent.vars.row|default(false) -%}
         <div>
     {%- endif -%}
@@ -87,10 +102,13 @@
     {%- if block.parent.vars.row|default(false) -%}
         </div>
     {%- endif -%}
+{%- endif -%}
 {%- endblock block_row %}
 
 {% block hidden_row -%}
+{%- if rendered -%}
     {{- block_widget(block) -}}
+{%- endif -%}
 {%- endblock hidden_row %}
 
 {# Misc #}
@@ -99,9 +117,11 @@
 {# Support #}
 
 {% block block_rows -%}
+{%- if rendered -%}
     {%- for child in block -%}
         {{- block_row(child) -}}
     {%- endfor -%}
+{%- endif -%}
 {%- endblock block_rows -%}
 
 {% block widget_attributes -%}
