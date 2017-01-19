@@ -46,6 +46,7 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
                 'TwigBundle' => 'Symfony\\Bundle\\TwigBundle\\TwigBundle',
                 'SonatraBlockBundle' => 'Sonatra\\Bundle\\BlockBundle\\SonatraBlockBundle',
             ),
+            'kernel.bundles_metadata' => array(),
             'kernel.cache_dir' => __DIR__,
             'kernel.debug' => false,
             'kernel.environment' => 'test',
