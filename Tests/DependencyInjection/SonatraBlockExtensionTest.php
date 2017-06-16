@@ -11,6 +11,7 @@
 
 namespace Sonatra\Bundle\BlockBundle\Tests\DependencyInjection;
 
+use PHPUnit\Framework\TestCase;
 use Sonatra\Bundle\BlockBundle\DependencyInjection\SonatraBlockExtension;
 use Sonatra\Bundle\BlockBundle\SonatraBlockBundle;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
@@ -23,7 +24,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  *
  * @author François Pluchino <francois.pluchino@sonatra.com>
  */
-class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
+class SonatraBlockExtensionTest extends TestCase
 {
     public function testExtensionExist()
     {
@@ -169,6 +170,8 @@ class SonatraBlockExtensionTest extends \PHPUnit_Framework_TestCase
         $container->getCompilerPassConfig()->setOptimizationPasses(array());
         $container->getCompilerPassConfig()->setRemovingPasses(array());
         $container->compile();
+
+        $this->assertFalse($container->hasDefinition('sonatra_block.extension'));
     }
 
     protected function createContainer(array $configs = array())
