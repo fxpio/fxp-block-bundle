@@ -17,6 +17,7 @@ use Sonatra\Component\Block\Tests\AbstractBaseExtensionTest;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -51,7 +52,8 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
             'kernel.debug' => false,
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
-            'kernel.root_dir' => __DIR__,
+            'kernel.root_dir' => __DIR__.'/Fixtures',
+            'kernel.project_dir' => __DIR__,
             'kernel.charset' => 'UTF-8',
             'kernel.secret' => 'TestSecret',
         )));
@@ -77,6 +79,12 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
 
         $load = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Fixtures/config'));
         $load->load($service.'.xml');
+
+        $container->findDefinition('validator.validator_factory')
+            ->replaceArgument(0, ServiceLocatorTagPass::register($container, array()));
+
+        $container->findDefinition('translator.default')
+            ->replaceArgument(0, ServiceLocatorTagPass::register($container, array()));
 
         $container->getCompilerPassConfig()->setRemovingPasses(array());
 
