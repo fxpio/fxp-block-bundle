@@ -56,7 +56,7 @@ class SonatraBlockExtension extends Extension
      */
     private function registerDoctrineConfiguration(array $config, XmlFileLoader $loader)
     {
-        if ($config['enabled']) {
+        if ($config['enabled'] && class_exists('Doctrine\Common\Persistence\ManagerRegistry')) {
             $loader->load('doctrine.xml');
         }
     }
@@ -71,7 +71,7 @@ class SonatraBlockExtension extends Extension
      */
     private function registerProfilerConfiguration(array $config, XmlFileLoader $loader)
     {
-        if ($config['enabled'] && $config['collect']) {
+        if ($config['enabled'] && $config['collect'] && class_exists('Symfony\Component\Debug\Debug')) {
             $loader->load('block_debug.xml');
             $loader->load('collectors.xml');
         }
