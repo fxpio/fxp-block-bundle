@@ -22,7 +22,7 @@
         </service>
 
         <!-- BlockFactory -->
-        <service id="sonatra_block.factory" class="%sonatra_block.factory.class%">
+        <service id="sonatra_block.factory" class="%sonatra_block.factory.class%" public="true">
             <argument type="service" id="sonatra_block.registry" />
             <argument type="service" id="sonatra_block.resolved_type_factory" />
         </service>
@@ -51,107 +51,140 @@
         </service>
 
         <!-- CoreExtension -->
-        <service id="sonatra_block.type.block" class="Sonatra\Component\Block\Extension\Core\Type\BlockType">
+        <service id="sonatra_block.type.block" class="Sonatra\Component\Block\Extension\Core\Type\BlockType"
+                 public="true">
             <argument type="service" id="property_accessor"/>
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.twig" class="Sonatra\Component\Block\Extension\Core\Type\TwigType">
+        <service id="sonatra_block.type.twig" class="Sonatra\Component\Block\Extension\Core\Type\TwigType"
+                 public="true">
             <tag name="sonatra_block.type" />
             <argument type="service" id="twig" />
         </service>
-        <service id="sonatra_block.type.output" class="Sonatra\Component\Block\Extension\Core\Type\OutputType">
+        <service id="sonatra_block.type.output" class="Sonatra\Component\Block\Extension\Core\Type\OutputType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.object" class="Sonatra\Component\Block\Extension\Core\Type\ObjectType">
+        <service id="sonatra_block.type.object" class="Sonatra\Component\Block\Extension\Core\Type\ObjectType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.field" class="Sonatra\Component\Block\Extension\Core\Type\FieldType">
+        <service id="sonatra_block.type.field" class="Sonatra\Component\Block\Extension\Core\Type\FieldType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.text" class="Sonatra\Component\Block\Extension\Core\Type\TextType">
+        <service id="sonatra_block.type.text" class="Sonatra\Component\Block\Extension\Core\Type\TextType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.textarea" class="Sonatra\Component\Block\Extension\Core\Type\TextareaType">
+        <service id="sonatra_block.type.textarea" class="Sonatra\Component\Block\Extension\Core\Type\TextareaType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.password" class="Sonatra\Component\Block\Extension\Core\Type\PasswordType">
+        <service id="sonatra_block.type.password" class="Sonatra\Component\Block\Extension\Core\Type\PasswordType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.email" class="Sonatra\Component\Block\Extension\Core\Type\EmailType">
+        <service id="sonatra_block.type.email" class="Sonatra\Component\Block\Extension\Core\Type\EmailType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.url" class="Sonatra\Component\Block\Extension\Core\Type\UrlType">
+        <service id="sonatra_block.type.url" class="Sonatra\Component\Block\Extension\Core\Type\UrlType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.checkbox" class="Sonatra\Component\Block\Extension\Core\Type\CheckboxType">
+        <service id="sonatra_block.type.checkbox" class="Sonatra\Component\Block\Extension\Core\Type\CheckboxType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.radio" class="Sonatra\Component\Block\Extension\Core\Type\RadioType">
+        <service id="sonatra_block.type.radio" class="Sonatra\Component\Block\Extension\Core\Type\RadioType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.datetime" class="Sonatra\Component\Block\Extension\Core\Type\DateTimeType">
+        <service id="sonatra_block.type.datetime" class="Sonatra\Component\Block\Extension\Core\Type\DateTimeType"
+                 public="true">
             <tag name="sonatra_block.type" template-alias="datetime" />
         </service>
-        <service id="sonatra_block.type.date" class="Sonatra\Component\Block\Extension\Core\Type\DateType">
+        <service id="sonatra_block.type.date" class="Sonatra\Component\Block\Extension\Core\Type\DateType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.time" class="Sonatra\Component\Block\Extension\Core\Type\TimeType">
+        <service id="sonatra_block.type.time" class="Sonatra\Component\Block\Extension\Core\Type\TimeType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.birthday" class="Sonatra\Component\Block\Extension\Core\Type\BirthdayType">
+        <service id="sonatra_block.type.birthday" class="Sonatra\Component\Block\Extension\Core\Type\BirthdayType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.timezone" class="Sonatra\Component\Block\Extension\Core\Type\TimezoneType">
+        <service id="sonatra_block.type.timezone" class="Sonatra\Component\Block\Extension\Core\Type\TimezoneType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.number" class="Sonatra\Component\Block\Extension\Core\Type\NumberType">
+        <service id="sonatra_block.type.number" class="Sonatra\Component\Block\Extension\Core\Type\NumberType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.integer" class="Sonatra\Component\Block\Extension\Core\Type\IntegerType">
+        <service id="sonatra_block.type.integer" class="Sonatra\Component\Block\Extension\Core\Type\IntegerType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.percent" class="Sonatra\Component\Block\Extension\Core\Type\PercentType">
+        <service id="sonatra_block.type.percent" class="Sonatra\Component\Block\Extension\Core\Type\PercentType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.money" class="Sonatra\Component\Block\Extension\Core\Type\MoneyType">
+        <service id="sonatra_block.type.money" class="Sonatra\Component\Block\Extension\Core\Type\MoneyType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.currency" class="Sonatra\Component\Block\Extension\Core\Type\CurrencyType">
+        <service id="sonatra_block.type.currency" class="Sonatra\Component\Block\Extension\Core\Type\CurrencyType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.choice" class="Sonatra\Component\Block\Extension\Core\Type\ChoiceType">
+        <service id="sonatra_block.type.choice" class="Sonatra\Component\Block\Extension\Core\Type\ChoiceType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.country" class="Sonatra\Component\Block\Extension\Core\Type\CountryType">
+        <service id="sonatra_block.type.country" class="Sonatra\Component\Block\Extension\Core\Type\CountryType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.locale" class="Sonatra\Component\Block\Extension\Core\Type\LocaleType">
+        <service id="sonatra_block.type.locale" class="Sonatra\Component\Block\Extension\Core\Type\LocaleType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.language" class="Sonatra\Component\Block\Extension\Core\Type\LanguageType">
+        <service id="sonatra_block.type.language" class="Sonatra\Component\Block\Extension\Core\Type\LanguageType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.collection" class="Sonatra\Component\Block\Extension\Core\Type\CollectionType">
+        <service id="sonatra_block.type.collection" class="Sonatra\Component\Block\Extension\Core\Type\CollectionType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.repeated" class="Sonatra\Component\Block\Extension\Core\Type\RepeatedType">
+        <service id="sonatra_block.type.repeated" class="Sonatra\Component\Block\Extension\Core\Type\RepeatedType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.hidden" class="Sonatra\Component\Block\Extension\Core\Type\HiddenType">
+        <service id="sonatra_block.type.hidden" class="Sonatra\Component\Block\Extension\Core\Type\HiddenType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.closure" class="Sonatra\Component\Block\Extension\Core\Type\ClosureType">
+        <service id="sonatra_block.type.closure" class="Sonatra\Component\Block\Extension\Core\Type\ClosureType"
+                 public="true">
             <tag name="sonatra_block.type" />
         </service>
-        <service id="sonatra_block.type.form" class="Sonatra\Component\Block\Extension\Core\Type\FormType">
+        <service id="sonatra_block.type.form" class="Sonatra\Component\Block\Extension\Core\Type\FormType"
+                 public="true">
             <tag name="sonatra_block.type" />
             <argument type="service" id="form.factory" />
         </service>
-        <service id="sonatra_block.type.form_errors" class="Sonatra\Component\Block\Extension\Core\Type\FormFunctionType">
+        <service id="sonatra_block.type.form_errors" class="Sonatra\Component\Block\Extension\Core\Type\FormFunctionType"
+                 public="true">
             <tag name="sonatra_block.type" />
             <argument>errors</argument>
         </service>
-        <service id="sonatra_block.type.form_rest" class="Sonatra\Component\Block\Extension\Core\Type\FormFunctionType">
+        <service id="sonatra_block.type.form_rest" class="Sonatra\Component\Block\Extension\Core\Type\FormFunctionType"
+                 public="true">
             <tag name="sonatra_block.type" />
             <argument>rest</argument>
         </service>

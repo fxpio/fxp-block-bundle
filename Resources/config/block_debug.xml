@@ -18,7 +18,8 @@
         </service>
 
         <!-- DataCollectorTypeExtension -->
-        <service id="sonatra_block.type_extension.block.data_collector" class="%sonatra_block.type_extension.block.data_collector.class%">
+        <service id="sonatra_block.type_extension.block.data_collector" class="%sonatra_block.type_extension.block.data_collector.class%"
+                 public="true">
             <tag name="sonatra_block.type_extension" extended-type="Sonatra\Component\Block\Extension\Core\Type\BlockType" />
             <argument type="service" id="data_collector.sonatra_block" />
         </service>

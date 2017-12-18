@@ -14,7 +14,8 @@
             <argument type="service" id="doctrine" />
         </service>
 
-        <service id="sonatra_block.type.entity" class="Sonatra\Component\Block\Doctrine\Type\EntityType">
+        <service id="sonatra_block.type.entity" class="Sonatra\Component\Block\Doctrine\Type\EntityType"
+                 public="true">
             <tag name="sonatra_block.type" />
             <argument type="service" id="doctrine" />
         </service>
