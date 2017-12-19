@@ -86,6 +86,14 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
         $container->findDefinition('translator.default')
             ->replaceArgument(0, ServiceLocatorTagPass::register($container, array()));
 
+        $container->findDefinition('sonatra_block.extension')->setPublic(true);
+        $container->findDefinition('sonatra_block.type_guesser.validator')->setPublic(true);
+        $container->findDefinition('test.sonatra_block.type.foo')->setPublic(true);
+
+        if ($container->hasDefinition('test.sonatra_block.type_extension.foo')) {
+            $container->findDefinition('test.sonatra_block.type_extension.foo')->setPublic(true);
+        }
+
         $container->getCompilerPassConfig()->setRemovingPasses(array());
 
         $container->compile();

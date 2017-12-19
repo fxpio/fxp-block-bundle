@@ -142,6 +142,7 @@ class BlockPassTest extends TestCase
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
             'kernel.root_dir' => $this->rootDir,
+            'kernel.project_dir' => $this->rootDir,
             'kernel.charset' => 'UTF-8',
             'assetic.debug' => false,
             'assetic.cache_dir' => $this->rootDir.'/cache/assetic',

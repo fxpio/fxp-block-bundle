@@ -155,6 +155,7 @@ class SonatraBlockExtensionTest extends TestCase
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
             'kernel.root_dir' => __DIR__,
+            'kernel.project_dir' => __DIR__,
             'kernel.charset' => 'UTF-8',
         )));
 
@@ -188,6 +189,7 @@ class SonatraBlockExtensionTest extends TestCase
             'kernel.environment' => 'test',
             'kernel.name' => 'kernel',
             'kernel.root_dir' => __DIR__,
+            'kernel.project_dir' => __DIR__,
             'kernel.charset' => 'UTF-8',
         )));
 
