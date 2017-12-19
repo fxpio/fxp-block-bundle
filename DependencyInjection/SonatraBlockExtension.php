@@ -56,7 +56,7 @@ class SonatraBlockExtension extends Extension
      */
     private function registerDoctrineConfiguration(array $config, XmlFileLoader $loader)
     {
-        if ($config['enabled'] && class_exists('Doctrine\Common\Persistence\ManagerRegistry')) {
+        if ($config['enabled'] && interface_exists('Doctrine\Common\Persistence\ManagerRegistry')) {
             $loader->load('doctrine.xml');
         }
     }
