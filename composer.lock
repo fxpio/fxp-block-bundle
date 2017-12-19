@@ -202,12 +202,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonatra/sonatra-block.git",
-                "reference": "3c66298e5fc672717184f517dd07122d05f24d54"
+                "reference": "a83e7a035613e8fbbcadf8b0d3e67dad95916b34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonatra/sonatra-block/zipball/3c66298e5fc672717184f517dd07122d05f24d54",
-                "reference": "3c66298e5fc672717184f517dd07122d05f24d54",
+                "url": "https://api.github.com/repos/sonatra/sonatra-block/zipball/a83e7a035613e8fbbcadf8b0d3e67dad95916b34",
+                "reference": "a83e7a035613e8fbbcadf8b0d3e67dad95916b34",
                 "shasum": ""
             },
             "require": {
@@ -260,7 +260,7 @@
                 "ui",
                 "user interface"
             ],
-            "time": "2017-12-19T20:08:32+00:00"
+            "time": "2017-12-19T20:24:56+00:00"
         },
         {
             "name": "symfony/cache",
