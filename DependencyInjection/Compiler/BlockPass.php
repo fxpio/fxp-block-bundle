@@ -1,26 +1,26 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler;
+namespace Fxp\Bundle\BlockBundle\DependencyInjection\Compiler;
 
-use Sonatra\Component\Block\Exception\InvalidArgumentException;
+use Fxp\Component\Block\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Adds all services with the tags "sonatra_block.type" and "sonatra_block.type_guesser" as
- * arguments of the "sonatra_block.extension" service.
+ * Adds all services with the tags "fxp_block.type" and "fxp_block.type_guesser" as
+ * arguments of the "fxp_block.extension" service.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class BlockPass implements CompilerPassInterface
 {
@@ -29,16 +29,16 @@ class BlockPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('sonatra_block.extension')) {
+        if (!$container->hasDefinition('fxp_block.extension')) {
             return;
         }
 
-        $definition = $container->getDefinition('sonatra_block.extension');
+        $definition = $container->getDefinition('fxp_block.extension');
 
         // Builds an array with service IDs as keys and tag aliases as values
         $types = array();
 
-        foreach ($container->findTaggedServiceIds('sonatra_block.type') as $serviceId => $tag) {
+        foreach ($container->findTaggedServiceIds('fxp_block.type') as $serviceId => $tag) {
             $serviceDefinition = $this->getPublicRequireDefinition($container, $serviceId, 'types');
 
             // Support type access by FQCN
@@ -49,7 +49,7 @@ class BlockPass implements CompilerPassInterface
 
         $typeExtensions = array();
 
-        foreach ($container->findTaggedServiceIds('sonatra_block.type_extension') as $serviceId => $tag) {
+        foreach ($container->findTaggedServiceIds('fxp_block.type_extension') as $serviceId => $tag) {
             $this->getPublicRequireDefinition($container, $serviceId, 'type extensions');
 
             if (isset($tag[0]['extended_type'])) {
@@ -63,8 +63,8 @@ class BlockPass implements CompilerPassInterface
 
         $definition->replaceArgument(1, $typeExtensions);
 
-        // Find all services annotated with "sonatra_block.type_guesser"
-        $guessers = array_keys($container->findTaggedServiceIds('sonatra_block.type_guesser'));
+        // Find all services annotated with "fxp_block.type_guesser"
+        $guessers = array_keys($container->findTaggedServiceIds('fxp_block.type_guesser'));
         foreach ($guessers as $serviceId) {
             $this->getPublicRequireDefinition($container, $serviceId, 'type guessers');
         }

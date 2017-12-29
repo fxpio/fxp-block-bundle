@@ -4,8 +4,74 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ebce7fafd0e24b909f433610d0218c0",
+    "content-hash": "41c090632748697f5d28385399aeb342",
     "packages": [
+        {
+            "name": "fxp/block",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fxpio/fxp-block.git",
+                "reference": "884968ccd39875403ac9f35f332033f0e480c59f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fxpio/fxp-block/zipball/884968ccd39875403ac9f35f332033f0e480c59f",
+                "reference": "884968ccd39875403ac9f35f332033f0e480c59f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.0",
+                "symfony/event-dispatcher": "^3.4.0|^4.0.0",
+                "symfony/form": "^3.4.0|^4.0.0",
+                "symfony/options-resolver": "^3.4.0|^4.0.0"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.6.0",
+                "symfony/dependency-injection": "^3.4.0|^4.0.0",
+                "symfony/doctrine-bridge": "^3.4.0|^4.0.0",
+                "symfony/http-kernel": "^3.4.0|^4.0.0",
+                "symfony/templating": "^3.4.0|^4.0.0",
+                "symfony/translation": "^3.4.0|^4.0.0",
+                "symfony/validator": "^3.4.0|^4.0.0",
+                "twig/twig": "^2.4.0"
+            },
+            "suggest": {
+                "doctrine/orm": "For doctrine block type"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fxp\\Component\\Block\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Pluchino",
+                    "email": "francois.pluchino@gmail.com"
+                }
+            ],
+            "description": "Provides tools for defining UI blocks, rendering and mapping response data to related models",
+            "homepage": "https://github.com/fxpio/fxp-block",
+            "keywords": [
+                "block",
+                "ui",
+                "user interface"
+            ],
+            "time": "2017-12-29T16:42:13+00:00"
+        },
         {
             "name": "psr/cache",
             "version": "1.0.1",
@@ -195,72 +261,6 @@
                 "simple-cache"
             ],
             "time": "2017-01-02T13:31:39+00:00"
-        },
-        {
-            "name": "sonatra/block",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sonatra/sonatra-block.git",
-                "reference": "715ead737a27771752d277c5c8994d9ed70b61ea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sonatra/sonatra-block/zipball/715ead737a27771752d277c5c8994d9ed70b61ea",
-                "reference": "715ead737a27771752d277c5c8994d9ed70b61ea",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.0",
-                "symfony/event-dispatcher": "^3.4.0|^4.0.0",
-                "symfony/form": "^3.4.0|^4.0.0",
-                "symfony/options-resolver": "^3.4.0|^4.0.0"
-            },
-            "require-dev": {
-                "doctrine/orm": "^2.6.0",
-                "symfony/dependency-injection": "^3.4.0|^4.0.0",
-                "symfony/doctrine-bridge": "^3.4.0|^4.0.0",
-                "symfony/http-kernel": "^3.4.0|^4.0.0",
-                "symfony/templating": "^3.4.0|^4.0.0",
-                "symfony/translation": "^3.4.0|^4.0.0",
-                "symfony/validator": "^3.4.0|^4.0.0",
-                "twig/twig": "^2.4.0"
-            },
-            "suggest": {
-                "doctrine/orm": "For doctrine block type"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Sonatra\\Component\\Block\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "François Pluchino",
-                    "email": "francois.pluchino@sonatra.com"
-                }
-            ],
-            "description": "Provides tools for defining UI blocks, rendering and mapping response data to related models",
-            "homepage": "https://github.com/sonatra/sonatra-block",
-            "keywords": [
-                "block",
-                "ui",
-                "user interface"
-            ],
-            "time": "2017-12-27T10:03:40+00:00"
         },
         {
             "name": "symfony/cache",

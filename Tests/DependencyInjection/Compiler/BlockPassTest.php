@@ -1,22 +1,22 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\BlockBundle\Tests\DependencyInjection\Compiler;
+namespace Fxp\Bundle\BlockBundle\Tests\DependencyInjection\Compiler;
 
+use Fxp\Bundle\BlockBundle\DependencyInjection\Compiler\BlockPass;
+use Fxp\Component\Block\Extension\Core\Type\BlockType;
+use Fxp\Component\Block\Extension\DependencyInjection\DependencyInjectionExtension;
+use Fxp\Component\Block\Guess\TypeGuess;
+use Fxp\Component\Block\Tests\Fixtures\Extension\FooExtension;
 use PHPUnit\Framework\TestCase;
-use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\BlockPass;
-use Sonatra\Component\Block\Extension\Core\Type\BlockType;
-use Sonatra\Component\Block\Extension\DependencyInjection\DependencyInjectionExtension;
-use Sonatra\Component\Block\Guess\TypeGuess;
-use Sonatra\Component\Block\Tests\Fixtures\Extension\FooExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -26,7 +26,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * Tests case for Block compiler pass.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class BlockPassTest extends TestCase
 {
@@ -47,7 +47,7 @@ class BlockPassTest extends TestCase
 
     protected function setUp()
     {
-        $this->rootDir = sys_get_temp_dir().'/sonatra_block-bundle_block_pass_tests';
+        $this->rootDir = sys_get_temp_dir().'/fxp_block-bundle_block_pass_tests';
         $this->fs = new Filesystem();
         $this->pass = new BlockPass();
     }
@@ -66,10 +66,10 @@ class BlockPassTest extends TestCase
     {
         $container = $this->getContainer();
 
-        $this->assertTrue($container->hasDefinition('sonatra_block.extension'));
+        $this->assertTrue($container->hasDefinition('fxp_block.extension'));
 
         $blockDef = new Definition(BlockType::class);
-        $blockDef->setTags(array('sonatra_block.type' => array()));
+        $blockDef->setTags(array('fxp_block.type' => array()));
         $blockDef->setPublic(false);
         $container->setDefinition('test.block', $blockDef);
 
@@ -84,10 +84,10 @@ class BlockPassTest extends TestCase
     {
         $container = $this->getContainer();
 
-        $this->assertTrue($container->hasDefinition('sonatra_block.extension'));
+        $this->assertTrue($container->hasDefinition('fxp_block.extension'));
 
         $blockDef = new Definition(FooExtension::class);
-        $blockDef->setTags(array('sonatra_block.type_extension' => array()));
+        $blockDef->setTags(array('fxp_block.type_extension' => array()));
         $blockDef->setPublic(false);
         $container->setDefinition('test.block_extension', $blockDef);
 
@@ -102,10 +102,10 @@ class BlockPassTest extends TestCase
     {
         $container = $this->getContainer();
 
-        $this->assertTrue($container->hasDefinition('sonatra_block.extension'));
+        $this->assertTrue($container->hasDefinition('fxp_block.extension'));
 
         $blockDef = new Definition(FooExtension::class);
-        $blockDef->setTags(array('sonatra_block.type_extension' => array()));
+        $blockDef->setTags(array('fxp_block.type_extension' => array()));
         $container->setDefinition('test.block_extension', $blockDef);
 
         $this->pass->process($container);
@@ -119,10 +119,10 @@ class BlockPassTest extends TestCase
     {
         $container = $this->getContainer();
 
-        $this->assertTrue($container->hasDefinition('sonatra_block.extension'));
+        $this->assertTrue($container->hasDefinition('fxp_block.extension'));
 
         $blockDef = new Definition(TypeGuess::class);
-        $blockDef->setTags(array('sonatra_block.type_guesser' => array()));
+        $blockDef->setTags(array('fxp_block.type_guesser' => array()));
         $blockDef->setPublic(false);
         $container->setDefinition('test.block_guesser', $blockDef);
 
@@ -156,7 +156,7 @@ class BlockPassTest extends TestCase
             array(),
             array(),
         ));
-        $container->setDefinition('sonatra_block.extension', $extDef);
+        $container->setDefinition('fxp_block.extension', $extDef);
 
         return $container;
     }

@@ -1,27 +1,27 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\BlockBundle;
+namespace Fxp\Bundle\BlockBundle;
 
-use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\AddTemplatePathPass;
-use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\BlockPass;
-use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\BlockTemplatePass;
-use Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler\TemplateAliasPass;
+use Fxp\Bundle\BlockBundle\DependencyInjection\Compiler\AddTemplatePathPass;
+use Fxp\Bundle\BlockBundle\DependencyInjection\Compiler\BlockPass;
+use Fxp\Bundle\BlockBundle\DependencyInjection\Compiler\BlockTemplatePass;
+use Fxp\Bundle\BlockBundle\DependencyInjection\Compiler\TemplateAliasPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class SonatraBlockBundle extends Bundle
+class FxpBlockBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {

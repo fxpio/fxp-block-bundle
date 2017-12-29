@@ -8,9 +8,9 @@ namespace Acme\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sonatra\Component\Block\Extension\Core\Type\DateTimeType;
-use Sonatra\Component\Block\Extension\Core\Type\TextType;
-use Sonatra\Component\Block\Extension\Core\Type\TextareaType;
+use Fxp\Component\Block\Extension\Core\Type\DateTimeType;
+use Fxp\Component\Block\Extension\Core\Type\TextType;
+use Fxp\Component\Block\Extension\Core\Type\TextareaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class DefaultController extends Controller
@@ -27,7 +27,7 @@ class DefaultController extends Controller
         $data->setBody("Bar content.");
         $data->setPostedAt(new \Datetime());
 
-        $panel = $this->get('sonatra.panel.factory')->createBuilder('block', $data, array(
+        $panel = $this->get('fxp.panel.factory')->createBuilder('block', $data, array(
                 'block_name'     => 'post_create',
         ))
         ->add('title',  TextType::class, array('label' => 'The title'))

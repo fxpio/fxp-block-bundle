@@ -1,24 +1,24 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler;
+namespace Fxp\Bundle\BlockBundle\DependencyInjection\Compiler;
 
-use Sonatra\Component\Block\Block;
+use Fxp\Component\Block\Block;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * This compiler pass adds the path for the Block template in the twig loader.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class AddTemplatePathPass implements CompilerPassInterface
 {

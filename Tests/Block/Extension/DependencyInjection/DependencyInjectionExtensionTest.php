@@ -1,19 +1,19 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\BlockBundle\Tests\Block\Extension\DependencyInjection;
+namespace Fxp\Bundle\BlockBundle\Tests\Block\Extension\DependencyInjection;
 
-use Sonatra\Bundle\BlockBundle\DependencyInjection\SonatraBlockExtension;
-use Sonatra\Bundle\BlockBundle\SonatraBlockBundle;
-use Sonatra\Component\Block\Tests\AbstractBaseExtensionTest;
+use Fxp\Bundle\BlockBundle\DependencyInjection\FxpBlockExtension;
+use Fxp\Bundle\BlockBundle\FxpBlockBundle;
+use Fxp\Component\Block\Tests\AbstractBaseExtensionTest;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\Config\FileLocator;
@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
 {
@@ -31,12 +31,12 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
     {
         $container = $this->getContainer('container1');
 
-        $this->extension = $container->get('sonatra_block.extension');
+        $this->extension = $container->get('fxp_block.extension');
     }
 
     protected function assertPreConditions()
     {
-        $this->assertInstanceOf('Sonatra\Component\Block\BlockExtensionInterface', $this->extension);
+        $this->assertInstanceOf('Fxp\Component\Block\BlockExtensionInterface', $this->extension);
     }
 
     protected function getContainer($service)
@@ -45,7 +45,7 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
             'kernel.bundles' => array(
                 'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
                 'TwigBundle' => 'Symfony\\Bundle\\TwigBundle\\TwigBundle',
-                'SonatraBlockBundle' => 'Sonatra\\Bundle\\BlockBundle\\SonatraBlockBundle',
+                'FxpBlockBundle' => 'Fxp\\Bundle\\BlockBundle\\FxpBlockBundle',
             ),
             'kernel.bundles_metadata' => array(),
             'kernel.cache_dir' => __DIR__,
@@ -57,7 +57,7 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
             'kernel.charset' => 'UTF-8',
             'kernel.secret' => 'TestSecret',
         )));
-        $bundle = new SonatraBlockBundle();
+        $bundle = new FxpBlockBundle();
         $bundle->build($container); // Attach all default factories
 
         $sfExt = new FrameworkExtension();
@@ -72,7 +72,7 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
         $container->registerExtension($twigExt);
         $twigExt->load(array(), $container);
 
-        $extension = new SonatraBlockExtension();
+        $extension = new FxpBlockExtension();
         $container->registerExtension($extension);
         $config = array('doctrine' => array('enabled' => false));
         $extension->load(array($config), $container);
@@ -86,12 +86,12 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
         $container->findDefinition('translator.default')
             ->replaceArgument(0, ServiceLocatorTagPass::register($container, array()));
 
-        $container->findDefinition('sonatra_block.extension')->setPublic(true);
-        $container->findDefinition('sonatra_block.type_guesser.validator')->setPublic(true);
-        $container->findDefinition('test.sonatra_block.type.foo')->setPublic(true);
+        $container->findDefinition('fxp_block.extension')->setPublic(true);
+        $container->findDefinition('fxp_block.type_guesser.validator')->setPublic(true);
+        $container->findDefinition('test.fxp_block.type.foo')->setPublic(true);
 
-        if ($container->hasDefinition('test.sonatra_block.type_extension.foo')) {
-            $container->findDefinition('test.sonatra_block.type_extension.foo')->setPublic(true);
+        if ($container->hasDefinition('test.fxp_block.type_extension.foo')) {
+            $container->findDefinition('test.fxp_block.type_extension.foo')->setPublic(true);
         }
 
         $container->getCompilerPassConfig()->setRemovingPasses(array());
@@ -102,13 +102,13 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
     }
 
     /**
-     * @expectedException \Sonatra\Component\Block\Exception\InvalidArgumentException
+     * @expectedException \Fxp\Component\Block\Exception\InvalidArgumentException
      */
     public function testInvalidServiceAlias()
     {
         $container = $this->getContainer('container2');
-        $extension = $container->get('sonatra_block.extension');
-        $this->assertInstanceOf('Sonatra\Component\Block\BlockExtensionInterface', $extension);
+        $extension = $container->get('fxp_block.extension');
+        $this->assertInstanceOf('Fxp\Component\Block\BlockExtensionInterface', $extension);
 
         $extension->getType('bar');
     }

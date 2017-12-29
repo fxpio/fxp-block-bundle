@@ -1,12 +1,12 @@
 {%- extends '@WebProfiler/Profiler/layout.html.twig' -%}
 
-{%- from '@SonatraBlock/Collector/macro.html.twig' import block_tree_entry, block_tree_details -%}
+{%- from '@FxpBlock/Collector/macro.html.twig' import block_tree_entry, block_tree_details -%}
 
 {% block toolbar -%}
     {%- if collector.data|length and collector.data.blocks|length -%}
         {% set status_color = collector.data.duplicate_ids ? 'red' : '' %}
         {% set icon %}
-            {{ include('@SonatraBlock/Icon/block.svg') }}
+            {{ include('@FxpBlock/Icon/block.svg') }}
             <span class="sf-toolbar-value">
                 {{ collector.data.duplicate_ids|length ?: collector.data.blocks|length }}
             </span>
@@ -29,7 +29,7 @@
 
 {% block menu -%}
     <span class="label label-status-{{ collector.data.duplicate_ids|length ? 'error' }} {{ collector.data.blocks is empty ? 'disabled' }}">
-        <span class="icon">{{ include('@SonatraBlock/Icon/block.svg') }}</span>
+        <span class="icon">{{ include('@FxpBlock/Icon/block.svg') }}</span>
         <strong>Blocks</strong>
         {% if collector.data.duplicate_ids|length > 0 %}
             <span class="count">
@@ -41,7 +41,7 @@
 
 {% block head -%}
     {{- parent() -}}
-    {%- include '@SonatraBlock/Collector/block.css.twig' -%}
+    {%- include '@FxpBlock/Collector/block.css.twig' -%}
 {%- endblock head %}
 
 {% block panel -%}
@@ -67,5 +67,5 @@
         </div>
     {% endif %}
 
-    {%- include '@SonatraBlock/Collector/block.js.twig' -%}
+    {%- include '@FxpBlock/Collector/block.js.twig' -%}
 {%- endblock panel %}

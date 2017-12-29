@@ -1,24 +1,24 @@
 <?php
 
 /*
- * This file is part of the Sonatra package.
+ * This file is part of the Fxp package.
  *
- * (c) François Pluchino <francois.pluchino@sonatra.com>
+ * (c) François Pluchino <francois.pluchino@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonatra\Bundle\BlockBundle\DependencyInjection\Compiler;
+namespace Fxp\Bundle\BlockBundle\DependencyInjection\Compiler;
 
-use Sonatra\Component\Block\Util\StringUtil;
+use Fxp\Component\Block\Util\StringUtil;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Adds all aliases of block in template extension.
  *
- * @author François Pluchino <francois.pluchino@sonatra.com>
+ * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class TemplateAliasPass implements CompilerPassInterface
 {
@@ -27,15 +27,15 @@ class TemplateAliasPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('sonatra_block.twig.extension')) {
+        if (!$container->hasDefinition('fxp_block.twig.extension')) {
             return;
         }
 
-        $definition = $container->getDefinition('sonatra_block.twig.extension');
+        $definition = $container->getDefinition('fxp_block.twig.extension');
 
         $aliases = array();
 
-        foreach ($container->findTaggedServiceIds('sonatra_block.type') as $serviceId => $tag) {
+        foreach ($container->findTaggedServiceIds('fxp_block.type') as $serviceId => $tag) {
             $serviceDefinition = $container->getDefinition($serviceId);
             $class = $serviceDefinition->getClass();
             $alias = isset($tag[0]['template_alias'])

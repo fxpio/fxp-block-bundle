@@ -15,23 +15,13 @@ Installation is a quick, 2 step process:
 
 ### Step 1: Download the bundle using composer
 
-Add Sonatra BlockBundle in your composer.json:
-
-```js
-{
-    "require": {
-        "sonatra/block-bundle": "~1.0"
-    }
-}
-```
-
-Or tell composer to download the bundle by running the command:
+Tell composer to download the bundle by running the command:
 
 ```bash
-$ php composer.phar require sonatra/block-bundle:"~1.0"
+$ composer require fxp/block-bundle
 ```
 
-Composer will install the bundle to your project's `vendor/sonatra` directory.
+Composer will install the bundle to your project's `vendor/fxp` directory.
 
 ### Step 2: Enable the bundle
 
@@ -44,24 +34,24 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Sonatra\Bundle\BlockBundle\SonatraBlockBundle(),
+        new Fxp\Bundle\BlockBundle\FxpBlockBundle(),
     );
 }
 ```
 
 ### Step 3: Configure the bundle (optional)
 
-You can override the default configuration adding `sonatra_block` tree in `app/config/config.yml`.
-For see the reference of Sonatra Block Configuration, execute command:
+You can override the default configuration adding `fxp_block` tree in `app/config/config.yml`.
+For see the reference of Fxp Block Configuration, execute command:
 
 ```bash
-$ php app/console config:dump-reference SonatraBlockBundle 
+$ php app/console config:dump-reference FxpBlockBundle 
 ```
 
 ### Next Steps
 
 Now that you have completed the basic installation and configuration of the
-Sonatra BlockBundle, you are ready to learn about usages of the bundle.
+Fxp BlockBundle, you are ready to learn about usages of the bundle.
 
 The following documents are available:
 

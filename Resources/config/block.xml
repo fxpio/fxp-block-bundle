@@ -5,16 +5,16 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="sonatra_block.extension.base.class">Sonatra\Component\Block\Extension\DependencyInjection\DependencyInjectionExtension</parameter>
-        <parameter key="sonatra_block.factory.class">Sonatra\Component\Block\BlockFactory</parameter>
-        <parameter key="sonatra_block.registry.class">Sonatra\Component\Block\BlockRegistry</parameter>
-        <parameter key="sonatra_block.resolved_type_factory.class">Sonatra\Component\Block\ResolvedBlockTypeFactory</parameter>
-        <parameter key="sonatra_block.type_guesser.validator.base.class">Sonatra\Component\Block\Extension\Validator\ValidatorTypeGuesser</parameter>
+        <parameter key="fxp_block.extension.base.class">Fxp\Component\Block\Extension\DependencyInjection\DependencyInjectionExtension</parameter>
+        <parameter key="fxp_block.factory.class">Fxp\Component\Block\BlockFactory</parameter>
+        <parameter key="fxp_block.registry.class">Fxp\Component\Block\BlockRegistry</parameter>
+        <parameter key="fxp_block.resolved_type_factory.class">Fxp\Component\Block\ResolvedBlockTypeFactory</parameter>
+        <parameter key="fxp_block.type_guesser.validator.base.class">Fxp\Component\Block\Extension\Validator\ValidatorTypeGuesser</parameter>
     </parameters>
 
     <services>
         <!-- DependencyInjectionExtension -->
-        <service id="sonatra_block.extension" class="%sonatra_block.extension.base.class%" public="false">
+        <service id="fxp_block.extension" class="%fxp_block.extension.base.class%" public="false">
             <property name="container" type="service" id="service_container" />
             <argument type="collection" />
             <argument type="collection" />
@@ -22,170 +22,170 @@
         </service>
 
         <!-- BlockFactory -->
-        <service id="sonatra_block.factory" class="%sonatra_block.factory.class%" public="true">
-            <argument type="service" id="sonatra_block.registry" />
-            <argument type="service" id="sonatra_block.resolved_type_factory" />
+        <service id="fxp_block.factory" class="%fxp_block.factory.class%" public="true">
+            <argument type="service" id="fxp_block.registry" />
+            <argument type="service" id="fxp_block.resolved_type_factory" />
         </service>
 
         <!-- BlockRegistry -->
-        <service id="sonatra_block.registry" class="%sonatra_block.registry.class%">
+        <service id="fxp_block.registry" class="%fxp_block.registry.class%">
             <argument type="collection">
                 <!--
                 We don't need to be able to add more extensions.
-                 * more types can be registered with the sonatra_block.type tag
-                 * more type extensions can be registered with the sonatra_block.type_extension tag
-                 * more type_guessers can be registered with the sonatra_block.type.type_guesser tag
+                 * more types can be registered with the fxp_block.type tag
+                 * more type extensions can be registered with the fxp_block.type_extension tag
+                 * more type_guessers can be registered with the fxp_block.type.type_guesser tag
                 -->
-                <argument type="service" id="sonatra_block.extension" />
+                <argument type="service" id="fxp_block.extension" />
             </argument>
-            <argument type="service" id="sonatra_block.resolved_type_factory" />
+            <argument type="service" id="fxp_block.resolved_type_factory" />
         </service>
 
         <!-- ResolvedBlockTypeFactory -->
-        <service id="sonatra_block.resolved_type_factory" class="%sonatra_block.resolved_type_factory.class%" />
+        <service id="fxp_block.resolved_type_factory" class="%fxp_block.resolved_type_factory.class%" />
 
         <!-- ValidatorTypeGuesser -->
-        <service id="sonatra_block.type_guesser.validator" class="%sonatra_block.type_guesser.validator.base.class%">
-            <tag name="sonatra_block.type_guesser" />
+        <service id="fxp_block.type_guesser.validator" class="%fxp_block.type_guesser.validator.base.class%">
+            <tag name="fxp_block.type_guesser" />
             <argument type="service" id="validator.mapping.class_metadata_factory" />
         </service>
 
         <!-- CoreExtension -->
-        <service id="sonatra_block.type.block" class="Sonatra\Component\Block\Extension\Core\Type\BlockType"
+        <service id="fxp_block.type.block" class="Fxp\Component\Block\Extension\Core\Type\BlockType"
                  public="true">
             <argument type="service" id="property_accessor"/>
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.twig" class="Sonatra\Component\Block\Extension\Core\Type\TwigType"
+        <service id="fxp_block.type.twig" class="Fxp\Component\Block\Extension\Core\Type\TwigType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
             <argument type="service" id="twig" />
         </service>
-        <service id="sonatra_block.type.output" class="Sonatra\Component\Block\Extension\Core\Type\OutputType"
+        <service id="fxp_block.type.output" class="Fxp\Component\Block\Extension\Core\Type\OutputType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.object" class="Sonatra\Component\Block\Extension\Core\Type\ObjectType"
+        <service id="fxp_block.type.object" class="Fxp\Component\Block\Extension\Core\Type\ObjectType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.field" class="Sonatra\Component\Block\Extension\Core\Type\FieldType"
+        <service id="fxp_block.type.field" class="Fxp\Component\Block\Extension\Core\Type\FieldType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.text" class="Sonatra\Component\Block\Extension\Core\Type\TextType"
+        <service id="fxp_block.type.text" class="Fxp\Component\Block\Extension\Core\Type\TextType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.textarea" class="Sonatra\Component\Block\Extension\Core\Type\TextareaType"
+        <service id="fxp_block.type.textarea" class="Fxp\Component\Block\Extension\Core\Type\TextareaType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.password" class="Sonatra\Component\Block\Extension\Core\Type\PasswordType"
+        <service id="fxp_block.type.password" class="Fxp\Component\Block\Extension\Core\Type\PasswordType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.email" class="Sonatra\Component\Block\Extension\Core\Type\EmailType"
+        <service id="fxp_block.type.email" class="Fxp\Component\Block\Extension\Core\Type\EmailType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.url" class="Sonatra\Component\Block\Extension\Core\Type\UrlType"
+        <service id="fxp_block.type.url" class="Fxp\Component\Block\Extension\Core\Type\UrlType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.checkbox" class="Sonatra\Component\Block\Extension\Core\Type\CheckboxType"
+        <service id="fxp_block.type.checkbox" class="Fxp\Component\Block\Extension\Core\Type\CheckboxType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.radio" class="Sonatra\Component\Block\Extension\Core\Type\RadioType"
+        <service id="fxp_block.type.radio" class="Fxp\Component\Block\Extension\Core\Type\RadioType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.datetime" class="Sonatra\Component\Block\Extension\Core\Type\DateTimeType"
+        <service id="fxp_block.type.datetime" class="Fxp\Component\Block\Extension\Core\Type\DateTimeType"
                  public="true">
-            <tag name="sonatra_block.type" template-alias="datetime" />
+            <tag name="fxp_block.type" template-alias="datetime" />
         </service>
-        <service id="sonatra_block.type.date" class="Sonatra\Component\Block\Extension\Core\Type\DateType"
+        <service id="fxp_block.type.date" class="Fxp\Component\Block\Extension\Core\Type\DateType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.time" class="Sonatra\Component\Block\Extension\Core\Type\TimeType"
+        <service id="fxp_block.type.time" class="Fxp\Component\Block\Extension\Core\Type\TimeType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.birthday" class="Sonatra\Component\Block\Extension\Core\Type\BirthdayType"
+        <service id="fxp_block.type.birthday" class="Fxp\Component\Block\Extension\Core\Type\BirthdayType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.timezone" class="Sonatra\Component\Block\Extension\Core\Type\TimezoneType"
+        <service id="fxp_block.type.timezone" class="Fxp\Component\Block\Extension\Core\Type\TimezoneType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.number" class="Sonatra\Component\Block\Extension\Core\Type\NumberType"
+        <service id="fxp_block.type.number" class="Fxp\Component\Block\Extension\Core\Type\NumberType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.integer" class="Sonatra\Component\Block\Extension\Core\Type\IntegerType"
+        <service id="fxp_block.type.integer" class="Fxp\Component\Block\Extension\Core\Type\IntegerType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.percent" class="Sonatra\Component\Block\Extension\Core\Type\PercentType"
+        <service id="fxp_block.type.percent" class="Fxp\Component\Block\Extension\Core\Type\PercentType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.money" class="Sonatra\Component\Block\Extension\Core\Type\MoneyType"
+        <service id="fxp_block.type.money" class="Fxp\Component\Block\Extension\Core\Type\MoneyType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.currency" class="Sonatra\Component\Block\Extension\Core\Type\CurrencyType"
+        <service id="fxp_block.type.currency" class="Fxp\Component\Block\Extension\Core\Type\CurrencyType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.choice" class="Sonatra\Component\Block\Extension\Core\Type\ChoiceType"
+        <service id="fxp_block.type.choice" class="Fxp\Component\Block\Extension\Core\Type\ChoiceType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.country" class="Sonatra\Component\Block\Extension\Core\Type\CountryType"
+        <service id="fxp_block.type.country" class="Fxp\Component\Block\Extension\Core\Type\CountryType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.locale" class="Sonatra\Component\Block\Extension\Core\Type\LocaleType"
+        <service id="fxp_block.type.locale" class="Fxp\Component\Block\Extension\Core\Type\LocaleType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.language" class="Sonatra\Component\Block\Extension\Core\Type\LanguageType"
+        <service id="fxp_block.type.language" class="Fxp\Component\Block\Extension\Core\Type\LanguageType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.collection" class="Sonatra\Component\Block\Extension\Core\Type\CollectionType"
+        <service id="fxp_block.type.collection" class="Fxp\Component\Block\Extension\Core\Type\CollectionType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.repeated" class="Sonatra\Component\Block\Extension\Core\Type\RepeatedType"
+        <service id="fxp_block.type.repeated" class="Fxp\Component\Block\Extension\Core\Type\RepeatedType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.hidden" class="Sonatra\Component\Block\Extension\Core\Type\HiddenType"
+        <service id="fxp_block.type.hidden" class="Fxp\Component\Block\Extension\Core\Type\HiddenType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.closure" class="Sonatra\Component\Block\Extension\Core\Type\ClosureType"
+        <service id="fxp_block.type.closure" class="Fxp\Component\Block\Extension\Core\Type\ClosureType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
         </service>
-        <service id="sonatra_block.type.form" class="Sonatra\Component\Block\Extension\Core\Type\FormType"
+        <service id="fxp_block.type.form" class="Fxp\Component\Block\Extension\Core\Type\FormType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
             <argument type="service" id="form.factory" />
         </service>
-        <service id="sonatra_block.type.form_errors" class="Sonatra\Component\Block\Extension\Core\Type\FormFunctionType"
+        <service id="fxp_block.type.form_errors" class="Fxp\Component\Block\Extension\Core\Type\FormFunctionType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
             <argument>errors</argument>
         </service>
-        <service id="sonatra_block.type.form_rest" class="Sonatra\Component\Block\Extension\Core\Type\FormFunctionType"
+        <service id="fxp_block.type.form_rest" class="Fxp\Component\Block\Extension\Core\Type\FormFunctionType"
                  public="true">
-            <tag name="sonatra_block.type" />
+            <tag name="fxp_block.type" />
             <argument>rest</argument>
         </service>
     </services>
