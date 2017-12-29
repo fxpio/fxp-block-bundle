@@ -5,15 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="fxp_block.twig.extension.base.class">Fxp\Component\Block\Twig\Extension\BlockExtension</parameter>
-        <parameter key="fxp_block.twig.extension_translator.base.class">Fxp\Component\Block\Twig\Extension\BlockTranslatorExtension</parameter>
-        <parameter key="fxp_block.twig.renderer.base.class">Fxp\Component\Block\Twig\Block\TwigRenderer</parameter>
-        <parameter key="fxp_block.twig.engine.base.class">Fxp\Component\Block\Twig\Block\TwigRendererEngine</parameter>
         <parameter key="fxp_block.twig.resources" type="collection" />
     </parameters>
 
     <services>
-        <service id="fxp_block.twig.extension" class="%fxp_block.twig.extension.base.class%" public="false">
+        <service id="fxp_block.twig.extension"
+                 class="Fxp\Component\Block\Twig\Extension\BlockExtension"
+                 public="false">
             <tag name="twig.extension" />
             <argument type="service" id="twig" />
             <argument type="service" id="fxp_block.twig.renderer" />
@@ -22,16 +20,22 @@
             <argument type="collection" />
         </service>
 
-        <service id="fxp_block.twig.extension_translator" class="%fxp_block.twig.extension_translator.base.class%" public="false">
+        <service id="fxp_block.twig.extension_translator"
+                 class="Fxp\Component\Block\Twig\Extension\BlockTranslatorExtension"
+                 public="false">
             <tag name="twig.extension" />
             <argument type="service" id="translator" />
         </service>
 
-        <service id="fxp_block.twig.renderer" class="%fxp_block.twig.renderer.base.class%" public="false">
+        <service id="fxp_block.twig.renderer"
+                 class="Fxp\Component\Block\Twig\Block\TwigRenderer"
+                 public="false">
             <argument type="service" id="fxp_block.twig.engine" />
         </service>
 
-        <service id="fxp_block.twig.engine" class="%fxp_block.twig.engine.base.class%" public="false">
+        <service id="fxp_block.twig.engine"
+                 class="Fxp\Component\Block\Twig\Block\TwigRendererEngine"
+                 public="false">
             <argument type="service" id="twig" />
             <argument>%fxp_block.twig.resources%</argument>
         </service>

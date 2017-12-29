@@ -4,21 +4,18 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="fxp_block.resolved_type_factory.data_collector_proxy.class">Fxp\Component\Block\Extension\DataCollector\Proxy\ResolvedTypeFactoryDataCollectorProxy</parameter>
-        <parameter key="fxp_block.type_extension.block.data_collector.class">Fxp\Component\Block\Extension\DataCollector\Type\DataCollectorTypeExtension</parameter>
-    </parameters>
-
     <services>
-        <service id="fxp_block.resolved_type_factory" class="%fxp_block.resolved_type_factory.data_collector_proxy.class%">
+        <service id="fxp_block.resolved_type_factory"
+                 class="Fxp\Component\Block\Extension\DataCollector\Proxy\ResolvedTypeFactoryDataCollectorProxy">
             <argument type="service">
-                <service class="%fxp_block.resolved_type_factory.class%" />
+                <service class="Fxp\Component\Block\ResolvedBlockTypeFactory" />
             </argument>
             <argument type="service" id="data_collector.fxp_block" />
         </service>
 
         <!-- DataCollectorTypeExtension -->
-        <service id="fxp_block.type_extension.block.data_collector" class="%fxp_block.type_extension.block.data_collector.class%"
+        <service id="fxp_block.type_extension.block.data_collector"
+                 class="Fxp\Component\Block\Extension\DataCollector\Type\DataCollectorTypeExtension"
                  public="true">
             <tag name="fxp_block.type_extension" extended-type="Fxp\Component\Block\Extension\Core\Type\BlockType" />
             <argument type="service" id="data_collector.fxp_block" />

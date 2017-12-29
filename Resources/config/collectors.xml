@@ -4,15 +4,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="data_collector.fxp_block.class">Fxp\Component\Block\Extension\DataCollector\BlockDataCollector</parameter>
-        <parameter key="data_collector.fxp_block.extractor.class">Fxp\Component\Block\Extension\DataCollector\BlockDataExtractor</parameter>
-    </parameters>
-
     <services>
-        <service id="data_collector.fxp_block.extractor" class="%data_collector.fxp_block.extractor.class%" />
+        <service id="data_collector.fxp_block.extractor" class="Fxp\Component\Block\Extension\DataCollector\BlockDataExtractor" />
 
-        <service id="data_collector.fxp_block" class="%data_collector.fxp_block.class%">
+        <service id="data_collector.fxp_block"
+                 class="Fxp\Component\Block\Extension\DataCollector\BlockDataCollector">
             <tag name="data_collector" template="@FxpBlock/Collector/block.html.twig" id="fxp_block" priority="255" />
             <argument type="service" id="data_collector.fxp_block.extractor" />
         </service>

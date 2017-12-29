@@ -4,17 +4,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="fxp_block.extension.base.class">Fxp\Component\Block\Extension\DependencyInjection\DependencyInjectionExtension</parameter>
-        <parameter key="fxp_block.factory.class">Fxp\Component\Block\BlockFactory</parameter>
-        <parameter key="fxp_block.registry.class">Fxp\Component\Block\BlockRegistry</parameter>
-        <parameter key="fxp_block.resolved_type_factory.class">Fxp\Component\Block\ResolvedBlockTypeFactory</parameter>
-        <parameter key="fxp_block.type_guesser.validator.base.class">Fxp\Component\Block\Extension\Validator\ValidatorTypeGuesser</parameter>
-    </parameters>
-
     <services>
         <!-- DependencyInjectionExtension -->
-        <service id="fxp_block.extension" class="%fxp_block.extension.base.class%" public="false">
+        <service id="fxp_block.extension"
+                 class="Fxp\Component\Block\Extension\DependencyInjection\DependencyInjectionExtension"
+                 public="false">
             <property name="container" type="service" id="service_container" />
             <argument type="collection" />
             <argument type="collection" />
@@ -22,13 +16,15 @@
         </service>
 
         <!-- BlockFactory -->
-        <service id="fxp_block.factory" class="%fxp_block.factory.class%" public="true">
+        <service id="fxp_block.factory"
+                 class="Fxp\Component\Block\BlockFactory"
+                 public="true">
             <argument type="service" id="fxp_block.registry" />
             <argument type="service" id="fxp_block.resolved_type_factory" />
         </service>
 
         <!-- BlockRegistry -->
-        <service id="fxp_block.registry" class="%fxp_block.registry.class%">
+        <service id="fxp_block.registry" class="Fxp\Component\Block\BlockRegistry">
             <argument type="collection">
                 <!--
                 We don't need to be able to add more extensions.
@@ -42,10 +38,10 @@
         </service>
 
         <!-- ResolvedBlockTypeFactory -->
-        <service id="fxp_block.resolved_type_factory" class="%fxp_block.resolved_type_factory.class%" />
+        <service id="fxp_block.resolved_type_factory" class="Fxp\Component\Block\ResolvedBlockTypeFactory" />
 
         <!-- ValidatorTypeGuesser -->
-        <service id="fxp_block.type_guesser.validator" class="%fxp_block.type_guesser.validator.base.class%">
+        <service id="fxp_block.type_guesser.validator" class="Fxp\Component\Block\Extension\Validator\ValidatorTypeGuesser">
             <tag name="fxp_block.type_guesser" />
             <argument type="service" id="validator.mapping.class_metadata_factory" />
         </service>
