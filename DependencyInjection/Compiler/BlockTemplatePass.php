@@ -32,9 +32,9 @@ class BlockTemplatePass implements CompilerPassInterface
 
         $resources = $container->getParameter('fxp_block.twig.resources');
 
-        array_splice($resources, 0, 0, array(
+        array_splice($resources, 0, 0, [
             'block_div_layout.html.twig',
-        ));
+        ]);
 
         $container->setParameter('fxp_block.twig.resources', $resources);
     }

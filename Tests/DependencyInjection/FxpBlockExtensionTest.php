@@ -102,12 +102,12 @@ class FxpBlockExtensionTest extends TestCase
 
     public function testExtensionLoaderWithDebugAndCollector()
     {
-        $container = $this->createContainer(array(array(
-            'profiler' => array(
+        $container = $this->createContainer([[
+            'profiler' => [
                 'enabled' => true,
                 'collect' => true,
-            ),
-        )));
+            ],
+        ]]);
 
         $this->assertTrue($container->hasDefinition('fxp_block.type_extension.block.data_collector'));
 
@@ -118,38 +118,38 @@ class FxpBlockExtensionTest extends TestCase
 
     public function testExtensionLoaderWithSeveralConfig()
     {
-        $container = $this->createContainer(array(
-                array(
-                    'block_themes' => array(
+        $container = $this->createContainer([
+                [
+                    'block_themes' => [
                         'foobar.html.twig',
-                    ),
-                    'profiler' => array(
+                    ],
+                    'profiler' => [
                         'enabled' => true,
-                    ),
-                ),
-                array(
-                    'profiler' => array(
+                    ],
+                ],
+                [
+                    'profiler' => [
                         'enabled' => false,
-                    ),
-                ),
-            ));
+                    ],
+                ],
+            ]);
 
-        $validResources = array(
+        $validResources = [
             'block_div_layout.html.twig',
             'foobar.html.twig',
-        );
+        ];
 
         $this->assertSame($validResources, $container->getParameter('fxp_block.twig.resources'));
     }
 
     public function testCompilerPassWithoutExtension()
     {
-        $container = new ContainerBuilder(new ParameterBag(array(
-            'kernel.bundles' => array(
+        $container = new ContainerBuilder(new ParameterBag([
+            'kernel.bundles' => [
                 'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
                 'FxpBlockBundle' => 'Fxp\\Bundle\\BlockBundle\\FxpBlockBundle',
-            ),
-            'kernel.bundles_metadata' => array(),
+            ],
+            'kernel.bundles_metadata' => [],
             'kernel.cache_dir' => __DIR__,
             'kernel.debug' => false,
             'kernel.environment' => 'test',
@@ -157,33 +157,33 @@ class FxpBlockExtensionTest extends TestCase
             'kernel.root_dir' => __DIR__,
             'kernel.project_dir' => __DIR__,
             'kernel.charset' => 'UTF-8',
-        )));
+        ]));
 
         $sfExt = new FrameworkExtension();
 
         $container->registerExtension($sfExt);
 
-        $sfExt->load(array(), $container);
+        $sfExt->load([], $container);
 
         $bundle = new FxpBlockBundle();
         $bundle->build($container);
 
-        $container->getCompilerPassConfig()->setOptimizationPasses(array());
-        $container->getCompilerPassConfig()->setRemovingPasses(array());
+        $container->getCompilerPassConfig()->setOptimizationPasses([]);
+        $container->getCompilerPassConfig()->setRemovingPasses([]);
         $container->compile();
 
         $this->assertFalse($container->hasDefinition('fxp_block.extension'));
     }
 
-    protected function createContainer(array $configs = array())
+    protected function createContainer(array $configs = [])
     {
-        $container = new ContainerBuilder(new ParameterBag(array(
-            'kernel.bundles' => array(
+        $container = new ContainerBuilder(new ParameterBag([
+            'kernel.bundles' => [
                 'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
                 'TwigBundle' => 'Symfony\\Bundle\\TwigBundle\\TwigBundle',
                 'FxpBlockBundle' => 'Fxp\\Bundle\\BlockBundle\\FxpBlockBundle',
-            ),
-            'kernel.bundles_metadata' => array(),
+            ],
+            'kernel.bundles_metadata' => [],
             'kernel.cache_dir' => __DIR__,
             'kernel.debug' => false,
             'kernel.environment' => 'test',
@@ -191,7 +191,7 @@ class FxpBlockExtensionTest extends TestCase
             'kernel.root_dir' => __DIR__,
             'kernel.project_dir' => __DIR__,
             'kernel.charset' => 'UTF-8',
-        )));
+        ]));
 
         $sfExt = new FrameworkExtension();
         $twigExt = new TwigExtension();
@@ -201,8 +201,8 @@ class FxpBlockExtensionTest extends TestCase
         $container->registerExtension($twigExt);
         $container->registerExtension($extension);
 
-        $sfExt->load(array(array('form' => true)), $container);
-        $twigExt->load(array(), $container);
+        $sfExt->load([['form' => true]], $container);
+        $twigExt->load([], $container);
         $extension->load($configs, $container);
 
         if (!empty($twigConfigs)) {
@@ -212,8 +212,8 @@ class FxpBlockExtensionTest extends TestCase
         $bundle = new FxpBlockBundle();
         $bundle->build($container);
 
-        $container->getCompilerPassConfig()->setOptimizationPasses(array());
-        $container->getCompilerPassConfig()->setRemovingPasses(array());
+        $container->getCompilerPassConfig()->setOptimizationPasses([]);
+        $container->getCompilerPassConfig()->setRemovingPasses([]);
         $container->compile();
 
         return $container;

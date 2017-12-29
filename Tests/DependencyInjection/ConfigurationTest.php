@@ -25,58 +25,58 @@ class ConfigurationTest extends TestCase
     public function testDefaultConfig()
     {
         $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), array(array()));
+        $config = $processor->processConfiguration(new Configuration(), [[]]);
 
         $this->assertEquals(
-                array_merge(array(), self::getBundleDefaultConfig()),
+                array_merge([], self::getBundleDefaultConfig()),
                 $config
         );
     }
 
     public function testCustomConfig()
     {
-        $configs = array(array(
-            'block_themes' => array(
+        $configs = [[
+            'block_themes' => [
                 'foobar.html.twig',
-            ),
-        ));
+            ],
+        ]];
 
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), $configs);
 
         $this->assertEquals(
-            array_merge(array(), self::getBundleCustomConfig()),
+            array_merge([], self::getBundleCustomConfig()),
             $config
         );
     }
 
     protected static function getBundleDefaultConfig()
     {
-        return array(
-            'block_themes' => array(),
-            'doctrine' => array(
+        return [
+            'block_themes' => [],
+            'doctrine' => [
                 'enabled' => true,
-            ),
-            'profiler' => array(
+            ],
+            'profiler' => [
                 'enabled' => false,
                 'collect' => true,
-            ),
-        );
+            ],
+        ];
     }
 
     protected static function getBundleCustomConfig()
     {
-        return array(
-            'block_themes' => array(
+        return [
+            'block_themes' => [
                 'foobar.html.twig',
-            ),
-            'doctrine' => array(
+            ],
+            'doctrine' => [
                 'enabled' => true,
-            ),
-            'profiler' => array(
+            ],
+            'profiler' => [
                 'enabled' => false,
                 'collect' => true,
-            ),
-        );
+            ],
+        ];
     }
 }

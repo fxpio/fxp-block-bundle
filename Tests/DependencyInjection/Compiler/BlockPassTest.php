@@ -69,7 +69,7 @@ class BlockPassTest extends TestCase
         $this->assertTrue($container->hasDefinition('fxp_block.extension'));
 
         $blockDef = new Definition(BlockType::class);
-        $blockDef->setTags(array('fxp_block.type' => array()));
+        $blockDef->setTags(['fxp_block.type' => []]);
         $blockDef->setPublic(false);
         $container->setDefinition('test.block', $blockDef);
 
@@ -87,7 +87,7 @@ class BlockPassTest extends TestCase
         $this->assertTrue($container->hasDefinition('fxp_block.extension'));
 
         $blockDef = new Definition(FooExtension::class);
-        $blockDef->setTags(array('fxp_block.type_extension' => array()));
+        $blockDef->setTags(['fxp_block.type_extension' => []]);
         $blockDef->setPublic(false);
         $container->setDefinition('test.block_extension', $blockDef);
 
@@ -105,7 +105,7 @@ class BlockPassTest extends TestCase
         $this->assertTrue($container->hasDefinition('fxp_block.extension'));
 
         $blockDef = new Definition(FooExtension::class);
-        $blockDef->setTags(array('fxp_block.type_extension' => array()));
+        $blockDef->setTags(['fxp_block.type_extension' => []]);
         $container->setDefinition('test.block_extension', $blockDef);
 
         $this->pass->process($container);
@@ -122,7 +122,7 @@ class BlockPassTest extends TestCase
         $this->assertTrue($container->hasDefinition('fxp_block.extension'));
 
         $blockDef = new Definition(TypeGuess::class);
-        $blockDef->setTags(array('fxp_block.type_guesser' => array()));
+        $blockDef->setTags(['fxp_block.type_guesser' => []]);
         $blockDef->setPublic(false);
         $container->setDefinition('test.block_guesser', $blockDef);
 
@@ -136,7 +136,7 @@ class BlockPassTest extends TestCase
      */
     protected function getContainer()
     {
-        $container = new ContainerBuilder(new ParameterBag(array(
+        $container = new ContainerBuilder(new ParameterBag([
             'kernel.cache_dir' => $this->rootDir.'/cache',
             'kernel.debug' => false,
             'kernel.environment' => 'test',
@@ -146,16 +146,16 @@ class BlockPassTest extends TestCase
             'kernel.charset' => 'UTF-8',
             'assetic.debug' => false,
             'assetic.cache_dir' => $this->rootDir.'/cache/assetic',
-            'kernel.bundles' => array(),
-        )));
+            'kernel.bundles' => [],
+        ]));
 
         $extDef = new Definition(DependencyInjectionExtension::class);
         $extDef->setProperty('container', new Reference('service_container'));
-        $extDef->setArguments(array(
-            array(),
-            array(),
-            array(),
-        ));
+        $extDef->setArguments([
+            [],
+            [],
+            [],
+        ]);
         $container->setDefinition('fxp_block.extension', $extDef);
 
         return $container;

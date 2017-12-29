@@ -41,13 +41,13 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
 
     protected function getContainer($service)
     {
-        $container = new ContainerBuilder(new ParameterBag(array(
-            'kernel.bundles' => array(
+        $container = new ContainerBuilder(new ParameterBag([
+            'kernel.bundles' => [
                 'FrameworkBundle' => 'Symfony\\Bundle\\FrameworkBundle\\FrameworkBundle',
                 'TwigBundle' => 'Symfony\\Bundle\\TwigBundle\\TwigBundle',
                 'FxpBlockBundle' => 'Fxp\\Bundle\\BlockBundle\\FxpBlockBundle',
-            ),
-            'kernel.bundles_metadata' => array(),
+            ],
+            'kernel.bundles_metadata' => [],
             'kernel.cache_dir' => __DIR__,
             'kernel.debug' => false,
             'kernel.environment' => 'test',
@@ -56,35 +56,35 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
             'kernel.project_dir' => __DIR__,
             'kernel.charset' => 'UTF-8',
             'kernel.secret' => 'TestSecret',
-        )));
+        ]));
         $bundle = new FxpBlockBundle();
         $bundle->build($container); // Attach all default factories
 
         $sfExt = new FrameworkExtension();
         $container->registerExtension($sfExt);
-        $sfExt->load(array(array(
-            'validation' => array('enabled' => true),
-            'form' => array('enabled' => true),
-            'templating' => array('engines' => array('twig')),
-        )), $container);
+        $sfExt->load([[
+            'validation' => ['enabled' => true],
+            'form' => ['enabled' => true],
+            'templating' => ['engines' => ['twig']],
+        ]], $container);
 
         $twigExt = new TwigExtension();
         $container->registerExtension($twigExt);
-        $twigExt->load(array(), $container);
+        $twigExt->load([], $container);
 
         $extension = new FxpBlockExtension();
         $container->registerExtension($extension);
-        $config = array('doctrine' => array('enabled' => false));
-        $extension->load(array($config), $container);
+        $config = ['doctrine' => ['enabled' => false]];
+        $extension->load([$config], $container);
 
         $load = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Fixtures/config'));
         $load->load($service.'.xml');
 
         $container->findDefinition('validator.validator_factory')
-            ->replaceArgument(0, ServiceLocatorTagPass::register($container, array()));
+            ->replaceArgument(0, ServiceLocatorTagPass::register($container, []));
 
         $container->findDefinition('translator.default')
-            ->replaceArgument(0, ServiceLocatorTagPass::register($container, array()));
+            ->replaceArgument(0, ServiceLocatorTagPass::register($container, []));
 
         $container->findDefinition('fxp_block.extension')->setPublic(true);
         $container->findDefinition('fxp_block.type_guesser.validator')->setPublic(true);
@@ -94,7 +94,7 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
             $container->findDefinition('test.fxp_block.type_extension.foo')->setPublic(true);
         }
 
-        $container->getCompilerPassConfig()->setRemovingPasses(array());
+        $container->getCompilerPassConfig()->setRemovingPasses([]);
 
         $container->compile();
 

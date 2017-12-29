@@ -36,7 +36,7 @@ class BlockPass implements CompilerPassInterface
         $definition = $container->getDefinition('fxp_block.extension');
 
         // Builds an array with service IDs as keys and tag aliases as values
-        $types = array();
+        $types = [];
 
         foreach ($container->findTaggedServiceIds('fxp_block.type') as $serviceId => $tag) {
             $serviceDefinition = $this->getPublicRequireDefinition($container, $serviceId, 'types');
@@ -47,7 +47,7 @@ class BlockPass implements CompilerPassInterface
 
         $definition->replaceArgument(0, $types);
 
-        $typeExtensions = array();
+        $typeExtensions = [];
 
         foreach ($container->findTaggedServiceIds('fxp_block.type_extension') as $serviceId => $tag) {
             $this->getPublicRequireDefinition($container, $serviceId, 'type extensions');

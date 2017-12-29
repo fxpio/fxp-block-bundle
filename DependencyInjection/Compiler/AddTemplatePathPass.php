@@ -34,6 +34,6 @@ class AddTemplatePathPass implements CompilerPassInterface
         $refl = new \ReflectionClass(Block::class);
 
         $path = dirname($refl->getFileName()).'/Resources/views/Block';
-        $container->getDefinition('twig.loader.filesystem')->addMethodCall('addPath', array($path));
+        $container->getDefinition('twig.loader.filesystem')->addMethodCall('addPath', [$path]);
     }
 }

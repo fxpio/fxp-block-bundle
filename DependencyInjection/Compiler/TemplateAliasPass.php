@@ -33,7 +33,7 @@ class TemplateAliasPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('fxp_block.twig.extension');
 
-        $aliases = array();
+        $aliases = [];
 
         foreach ($container->findTaggedServiceIds('fxp_block.type') as $serviceId => $tag) {
             $serviceDefinition = $container->getDefinition($serviceId);

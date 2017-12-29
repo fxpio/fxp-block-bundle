@@ -49,7 +49,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('block_themes')
                     ->prototype('scalar')->end()
-                    ->example(array('@App/block.html.twig'))
+                    ->example(['@App/block.html.twig'])
                 ->end()
             ->end()
         ;
