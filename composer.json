@@ -15,14 +15,14 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1.0",
-        "symfony/framework-bundle": "^3.4.0|^4.0.0",
+        "symfony/framework-bundle": "^4.1.0",
         "fxp/block": "^1.0.0"
     },
     "require-dev": {
-        "symfony/twig-bundle": "^3.4.0|^4.0.0",
-        "symfony/validator": "^3.4.0|^4.0.0",
-        "symfony/templating": "^3.4.0|^4.0.0",
-        "symfony/asset": "^3.4.0|^4.0.0",
+        "symfony/twig-bundle": "^4.1.0",
+        "symfony/validator": "^4.1.0",
+        "symfony/templating": "^4.1.0",
+        "symfony/asset": "^4.1.0",
         "doctrine/orm": "^2.6.0"
     },
     "suggest": {

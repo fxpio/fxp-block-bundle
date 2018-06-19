@@ -56,6 +56,7 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
             'kernel.project_dir' => __DIR__,
             'kernel.charset' => 'UTF-8',
             'kernel.secret' => 'TestSecret',
+            'container.build_id' => 'buildid',
         ]));
         $bundle = new FxpBlockBundle();
         $bundle->build($container); // Attach all default factories
