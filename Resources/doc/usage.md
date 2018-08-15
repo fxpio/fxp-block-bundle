@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Fxp\Component\Block\Extension\Core\Type\DateTimeType;
 use Fxp\Component\Block\Extension\Core\Type\TextType;
 use Fxp\Component\Block\Extension\Core\Type\TextareaType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends Controller
 {
