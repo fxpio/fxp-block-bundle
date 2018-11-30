@@ -6,14 +6,14 @@ Controller:
 ```php
 namespace Acme\BlogBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Fxp\Component\Block\Extension\Core\Type\DateTimeType;
 use Fxp\Component\Block\Extension\Core\Type\TextType;
 use Fxp\Component\Block\Extension\Core\Type\TextareaType;
-use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
     /**
      * @Route("/blog/post/create", name="blog_post_create")
