@@ -47,6 +47,7 @@ class DependencyInjectionExtensionTest extends AbstractBaseExtensionTest
                 'TwigBundle' => 'Symfony\\Bundle\\TwigBundle\\TwigBundle',
                 'FxpBlockBundle' => 'Fxp\\Bundle\\BlockBundle\\FxpBlockBundle',
             ],
+            'kernel.container_class' => 'app',
             'kernel.bundles_metadata' => [],
             'kernel.cache_dir' => __DIR__,
             'kernel.debug' => false,

@@ -15,14 +15,15 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1.0",
-        "symfony/framework-bundle": "^4.1.0",
-        "fxp/block": "^1.0.0"
+        "symfony/framework-bundle": "^4.2.0",
+        "fxp/block": "^1.1.0"
     },
     "require-dev": {
-        "symfony/twig-bundle": "^4.1.0",
-        "symfony/validator": "^4.1.0",
-        "symfony/templating": "^4.1.0",
-        "symfony/asset": "^4.1.0",
+        "symfony/twig-bundle": "^4.2.0",
+        "symfony/validator": "^4.2.0",
+        "symfony/templating": "^4.2.0",
+        "symfony/translation": "^4.2.0",
+        "symfony/asset": "^4.2.0",
         "doctrine/orm": "^2.6.0"
     },
     "suggest": {
@@ -36,7 +37,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "1.1-dev"
         }
     }
 }

@@ -27,8 +27,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fxp_block');
+        $treeBuilder = new TreeBuilder('fxp_block');
+        /* @var ArrayNodeDefinition $rootNode */
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->addBlockSection($rootNode);
         $this->addDoctrineSection($rootNode);
