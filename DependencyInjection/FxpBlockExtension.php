@@ -32,7 +32,7 @@ class FxpBlockExtension extends Extension
         $loader->load('block.xml');
         $loader->load('twig.xml');
 
-        if (count($configs) > 1) {
+        if (\count($configs) > 1) {
             $initConfig = array_pop($configs);
             $configs = array_reverse($configs);
             $configs[] = $initConfig;
