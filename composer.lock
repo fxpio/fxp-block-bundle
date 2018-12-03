@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fxpio/fxp-block.git",
-                "reference": "71b5678c85b5b2742b368b7be90bf047e88e69f6"
+                "reference": "a4fefb24de37bec5cc202181fd20cc7d3a4aa59b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fxpio/fxp-block/zipball/71b5678c85b5b2742b368b7be90bf047e88e69f6",
-                "reference": "71b5678c85b5b2742b368b7be90bf047e88e69f6",
+                "url": "https://api.github.com/repos/fxpio/fxp-block/zipball/a4fefb24de37bec5cc202181fd20cc7d3a4aa59b",
+                "reference": "a4fefb24de37bec5cc202181fd20cc7d3a4aa59b",
                 "shasum": ""
             },
             "require": {
@@ -70,7 +70,7 @@
                 "ui",
                 "user interface"
             ],
-            "time": "2018-12-02T15:21:25+00:00"
+            "time": "2018-12-03T12:12:40+00:00"
         },
         {
             "name": "psr/cache",

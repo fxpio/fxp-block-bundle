@@ -11,6 +11,7 @@
 
 namespace Fxp\Bundle\BlockBundle\DependencyInjection\Compiler;
 
+use Fxp\Component\Block\BlockTypeExtensionInterface;
 use Fxp\Component\Block\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -50,15 +51,18 @@ class BlockPass implements CompilerPassInterface
         $typeExtensions = [];
 
         foreach ($container->findTaggedServiceIds('fxp_block.type_extension') as $serviceId => $tag) {
-            $this->getPublicRequireDefinition($container, $serviceId, 'type extensions');
+            $extDef = $this->getPublicRequireDefinition($container, $serviceId, 'type extensions');
+            /* @var BlockTypeExtensionInterface|string $extClass */
+            $extClass = $extDef->getClass();
+            $extendedTypes = $extClass::getExtendedTypes();
 
-            if (isset($tag[0]['extended_type'])) {
-                $extendedType = $tag[0]['extended_type'];
-            } else {
-                throw new InvalidArgumentException(sprintf('Tagged block type extension must have the extended type configured using the extended_type/extended-type attribute, none was configured for the "%s" service.', $serviceId));
+            if (empty($extendedTypes)) {
+                throw new InvalidArgumentException(sprintf('The getExtendedTypes() method for service "%s" does not return any extended types.', $serviceId));
             }
 
-            $typeExtensions[$extendedType][] = $serviceId;
+            foreach ($extendedTypes as $extendedType) {
+                $typeExtensions[$extendedType][] = $serviceId;
+            }
         }
 
         $definition->replaceArgument(1, $typeExtensions);

@@ -12,6 +12,7 @@
 namespace Fxp\Bundle\BlockBundle\Tests\DependencyInjection\Compiler;
 
 use Fxp\Bundle\BlockBundle\DependencyInjection\Compiler\BlockPass;
+use Fxp\Bundle\BlockBundle\Tests\Block\Fixtures\Extension\BarExtension;
 use Fxp\Component\Block\Extension\Core\Type\BlockType;
 use Fxp\Component\Block\Extension\DependencyInjection\DependencyInjectionExtension;
 use Fxp\Component\Block\Guess\TypeGuess;
@@ -96,15 +97,15 @@ class BlockPassTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Tagged block type extension must have the extended type configured using the extended_type/extended-type attribute, none was configured for the "test.block_extension" service.
+     * @expectedExceptionMessage The getExtendedTypes() method for service "test.block_extension" does not return any extended types.
      */
-    public function testProcessBlockTypeExtensionWithoutExtendedType()
+    public function testProcessBlockTypeExtensionWithoutExtendedTypes()
     {
         $container = $this->getContainer();
 
         $this->assertTrue($container->hasDefinition('fxp_block.extension'));
 
-        $blockDef = new Definition(FooExtension::class);
+        $blockDef = new Definition(BarExtension::class);
         $blockDef->setTags(['fxp_block.type_extension' => []]);
         $container->setDefinition('test.block_extension', $blockDef);
 
